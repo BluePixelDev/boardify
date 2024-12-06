@@ -1,5 +1,6 @@
-import { Vector2 } from "@/scripts/utils"
-import { CSSProperties, MouseEventHandler, useCallback, useState } from "react";
+import useDrag from "@/hooks/UseDrag";
+import { Vector2 } from "@/scripts/utils";
+import { CSSProperties, useCallback, useRef, useState } from "react";
 import { useGraphViewContext } from "./GraphView";
 
 type GraphNodeProps = {
@@ -15,6 +16,7 @@ export default function (props: GraphNodeProps) {
     const { scale } = useGraphViewContext()
     const [position, setPosition] = useState<Vector2>(props.position);
     const [size, _setSize] = useState<Vector2>(props.size);
+    const nodeRef = useRef<HTMLDivElement>(null)
 
     const updatePosition = useCallback((delta: { x: number, y: number }) => {
         setPosition(prev => ({
@@ -23,30 +25,14 @@ export default function (props: GraphNodeProps) {
         }));
     }, [scale])
 
-    // Handle mouse down for panning
-    const handleMouseDown: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
-        if (event.button !== 0) return; // Only for middle mouse button
+    const checkDrag = (event: MouseEvent) => {
+        return event.button == 0 && event.target == nodeRef.current
+    }
 
-        let startX = event.clientX;
-        let startY = event.clientY;
-        const handleMouseMove = (moveEvent: MouseEvent) => {
-            const deltaX = moveEvent.clientX - startX;
-            const deltaY = moveEvent.clientY - startY;
-            updatePosition({ x: deltaX, y: deltaY });
-
-            // Update start position for continuous dragging
-            startX = moveEvent.clientX;
-            startY = moveEvent.clientY;
-        };
-
-        const handleMouseUp = () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-        };
-
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-    }, [updatePosition]);
+    useDrag({
+        shouldDrag: checkDrag,
+        onDrag: updatePosition
+    })
 
     const nodeStyle: CSSProperties = {
         position: "absolute",
@@ -56,12 +42,12 @@ export default function (props: GraphNodeProps) {
     };
 
     return <div
+        ref={nodeRef}
         className="graph-node shadow-black shadow-2xl"
-        style={nodeStyle}
-        onMouseDown={handleMouseDown}>
+        style={nodeStyle}>
 
-        <div 
-        className="graph-node-content">
+        <div
+            className="graph-node-content">
             {props.children}
         </div>
     </div>

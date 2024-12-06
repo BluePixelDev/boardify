@@ -1,9 +1,10 @@
+import useDrag from "@/hooks/UseDrag";
 import GridBackground from "./GridBackground";
-import { createContext, CSSProperties, MouseEventHandler, useCallback, useContext, useRef, useState, WheelEventHandler } from 'react';
+import { createContext, CSSProperties, useCallback, useContext, useEffect, useRef, useState, WheelEventHandler } from 'react';
 
 type GraphProperties = {
     minZoom: number,
-    maxZoom: number
+    maxZoom: number,
 }
 
 type Props = {
@@ -30,14 +31,22 @@ export const useGraphViewContext = () => useContext(GraphViewContext);
 export default function GraphView(props: Props) {
     const [scale, setScale] = useState(1);
     const [translate, setTranslate] = useState({ x: 0, y: 0 });
+    const [targetTranslate, setTargetTranslate] = useState({ x: 0, y: 0 });
     const containerRef = useRef<HTMLDivElement>(null);
+    const contentViewRef = useRef<HTMLDivElement>(null);
 
+    // ==== UPDATING ====
     const updatePosition = useCallback((delta: { x: number; y: number }) => {
-        setTranslate(prev => ({
-            x: prev.x + delta.x / scale,
-            y: prev.y + delta.y / scale
+        setTargetTranslate(prev => ({
+            x: prev.x + delta.x,
+            y: prev.y + delta.y
         }));
     }, [scale]);
+
+    const updatePositionNoSmooth = useCallback((newPosition: { x: number; y: number }) => {
+        setTranslate(newPosition);
+        setTargetTranslate(newPosition);
+    }, []);
 
     const updateScale = useCallback((delta: number, mousePosition?: { x: number; y: number }) => {
         if (!containerRef.current) return;
@@ -53,52 +62,72 @@ export default function GraphView(props: Props) {
             const newX = translate.x - (mouseX - translate.x) * (zoomFactor - 1);
             const newY = translate.y - (mouseY - translate.y) * (zoomFactor - 1);
 
-            setTranslate({ x: newX, y: newY });
+            updatePositionNoSmooth({ x: newX, y: newY });
         }
 
         setScale(newScale);
     }, [scale, translate]);
 
+     // Smooth interpolation parameters
+     const smoothingFactor = 0.5;
+     const epsilon = 0.2;  
+
+    useEffect(() => {
+        let animationFrameId: number;
+
+        const interpolateTranslate = () => {
+            const dx = targetTranslate.x - translate.x;
+            const dy = targetTranslate.y - translate.y;
+
+            if (Math.abs(dx) > epsilon || Math.abs(dy) > epsilon) {
+                const newX = translate.x + dx * smoothingFactor;
+                const newY = translate.y + dy * smoothingFactor;
+
+                setTranslate({
+                    x: Math.abs(dx) > epsilon ? newX : targetTranslate.x,
+                    y: Math.abs(dy) > epsilon ? newY : targetTranslate.y
+                });
+
+                animationFrameId = requestAnimationFrame(interpolateTranslate);
+            }
+        };
+
+        animationFrameId = requestAnimationFrame(interpolateTranslate);
+
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
+    }, [targetTranslate, translate]);
+
+    // Checks whether this element can be dragged
+    const checkDrag = (event: MouseEvent) => event.button == 1
+
+    useDrag({
+        shouldDrag: checkDrag,
+        onDrag: updatePosition
+    })
+
+    // ==== CALLBACKS ====
     const handleZoom: WheelEventHandler<HTMLDivElement> = useCallback((event) => {
         const delta = Math.sign(event.deltaY) * -0.1;
         updateScale(delta, { x: event.clientX, y: event.clientY });
     }, [updateScale]);
 
-    // Handle mouse down for panning
-    const handleMouseDown: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
-        if (event.button !== 1) return; // Only for middle mouse button
-
-        let startX = event.clientX;
-        let startY = event.clientY;
-
-        const handleMouseMove = (moveEvent: MouseEvent) => {
-            const deltaX = moveEvent.clientX - startX;
-            const deltaY = moveEvent.clientY - startY;
-            updatePosition({ x: deltaX, y: deltaY });
-
-            // Update start position for continuous dragging
-            startX = moveEvent.clientX;
-            startY = moveEvent.clientY;
-        };
-
-        const handleMouseUp = () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-        };
-
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-    }, [updatePosition]);
+    useEffect(() => {
+        if (!contentViewRef.current) return;
+        contentViewRef.current.style.transform = `translate3d(${translate.x}px, ${translate.y}px, 0) scale(${scale})`
+    }, [scale, translate])
 
     const boardStyle: CSSProperties = {
         cursor: 'grab',
         overflow: 'hidden',
     };
 
-    const contentStyle: CSSProperties = {
-        transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+    const graphViewContentStyle: CSSProperties = {
         transformOrigin: '0 0'
-    };
+    }
 
     return (
         <GraphViewContext.Provider value={{
@@ -111,12 +140,15 @@ export default function GraphView(props: Props) {
             <div
                 ref={containerRef}
                 className="board-view-default"
-                onMouseDown={handleMouseDown}
                 onWheel={handleZoom}
                 style={boardStyle}>
 
-                <GridBackground/>
-                <div className={`board-content-view-default`} style={contentStyle}>
+                <GridBackground />
+                <div
+                    ref={contentViewRef}
+                    className={`board-content-view-default`}
+                    style={graphViewContentStyle}
+                >
                     {props.children}
                 </div>
 

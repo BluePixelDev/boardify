@@ -1,7 +1,7 @@
 import "./App.css";
-import AppTheme from "./components/AppTheme";
-import GraphNode from "./components/board/GraphNode";
-import GraphView from "./components/board/GraphView";
+import AppTheme from "@/components/AppTheme";
+import GraphNode from "@/components/board/GraphNode";
+import GraphView from "@/components/board/GraphView";
 
 function App() {
   return (
