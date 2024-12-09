@@ -68,9 +68,9 @@ export default function GraphView(props: Props) {
         setScale(newScale);
     }, [scale, translate]);
 
-    // Smooth interpolation parameters
-    const smoothingFactor = 0.5;
-    const epsilon = 0.2;
+     // Smooth interpolation parameters
+     const smoothingFactor = 0.5;
+     const epsilon = 0.2;  
 
     useEffect(() => {
         let animationFrameId: number;

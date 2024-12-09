@@ -13,6 +13,7 @@ export default defineConfig(async () => ({
       '@components': path.resolve(__dirname, './src/components'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@scripts': path.resolve(__dirname, './src/scripts'),
+      '@redux': path.resolve(__dirname, './src/redux'),
     },
   },
   
