@@ -1,6 +1,6 @@
-import useDrag from "@/hooks/UseDrag";
 import GridBackground from "./GridBackground";
 import { createContext, CSSProperties, useCallback, useContext, useEffect, useRef, useState, WheelEventHandler } from 'react';
+import { useDragContext } from "@/hooks/DragProvider";
 
 type GraphProperties = {
     minZoom: number,
@@ -68,9 +68,9 @@ export default function GraphView(props: Props) {
         setScale(newScale);
     }, [scale, translate]);
 
-     // Smooth interpolation parameters
-     const smoothingFactor = 0.5;
-     const epsilon = 0.2;  
+    // Smooth interpolation parameters
+    const smoothingFactor = 0.5;
+    const epsilon = 0.2;
 
     useEffect(() => {
         let animationFrameId: number;
@@ -101,13 +101,13 @@ export default function GraphView(props: Props) {
         };
     }, [targetTranslate, translate]);
 
-    // Checks whether this element can be dragged
-    const checkDrag = (event: MouseEvent) => event.button == 1
+    const dragProvider = useDragContext();
 
-    useDrag({
-        shouldDrag: checkDrag,
-        onDrag: updatePosition
-    })
+    useEffect(() => {
+        if (dragProvider.startTarget != containerRef.current) return
+        if (dragProvider.originalEvent?.button != 1) return
+        updatePosition({x: dragProvider.deltaX, y: dragProvider.deltaY})
+    }, [dragProvider])
 
     // ==== CALLBACKS ====
     const handleZoom: WheelEventHandler<HTMLDivElement> = useCallback((event) => {
@@ -147,8 +147,7 @@ export default function GraphView(props: Props) {
                 <div
                     ref={contentViewRef}
                     className={`board-content-view-default`}
-                    style={graphViewContentStyle}
-                >
+                    style={graphViewContentStyle}>
                     {props.children}
                 </div>
 

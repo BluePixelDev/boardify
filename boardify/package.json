@@ -16,7 +16,8 @@
     "components": "^0.1.0",
     "framer-motion": "^11.13.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",

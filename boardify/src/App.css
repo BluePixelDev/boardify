@@ -51,7 +51,6 @@
 }
 
 .graph-node-content {
-  padding: 5em;
   box-sizing: border-box;
   pointer-events: none;
 }
