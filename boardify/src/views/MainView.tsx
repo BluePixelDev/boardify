@@ -1,4 +1,4 @@
-import GraphView from "@/components/graph/GraphView";
+import GraphView from "@/components/graph/graph-view/GraphView";
 import NodeManagerContext from "@/components/node-system/NodeManagerContext";
 import NodeRenderer from "@/components/node-system/NodeRenderer";
 

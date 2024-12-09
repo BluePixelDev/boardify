@@ -1,4 +1,4 @@
-import GraphNode from "@/components/graph/ViewNode";
+import GraphNode from "@/components/graph/graph-node/GraphNode";
 import { NodeData } from "../node-system/NodeManagerContext";
 
 export type NoteNodeData = {
@@ -8,7 +8,7 @@ export type NoteNodeData = {
 export default function NoteNode({ node }: { node: NodeData<NoteNodeData> }) {
     
     return (
-        <GraphNode id={node.id} position={node.position} size={node.size}>
+        <GraphNode position={node.position} size={node.size}>
             <h1>
                 {node.data.text}
             </h1>

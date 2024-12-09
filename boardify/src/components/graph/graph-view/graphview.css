@@ -1,0 +1,18 @@
+.graph-view {
+    cursor: grab;
+    overflow: hidden;
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.graph-view-content {
+    width: 0;
+    height: 0;
+    position: relative;
+    pointer-events: none;
+    user-select: none;
+    transform-origin: 0 0;
+}
+  

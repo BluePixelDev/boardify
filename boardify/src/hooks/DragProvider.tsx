@@ -2,12 +2,18 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 
 interface DragInfo {
     isDragging: boolean;
-    deltaX: number;
-    deltaY: number;
-    currentX: number,
-    currentY: number,
+    mouse: MouseInfo
     startTarget: HTMLElement | null;
     originalEvent: MouseEvent | null;
+}
+
+interface MouseInfo {
+    deltaX: number;
+    deltaY: number;
+    currentX: number;
+    currentY: number;
+    startX: number;
+    startY: number;
 }
 
 const DragContext = createContext<DragInfo | undefined>(undefined);
@@ -15,10 +21,14 @@ const DragContext = createContext<DragInfo | undefined>(undefined);
 export default function DragProvider({ children }: { children: JSX.Element | JSX.Element[] }) {
     const dragInfoRef = useRef<DragInfo>({
         isDragging: false,
-        deltaX: 0,
-        deltaY: 0,
-        currentX: 0,
-        currentY: 0,
+        mouse: {
+            deltaX: 0,
+            deltaY: 0,
+            currentX: 0,
+            currentY: 0,
+            startX: 0,
+            startY: 0
+        },
         startTarget: null,
         originalEvent: null
     });
@@ -44,10 +54,14 @@ export default function DragProvider({ children }: { children: JSX.Element | JSX
     const startDrag = useCallback((event: MouseEvent) => {
         const newDragInfo: DragInfo = {
             isDragging: true,
-            deltaX: 0,
-            deltaY: 0,
-            currentX: event.clientX,
-            currentY: event.clientY,
+            mouse: {
+                deltaX: 0,
+                deltaY: 0,
+                currentX: event.clientX,
+                currentY: event.clientY,
+                startX: event.clientX,
+                startY: event.clientY
+            },
             startTarget: event.target as HTMLElement,
             originalEvent: event
         };
@@ -60,22 +74,31 @@ export default function DragProvider({ children }: { children: JSX.Element | JSX
 
         const updatedDragInfo: DragInfo = {
             ...dragInfoRef.current,
-            deltaX: event.clientX - dragInfoRef.current.currentX,
-            deltaY: event.clientY - dragInfoRef.current.currentY,
-            currentX: event.clientX,
-            currentY: event.clientY,
+            mouse: {
+                ...dragInfoRef.current.mouse,
+                deltaX: event.clientX - dragInfoRef.current.mouse.currentX,
+                deltaY: event.clientY - dragInfoRef.current.mouse.currentY,
+                currentX: event.clientX,
+                currentY: event.clientY,
+            }
         };
 
         dragInfoRef.current = updatedDragInfo;
         setDragInfo(updatedDragInfo);
-    }, []);
+    }, [dragInfoRef]);
 
     const endDrag = useCallback(() => {
         const finalDragInfo: DragInfo = {
             ...dragInfoRef.current,
             isDragging: false,
-            deltaX: 0,
-            deltaY: 0,
+            mouse: {
+                deltaX: 0,
+                deltaY: 0,
+                startX: 0,
+                startY: 0,
+                currentX: 0,
+                currentY: 0
+            },
             originalEvent: null
         };
         dragInfoRef.current = finalDragInfo;

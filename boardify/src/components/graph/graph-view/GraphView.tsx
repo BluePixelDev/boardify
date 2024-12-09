@@ -1,4 +1,5 @@
-import GridBackground from "./GridBackground";
+import "./graphview.css"
+import GridBackground from "../GridBackground";
 import { createContext, CSSProperties, useCallback, useContext, useEffect, useRef, useState, WheelEventHandler } from 'react';
 import { useDragContext } from "@/hooks/DragProvider";
 
@@ -69,8 +70,8 @@ export default function GraphView(props: Props) {
     }, [scale, translate]);
 
      // Smooth interpolation parameters
-     const smoothingFactor = 0.5;
-     const epsilon = 0.2;  
+     const smoothingFactor = 0.8;
+     const epsilon = 0.5;  
 
     useEffect(() => {
         let animationFrameId: number;
@@ -104,9 +105,8 @@ export default function GraphView(props: Props) {
     const dragProvider = useDragContext();
 
     useEffect(() => {
-        if (dragProvider.startTarget != containerRef.current) return
-        if (dragProvider.originalEvent?.button != 1) return
-        updatePosition({x: dragProvider.deltaX, y: dragProvider.deltaY})
+        if (dragProvider.startTarget != containerRef.current && dragProvider.originalEvent?.button != 1) return
+        updatePosition({x: dragProvider.mouse.deltaX, y: dragProvider.mouse.deltaY})
     }, [dragProvider])
 
     // ==== CALLBACKS ====
@@ -119,11 +119,6 @@ export default function GraphView(props: Props) {
         if (!contentViewRef.current) return;
         contentViewRef.current.style.transform = `translate3d(${translate.x}px, ${translate.y}px, 0) scale(${scale})`
     }, [scale, translate])
-
-    const boardStyle: CSSProperties = {
-        cursor: 'grab',
-        overflow: 'hidden',
-    };
 
     const graphViewContentStyle: CSSProperties = {
         transformOrigin: '0 0'
@@ -139,14 +134,13 @@ export default function GraphView(props: Props) {
         }}>
             <div
                 ref={containerRef}
-                className="board-view-default"
-                onWheel={handleZoom}
-                style={boardStyle}>
+                className={"graph-view"}
+                onWheel={handleZoom}>
 
                 <GridBackground />
                 <div
                     ref={contentViewRef}
-                    className={`board-content-view-default`}
+                    className={`graph-view-content`}
                     style={graphViewContentStyle}>
                     {props.children}
                 </div>

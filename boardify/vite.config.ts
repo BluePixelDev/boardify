@@ -18,7 +18,6 @@ export default defineConfig(async () => ({
   },
   
   plugins: [react()],
- 
 
   clearScreen: false,
   server: {
