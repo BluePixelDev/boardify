@@ -1,26 +1,24 @@
 import "./App.css";
 import AppTheme from "@/components/AppTheme";
-import GraphNode from "@/components/board/GraphNode";
-import GraphView from "@/components/board/GraphView";
+import GraphNode from "@/components/graph/GraphNode";
+import GraphView from "@/components/graph/GraphView";
 
 function App() {
   return (
     <AppTheme>
-        <GraphView graph={{
-          maxZoom: 5,
-          minZoom: 0.5
+      <GraphView graph={{
+        maxZoom: 5,
+        minZoom: 0.5
+      }}>
+        <GraphNode position={{
+          x: -10,
+          y: 0
+        }} size={{
+          x: 250,
+          y: 250
         }}>
-          <GraphNode position={{
-            x: -10,
-            y: 0
-          }} size={{
-            x: 250,
-            y: 250
-          }} data={""} id={"joe"}>
-            <img src="tauri.svg" style={{width: "100%"}}></img>
-            <h2>Test</h2>
-          </GraphNode>
-        </GraphView>
+        </GraphNode>
+      </GraphView>
     </AppTheme>
   );
 }
