@@ -13,7 +13,7 @@ export default function (props: GraphNodeProps) {
     const { scale } = useGraphViewContext()
     const nodeRef = useRef<HTMLDivElement>(null)
 
-    return <div>
+    return <>
         <TransformRect
             zoom={scale}
             x={props.position.x}
@@ -28,6 +28,6 @@ export default function (props: GraphNodeProps) {
                 <div className="graph-node-content">{props.children}</div>
             </div >
         </TransformRect>
-    </div>
+    </>
 
 } 

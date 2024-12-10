@@ -105,7 +105,7 @@ export default function GraphView(props: Props) {
     const dragProvider = useDragContext();
 
     useEffect(() => {
-        if (dragProvider.startTarget != containerRef.current && dragProvider.originalEvent?.button != 1) return
+        if (dragProvider.startTarget != containerRef.current || dragProvider.originalEvent?.button != 1) return
         updatePosition({x: dragProvider.mouse.deltaX, y: dragProvider.mouse.deltaY})
     }, [dragProvider])
 

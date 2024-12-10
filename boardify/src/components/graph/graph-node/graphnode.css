@@ -2,10 +2,10 @@
     position: absolute;
     pointer-events: none;
     transform-origin: 0 0;
+    overflow: hidden;
 }
 
-/*
-.graph-node-content{
-
+.graph-node-content {
+    box-sizing: border-box;
+    pointer-events: none;
 }
-*/

@@ -10,7 +10,7 @@ function App() {
   return (
     <Provider store={store}>
       <AppTheme>
-        <Snippets/>
+        <Snippets />
         <DragProvider>
           <MainView />
         </DragProvider>
