@@ -4,9 +4,11 @@ import { useGraphViewContext } from "../graph-view/GraphView";
 import TransformRect from "../transform-rect/TransformRect";
 
 type GraphNodeProps = {
-    position: { x: number, y: number },
-    size: { width: number, height: number },
+    initialPosition: { x: number, y: number },
+    initalSize: { width: number, height: number },
     children?: JSX.Element | JSX.Element[],
+    onResize?: (newSize: { width: number, height: number }) => void,
+    onMove?: (newPos: { x: number, y: number }) => void,
 }
 
 export default function (props: GraphNodeProps) {
@@ -16,11 +18,13 @@ export default function (props: GraphNodeProps) {
     return <>
         <TransformRect
             zoom={scale}
-            x={props.position.x}
-            y={props.position.y}
-            width={props.size.width}
-            height={props.size.height}
+            initialX={props.initialPosition.x}
+            initialY={props.initialPosition.y}
+            initialWidth={props.initalSize.width}
+            initialHeight={props.initalSize.height}
             draggable={true}
+            onResize={props.onResize}
+            onMove={props.onMove}
         >
             <div
                 ref={nodeRef}

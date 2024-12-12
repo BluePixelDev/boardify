@@ -1,28 +1,31 @@
 import { useDragContext } from "@/hooks/DragProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
+import ResizeHandle from "./ResizeHandle";
 
 type TransformRectProps = {
     zoom: number
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    draggable: boolean,
-    onPosition?: (newPosition: { x: number, y: number }) => void,
+    initialX: number,
+    initialY: number,
+    initialWidth: number,
+    initialHeight: number,
+    draggable?: boolean,
+    resizable?: boolean,
+    onMove?: (newPosition: { x: number, y: number }) => void,
     onResize?: (newSize: { width: number, height: number }) => void,
+    setPosition?: (position: { width: number, height: number }) => void,
+    setSize?: (position: { width: number, height: number }) => void,
     children: JSX.Element | JSX.Element[]
 }
 
 const RESIZE_HANDLE_SIZE = 8; // size of the resize handle
-
 export default function (props: TransformRectProps) {
     const [position, setPosition] = useState<{ x: number; y: number }>({
-        x: props.x,
-        y: props.y,
+        x: props.initialX,
+        y: props.initialY,
     });
     const [size, setSize] = useState<{ width: number; height: number }>({
-        width: props.width,
-        height: props.height,
+        width: props.initialWidth,
+        height: props.initialHeight,
     });
 
     const dragContext = useDragContext();
@@ -51,7 +54,7 @@ export default function (props: TransformRectProps) {
             x: state.x + delta.x / props.zoom,
             y: state.y + delta.y / props.zoom
         }));
-        props.onPosition?.({ x: position.x, y: position.y });
+        props.onMove?.({ x: position.x, y: position.y });
     }, [props.zoom]);
 
     // Resizing Logic
@@ -154,54 +157,49 @@ export default function (props: TransformRectProps) {
             {props.children}
 
             {/* Resize Handles */}
-            <div
-                style={{
-                    position: 'absolute',
-                    right: 0,
-                    bottom: 0,
-                    width: RESIZE_HANDLE_SIZE / props.zoom,
-                    height: RESIZE_HANDLE_SIZE / props.zoom,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    cursor: 'se-resize'
-                }}
-                onMouseDown={(e) => handleMouseDownResize(e, 'se')}
-            />
-            <div
-                style={{
-                    position: 'absolute',
-                    right: 0,
-                    top: 0,
-                    width: RESIZE_HANDLE_SIZE / props.zoom,
-                    height: RESIZE_HANDLE_SIZE / props.zoom,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    cursor: 'ne-resize'
-                }}
-                onMouseDown={(e) => handleMouseDownResize(e, 'ne')}
-            />
-            <div
-                style={{
-                    position: 'absolute',
-                    left: 0,
-                    bottom: 0,
-                    width: RESIZE_HANDLE_SIZE / props.zoom,
-                    height: RESIZE_HANDLE_SIZE / props.zoom,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    cursor: 'sw-resize'
-                }}
-                onMouseDown={(e) => handleMouseDownResize(e, 'sw')}
-            />
-            <div
-                style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    width: RESIZE_HANDLE_SIZE / props.zoom,
-                    height: RESIZE_HANDLE_SIZE / props.zoom,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    cursor: 'nw-resize'
-                }}
-                onMouseDown={(e) => handleMouseDownResize(e, 'nw')}
-            />
+            {props.resizable && (<>
+                <ResizeHandle
+                    direction={"se"}
+                    style={{
+                        position: 'absolute',
+                        right: 0,
+                        bottom: 0,
+                    }}
+                    width={RESIZE_HANDLE_SIZE / props.zoom}
+                    height={RESIZE_HANDLE_SIZE / props.zoom}
+                    onMouseDown={handleMouseDownResize} />
+
+                <ResizeHandle
+                    direction={"ne"}
+                    style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                    }}
+                    width={RESIZE_HANDLE_SIZE / props.zoom}
+                    height={RESIZE_HANDLE_SIZE / props.zoom}
+                    onMouseDown={handleMouseDownResize} />
+                <ResizeHandle
+                    direction={"sw"}
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                    }}
+                    width={RESIZE_HANDLE_SIZE / props.zoom}
+                    height={RESIZE_HANDLE_SIZE / props.zoom}
+                    onMouseDown={handleMouseDownResize} />
+                <ResizeHandle
+                    direction={"nw"}
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                    }}
+                    width={RESIZE_HANDLE_SIZE / props.zoom}
+                    height={RESIZE_HANDLE_SIZE / props.zoom}
+                    onMouseDown={handleMouseDownResize} />
+            </>)}
         </div>
     );
 }

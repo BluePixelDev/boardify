@@ -1,9 +1,7 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { nodeRendererManager } from "@/scripts/NodeRendererRegistry";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-
-type Props = {
-    children?: JSX.Element | JSX.Element[],
-}
+import ImageNode, { ImageNodeData } from "../nodes/ImageNode";
 
 export interface BaseNodeData {
     id: string;
@@ -35,7 +33,7 @@ interface NodeManagerContextType {
 
 const NodeManagerContext = createContext<NodeManagerContextType | undefined>(undefined);
 
-export default function(props: Props) {
+export default function () {
     const [nodes, setNodes] = useState<NodeData[]>([]);
 
     const createNode = useCallback(<T,>(options: NodeCreationOptions<T>): NodeData<T> => {
@@ -54,14 +52,14 @@ export default function(props: Props) {
     }, []);
 
     const updateNode = useCallback(<T,>(id: string, updatedData: Partial<NodeData<T>>) => {
-        setNodes(prevNodes => 
-            prevNodes.map(node => 
-                node.id === id 
-                    ? { 
-                        ...node, 
-                        ...updatedData, 
-                        updatedAt: Date.now() 
-                    } 
+        setNodes(prevNodes =>
+            prevNodes.map(node =>
+                node.id === id
+                    ? {
+                        ...node,
+                        ...updatedData,
+                        updatedAt: Date.now()
+                    }
                     : node
             )
         );
@@ -71,6 +69,23 @@ export default function(props: Props) {
         setNodes(prevNodes => prevNodes.filter(node => node.id !== id));
     }, []);
 
+    useEffect(() => {
+        // Register renderers for different node types
+        nodeRendererManager.register('image', ImageNode); // Register a note renderer
+
+        // Create a sample node
+        const node = createNode<ImageNodeData>({
+            type: "image",
+            data: {
+                "src": "./vite.svg"
+            }
+        });
+
+        return () => {
+            deleteNode(node.id)
+        }
+    }, []);
+
     return (
         <NodeManagerContext.Provider value={{
             nodes,
@@ -78,7 +93,13 @@ export default function(props: Props) {
             updateNode,
             deleteNode,
         }}>
-            {props.children}
+            {nodes.map((node, index) => {
+                return (
+                    <div key={index}>
+                        {nodeRendererManager.getRenderer(node.type)({ node })}
+                    </div>
+                )
+            })}
         </NodeManagerContext.Provider>
     );
 }

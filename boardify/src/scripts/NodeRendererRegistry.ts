@@ -1,4 +1,4 @@
-import { NodeData } from "@/components/node-system/NodeManagerContext";
+import { NodeData } from "@/components/node-system/NodeLogic";
 
 type NodeRendererComponent<T = any> = (props: { node: NodeData<T> }) => JSX.Element | JSX.Element[];
 
