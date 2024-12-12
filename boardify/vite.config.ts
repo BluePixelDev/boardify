@@ -9,11 +9,12 @@ export default defineConfig(async () => ({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@scripts': path.resolve(__dirname, './src/scripts'),
-      '@redux': path.resolve(__dirname, './src/redux'),
+      '@shared': path.resolve(__dirname, './src/shared'),
+      '@views': path.resolve(__dirname, './src/views'),
+      '@features': path.resolve(__dirname, './src/features'),
+      '@file-drop': path.resolve(__dirname, './src/features/board'),
+      '@theme': path.resolve(__dirname, './src/features/file-drop'),
+      "app-snippets": path.resolve(__dirname, './src/features/app-snipets')
     },
   },
   

@@ -1,7 +1,7 @@
 import "./graphview.css"
-import GridBackground from "../GridBackground";
 import { createContext, CSSProperties, useCallback, useContext, useEffect, useRef, useState, WheelEventHandler } from 'react';
-import { useDragContext } from "@/hooks/DragProvider";
+import { useDragContext } from "@/shared/context/DragProvider";
+import GridBackground from "../background/GridBackground";
 
 type GraphProperties = {
     minZoom: number,

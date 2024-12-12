@@ -1,16 +1,16 @@
 import "./App.css";
-import AppTheme from "@/components/theme/AppTheme";
+import AppTheme from "@/features/theme/AppTheme";
 import MainView from "./views/MainView";
-import Snippets from "./components/snippets/AppSnippets";
+import AppSnippets from "./features/app-snippets/AppSnippets";
 import { Provider } from "react-redux";
-import DragProvider from "./hooks/DragProvider";
+import DragProvider from "./shared/context/DragProvider";
 import store from "./store"
 
 function App() {
   return (
     <Provider store={store}>
       <AppTheme>
-        <Snippets />
+        <AppSnippets />
         <DragProvider>
           <MainView />
         </DragProvider>

@@ -1,6 +1,6 @@
-import AppDropzone from "@/components/file-drop/app-dropzone/AppDropzone";
-import GraphView from "@/components/graph/graph-view/GraphView";
-import NodeLogic from "@/components/node-system/NodeLogic";
+import GraphView from "@/features/board/graph-view/GraphView";
+import NodeLogic from "@/features/board/node-logic/NodeLogic";
+import AppDropzone from "@/features/file-drop/file-drop/app-dropzone/AppDropzone";
 
 export default function MainView() {
     return (

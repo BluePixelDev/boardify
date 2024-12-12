@@ -23,11 +23,13 @@
     "baseUrl": "./",
     "paths": {
       "@/*":["./src/*"],
-      "@components/":["./src/components"],
-      "@scripts/":["./src/scripts"],
-      "@assets/":["./src/assets"],
-      "@hooks/":["./src/hooks"],
-      "@redux/":["./src/redux"],
+      "@shared":["./src/shared/"],
+      "@views":["./src/views/"],
+      "@features":["./src/features/"],
+      "@board":["./src/features/board"],
+      "@file-drop":["./src/features/file-drop"],
+      "@theme":["./src/features/theme"],
+      "@app-snippets":["./src/features/app-snipets"],
     }
   },
   "include": ["src"],

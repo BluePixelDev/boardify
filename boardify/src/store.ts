@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import cssSnippetsSlice from "./redux/snippetSlice"
+import cssSnippetsSlice from "./features/app-snippets/redux/snippetSlice"
+import nodesSlice from "./features/board/redux/nodesSlice"
 
 const store = configureStore({
     reducer:{
-        cssSnippets: cssSnippetsSlice
+        cssSnippets: cssSnippetsSlice,
+        graphNodes: nodesSlice
     }
 })
 
