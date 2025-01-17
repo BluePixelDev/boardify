@@ -1,6 +1,5 @@
-import { GraphNode } from "../types/nodeTypes";
-
-type NodeRendererComponent<T = any> = (props: { node: GraphNode<T> }) => JSX.Element | JSX.Element[];
+import { BoardNode } from "../types/node-types";
+type NodeRendererComponent<T = any> = (props: { node: BoardNode<T> }) => JSX.Element | JSX.Element[];
 
 class NodeRendererManager {
     private static instance: NodeRendererManager;

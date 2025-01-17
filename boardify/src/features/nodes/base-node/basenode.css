@@ -1,11 +1,11 @@
-.graph-node{
+.board-node {
     position: absolute;
     pointer-events: none;
     transform-origin: 0 0;
     overflow: hidden;
 }
 
-.graph-node-content {
+.board-node-content {
     box-sizing: border-box;
     pointer-events: none;
 }

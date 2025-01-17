@@ -1,13 +1,13 @@
 import "./basenode.css"
 import { useRef } from "react";
-import { useGraphViewContext } from "../graph-view/GraphView";
+import { useGraphViewContext } from "../../board/board-view/BoardView";
 import TransformRect from "../../../shared/transform-rect/TransformRect";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { updateNode } from "@/features/board/redux/nodesSlice";
-import { NodeSize } from "../types/nodeTypes";
+import { NodeSize } from "../types/node-types";
+import { updateNode } from "../redux/nodesSlice";
 
-type GraphNodeProps = {
+type BoardNodeProps = {
     nodeId: string,
     children?: JSX.Element | JSX.Element[],
     onResize?: (newSize: { width: number, height: number }) => void,
@@ -25,7 +25,7 @@ type GraphNodeProps = {
     aspectRatio?: number;
 }
 
-export default function (props: GraphNodeProps) {
+export default function (props: BoardNodeProps) {
     const { scale } = useGraphViewContext()
     const nodeRef = useRef<HTMLDivElement>(null)
 
@@ -62,8 +62,8 @@ export default function (props: GraphNodeProps) {
         >
             <div
                 ref={nodeRef}
-                className="graph-node shadow-black shadow-2xl w-full h-full">
-                <div className="graph-node-content">{props.children}</div>
+                className="board-node shadow-black shadow-2xl w-full h-full">
+                <div className="board-node-content">{props.children}</div>
             </div >
         </TransformRect>
     </>

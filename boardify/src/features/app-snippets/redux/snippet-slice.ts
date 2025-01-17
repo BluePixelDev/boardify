@@ -15,7 +15,7 @@ const initialState: CSSSnippetState = {
     {
       id: "test",
       name: "Test Snippet",
-      snippet: ""
+      snippet: ".board-node {transform-origin: center; border-radius: 30px; transition: rotate 0.1s; transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);  } .transform-rect:hover .board-node {rotate: 30deg;}"
     }
   ],
 };

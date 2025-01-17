@@ -1,5 +1,6 @@
+import "./gridbackground.css"
 import { CSSProperties } from "react"
-import { useGraphViewContext } from "../graph-view/GraphView";
+import { useGraphViewContext } from "../board-view/BoardView";
 
 export default function GridBackground() {
 

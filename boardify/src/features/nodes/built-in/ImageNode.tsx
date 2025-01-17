@@ -1,11 +1,11 @@
 import BaseNode from "../base-node/BaseNode";
-import { GraphNode } from "../types/nodeTypes";
+import { BoardNode } from "../types/node-types";
 
 export type ImageNodeData = {
     src: string;
 }
 
-export default function ({ node }: { node: GraphNode }) {
+export default function ({ node }: { node: BoardNode }) {
 
     return (
         <BaseNode nodeId={node.id} aspectRatio={1}>

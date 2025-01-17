@@ -1,5 +1,5 @@
-import GraphView from "@/features/board/graph-view/GraphView";
-import NodeLogic from "@/features/board/node-logic/NodeLogic";
+import GraphView from "@/features/board/board-view/BoardView";
+import NodeLogic from "@/features/nodes/NodeLogic";
 import AppDropzone from "@/features/file-drop/file-drop/app-dropzone/AppDropzone";
 
 export default function MainView() {

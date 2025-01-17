@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GraphNode } from "../types/nodeTypes";
+import { BoardNode } from "../../nodes/types/node-types";
 
 interface GraphNodeState {
-    nodes: GraphNode[];
+    nodes: BoardNode[];
 }
 
 const initialState: GraphNodeState = {
@@ -13,13 +13,13 @@ const graphNodesSlice = createSlice({
     name: "graphNodes",
     initialState,
     reducers: {
-        addNode: (state, action: PayloadAction<GraphNode>) => {
+        addNode: (state, action: PayloadAction<BoardNode>) => {
             state.nodes.push(action.payload);
         },
         removeNode: (state, action: PayloadAction<string>) => {
             state.nodes = state.nodes.filter(node => node.id !== action.payload);
         },
-        updateNode: (state, action: PayloadAction<Partial<GraphNode> & { id: string }>) => {
+        updateNode: (state, action: PayloadAction<Partial<BoardNode> & { id: string }>) => {
             const { id, ...updatedProperties } = action.payload;
             const index = state.nodes.findIndex(node => node.id === id);
             

@@ -1,4 +1,4 @@
-.graph-view {
+.board-view {
     cursor: grab;
     overflow: hidden;
     box-sizing: border-box;
@@ -7,7 +7,7 @@
     height: 100%;
 }
 
-.graph-view-content {
+.board-view-content {
     width: 0;
     height: 0;
     position: relative;

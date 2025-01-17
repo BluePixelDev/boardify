@@ -1,4 +1,4 @@
-import "./graphview.css"
+import "./boardview.css"
 import { createContext, CSSProperties, useCallback, useContext, useEffect, useRef, useState, WheelEventHandler } from 'react';
 import { useDragContext } from "@/shared/context/DragProvider";
 import GridBackground from "../background/GridBackground";
@@ -134,13 +134,13 @@ export default function GraphView(props: Props) {
         }}>
             <div
                 ref={containerRef}
-                className={"graph-view"}
+                className={"board-view"}
                 onWheel={handleZoom}>
 
                 <GridBackground />
                 <div
                     ref={contentViewRef}
-                    className={`graph-view-content`}
+                    className={`board-view-content`}
                     style={graphViewContentStyle}>
                     {props.children}
                 </div>

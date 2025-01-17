@@ -1,4 +1,4 @@
-import GraphNode from "@/features/board/base-node/BaseNode";
+import GraphNode from "@/features/nodes/base-node/BaseNode";
 import { NodeData } from "../node-system/NodeLogic";
 
 export type NoteNodeData = {
