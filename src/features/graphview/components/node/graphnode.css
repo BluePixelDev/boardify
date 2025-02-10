@@ -8,6 +8,7 @@
 }
 
 .graph-node-content {
+    image-rendering: optimizeQuality;
     box-sizing: border-box;
     pointer-events: none;
 }

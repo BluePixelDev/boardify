@@ -1,0 +1,31 @@
+.app-sidebar {
+    display: flex;
+    background-color: #212426;
+    flex-direction: column;
+    height: 100%;
+    z-index: 50;
+    padding: 0.5em;
+
+    border-right: 1px solid #2e3434;
+}
+
+.app-sidebar-item {
+    display: flex;
+    gap: 5px;
+    text-align: left;
+    padding: 5px;
+    border-radius: 4px;
+    outline: none;
+}
+.app-sidebar-item .app-sidebar-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.app-sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.app-sidebar-item.selected {
+    background-color: #8c33eb;
+}

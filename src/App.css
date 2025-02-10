@@ -9,7 +9,7 @@
   font-weight: 400;
 
   color: #f6f6f6;
-  background-color: #2f2f2f;
+  background-color: #18181a;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -17,6 +17,22 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
 * {
   overscroll-behavior: none;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

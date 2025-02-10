@@ -19,7 +19,7 @@ export default function () {
             setDraggingFiles(true);
         }
     }
-   
+
     const onDrop = useCallback((acceptedFiles: any) => {
         console.log(acceptedFiles);
         setDraggingFiles(false);
@@ -38,11 +38,11 @@ export default function () {
 
     return (
         <div
-            {...getRootProps()}
             className={`app-dropzone ${draggingFiles ? 'dragging' : ''}`}
+            {...getRootProps()}
         >
             <input {...getInputProps()} />
-            {draggingFiles && 
+            {draggingFiles &&
                 <FileDropDialog></FileDropDialog>
             }
         </div>

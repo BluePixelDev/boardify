@@ -25,7 +25,6 @@ export function useDrag({
     setPosition(initialPosition);
   }, [initialPosition]);
 
-
   const onMouseDown = useCallback(
     (e: React.MouseEvent) => {
       if (!draggable) return;
@@ -39,6 +38,14 @@ export function useDrag({
   const onMouseMove = useCallback(
     (e: MouseEvent) => {
       if (!draggingRef.current) return;
+
+      const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+      if (elementUnderCursor && elementUnderCursor.closest(".no-drag")) {
+        draggingRef.current = false;
+        return;
+      }
+
+      // Otherwise, update the position normally.
       const deltaX = e.clientX - startMousePos.current.x;
       const deltaY = e.clientY - startMousePos.current.y;
       const newPos = {

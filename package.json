@@ -15,7 +15,6 @@
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-shell": "^2",
     "boardify": "file:",
-    "components": "^0.1.0",
     "framer-motion": "^11.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,6 +23,7 @@
     "uuid": "^11.0.3"
   },
   "devDependencies": {
+    "@iconify/react": "^5.2.0",
     "@tauri-apps/cli": "^2",
     "@types/node": "^22.10.1",
     "@types/react": "^18.2.15",

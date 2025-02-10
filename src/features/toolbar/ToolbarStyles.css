@@ -1,0 +1,67 @@
+.toolbar {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding-left: 10px;
+    background-color: #333;
+    height: 32px;
+    user-select: none;
+    z-index: 100;
+}
+
+.toolbar-buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+.toolbar-button {
+    display: flex;
+    background: transparent;
+    border: none;
+    width: 2em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.toolbar-button:active {
+    transform: scale(0.95);
+}
+
+.toolbar-button.close-button:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+/*---- TOOLBAR ----*/
+.toolbar-items,
+.toolbar-items .dropdown {
+    height: 100%;
+}
+
+.toolbar-items .dropdown .dropdown-trigger {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: none;
+}
+
+.toolbar-items .dropdown-menu {
+    border-radius: 4px;
+    background-color: #312e34;
+}
+.toolbar-items .dropdown-submenu {
+    border-radius: 4px;
+    background-color: #312e34;
+}

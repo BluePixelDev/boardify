@@ -6,10 +6,7 @@ export default function GridBackground() {
   const { zoom: scale, translate } = useGraphViewContext();
 
   const baseDotSize = 2;
-  const minDotSize = 2;
-  const maxDotSize = 3;
-
-  const dotRadius = Math.min(Math.max(baseDotSize, minDotSize), maxDotSize);
+  const dotRadius = baseDotSize;
   const gridSpacing = 50 * scale;
 
   const svg = `
@@ -23,7 +20,7 @@ export default function GridBackground() {
 
   const style: CSSProperties = {
     backgroundImage,
-     backgroundPosition: `${translate.x}px ${translate.y}px`,
+    backgroundPosition: `${translate.x}px ${translate.y}px`,
     backgroundSize: `${gridSpacing}px ${gridSpacing}px`,
     backgroundRepeat: "repeat",
     opacity: 0.1,
