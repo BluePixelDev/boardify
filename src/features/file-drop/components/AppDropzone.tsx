@@ -1,7 +1,7 @@
-import "./appdropzone.css"
+import "../fildedropStyles.css"
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import FileDropDialog from "../file-drop-dialog/FileDropDialog";
+import FileDropDialog from "./FileDropDialog";
 
 export default function () {
     const [draggingFiles, setDraggingFiles] = useState(false);

@@ -4,14 +4,14 @@ import MainView from "./views/MainView";
 import AppSnippets from "./features/snippets/AppSnippets";
 import { Provider } from "react-redux";
 import store from "./redux/store"
-import Toolbar from "./features/toolbar/components/Toolbar";
+import { Titlebar } from "./features/titlebar";
 
 function App() {
   return (
     <Provider store={store}>
       <AppTheme>
         <AppSnippets />
-        <Toolbar />
+        <Titlebar />
         <MainView />
       </AppTheme>
     </Provider>

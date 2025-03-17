@@ -23,7 +23,7 @@ export default function NodeCanvas() {
       const newNode: GraphViewNode = {
         id: uuidv4(),
         type: "image",
-        position: { x: 100, y: 100 },
+        position: { x: 0, y: 0 },
         size: { width: 200, height: 200 },
         data: {
           src: "./vite.svg",

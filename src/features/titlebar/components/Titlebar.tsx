@@ -1,11 +1,11 @@
 import "../ToolbarStyles.css";
-import ToolbarButton from "./ToolbarButton";
+import ToolbarButton from "./TitlebarButton";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Icon } from "@iconify/react";
-import ToolbarDropdown from "./ToolbarDropdown";
+import TitlebarDropdown from "./TitlebarDropdown";
 
 const appWindow = getCurrentWindow();
-export default function Toolbar() {
+export default function titlebar() {
     const handleMinimize = async () => {
         try {
             await appWindow.minimize();
@@ -31,10 +31,10 @@ export default function Toolbar() {
     };
 
     return (
-        <div data-tauri-drag-region className="toolbar">
-            <ToolbarDropdown />
+        <div data-tauri-drag-region className="titlebar">
+            <TitlebarDropdown />
 
-            <div className="toolbar-buttons">
+            <div className="titlebar-buttons">
                 <ToolbarButton label="Minimize" onClick={handleMinimize}>
                     <Icon icon="mdi:window-minimize" width="24" height="24" />
                 </ToolbarButton>

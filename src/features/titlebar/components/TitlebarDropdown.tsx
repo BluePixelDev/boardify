@@ -1,9 +1,9 @@
 import "../ToolbarStyles.css"
 import { Dropdown, DropdownItem } from "@/features/dropdown";
 
-export default function ToolbarDropdown() {
+export default function TitlebarDropdown() {
     return (
-        <div className="toolbar-items">
+        <div className="titlebar-items">
             <Dropdown label="File">
                 <DropdownItem label="Save" onClick={() => alert("Profile clicked!")} />
                 <DropdownItem label="Save as" />

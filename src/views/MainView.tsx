@@ -1,6 +1,6 @@
-import GraphView from "@/features/graphview/components/view/GraphView";
+import { AppDropzone } from "@/features/file-drop";
+import GraphView from "@/features/graphview/components/GraphView";
 import NodeCanvas from "@/features/nodes/renderer/NodeCanvas";
-import AppDropzone from "@/features/file-drop/app-dropzone/AppDropzone";
 import { Sidebar, SidebarItem } from "@/features/sidebar";
 
 export default function MainView() {

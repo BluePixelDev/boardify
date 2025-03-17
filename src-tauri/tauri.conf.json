@@ -12,11 +12,12 @@
   "app": {
     "windows": [
       {
-        "title": "boardify",
+        "title": "Boardify",
         "width": 800,
         "height": 600,
         "dragDropEnabled": false,
-        "decorations": false
+        "decorations": false,
+        "transparent": true
       }
     ],
     "security": {

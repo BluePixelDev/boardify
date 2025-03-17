@@ -1,4 +1,4 @@
-.toolbar {
+.titlebar {
     display: flex;
     position: relative;
     align-items: center;
@@ -9,13 +9,13 @@
     z-index: 100;
 }
 
-.toolbar-buttons {
+.titlebar-buttons {
     margin-left: auto;
     display: flex;
     gap: 8px;
 }
 
-.toolbar-button {
+.titlebar-button {
     display: flex;
     background: transparent;
     border: none;
@@ -30,26 +30,26 @@
     justify-content: center;
 }
 
-.toolbar-button:hover {
+.titlebar-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
 }
 
-.toolbar-button:active {
+.titlebar-button:active {
     transform: scale(0.95);
 }
 
-.toolbar-button.close-button:hover {
+.titlebar-button.close-button:hover {
     background-color: rgba(255, 0, 0, 1);
 }
 
-/*---- TOOLBAR ----*/
-.toolbar-items,
-.toolbar-items .dropdown {
+/*---- titlebar ----*/
+.titlebar-items,
+.titlebar-items .dropdown {
     height: 100%;
 }
 
-.toolbar-items .dropdown .dropdown-trigger {
+.titlebar-items .dropdown .dropdown-trigger {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -57,11 +57,11 @@
     padding: none;
 }
 
-.toolbar-items .dropdown-menu {
+.titlebar-items .dropdown-menu {
     border-radius: 4px;
     background-color: #312e34;
 }
-.toolbar-items .dropdown-submenu {
+.titlebar-items .dropdown-submenu {
     border-radius: 4px;
     background-color: #312e34;
 }

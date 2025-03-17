@@ -1,4 +1,4 @@
-import GraphNode from "../../graphview/components/node/GraphNode";
+import GraphNode from "../../graphview/components/GraphNode";
 import { GraphViewNode } from "../../graphview/types";
 
 type ImageNodeData = {

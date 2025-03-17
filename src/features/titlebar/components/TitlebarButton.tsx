@@ -17,7 +17,7 @@ export default function ToolbarButton({
     return (
         <button
             onClick={onClick}
-            className={`toolbar-button ${className ?? ""}`}
+            className={`titlebar-button ${className ?? ""}`}
             aria-label={label}
         >
             {children ? children : label && <span>{label}</span>}

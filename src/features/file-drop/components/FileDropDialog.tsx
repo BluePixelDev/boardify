@@ -1,5 +1,5 @@
+import "../fildedropStyles.css";
 import DialogContainer from "@/shared/dialog/DialogContainer";
-import "./filedropdialog.css";
 
 export default function FileDropDialog() {
     return (

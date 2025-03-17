@@ -3,7 +3,7 @@ import { GraphNodePosition, GraphNodeSize } from "../types";
 
 type Directions = "n" | "s" | "e" | "w" | "se" | "ne" | "sw" | "nw";
 
-type ResizeResult = {
+export type ResizeResult = {
   size: { width: number; height: number };
   position: { x: number; y: number };
   onMouseDownResize: (e: React.MouseEvent, direction: Directions) => void;
@@ -31,19 +31,58 @@ export function useResize({
   const [size, setSize] = useState(initialSize);
   const [position, setPosition] = useState(initialPosition);
 
+  // Store the current resizing state and starting values.
   const resizingRef = useRef<{ isResizing: boolean; direction: Directions }>({
     isResizing: false,
     direction: "se",
   });
-
   const startMousePos = useRef({ x: 0, y: 0 });
   const startSize = useRef(initialSize);
   const startPos = useRef(initialPosition);
 
+  // Update the position when initialPosition changes.
   useEffect(() => {
     setPosition(initialPosition);
   }, [initialPosition]);
 
+  // Helper: Convert center-based coordinates into edge coordinates.
+  const getEdges = (
+    pos: GraphNodePosition,
+    size: GraphNodeSize
+  ) => ({
+    left: pos.x - size.width / 2,
+    right: pos.x + size.width / 2,
+    top: pos.y - size.height / 2,
+    bottom: pos.y + size.height / 2,
+  });
+
+  // Helper: Given an anchor (based on drag direction), compute the new center.
+  const getAnchoredCenter = (
+    direction: Directions,
+    edges: ReturnType<typeof getEdges>,
+    width: number,
+    height: number
+  ) => {
+    switch (direction) {
+      case "se":
+        // Top-left
+        return { x: edges.left + width / 2, y: edges.top + height / 2 };
+      case "sw":
+        // Top-right
+        return { x: edges.right - width / 2, y: edges.top + height / 2 };
+      case "ne":
+        // Bottom-left
+        return { x: edges.left + width / 2, y: edges.bottom - height / 2 };
+      case "nw":
+        // Bottom-right
+        return { x: edges.right - width / 2, y: edges.bottom - height / 2 };
+      default:
+        // For non-corner directions, just return the starting center.
+        return { x: startPos.current.x, y: startPos.current.y };
+    }
+  };
+
+  // When a resize starts, record the starting mouse, size and position.
   const onMouseDownResize = useCallback(
     (e: React.MouseEvent, direction: Directions) => {
       if (!resizable) return;
@@ -57,55 +96,56 @@ export function useResize({
     [resizable, size, position]
   );
 
+  // Calculate new size and position as the mouse moves.
   const onMouseMoveResize = useCallback(
     (e: MouseEvent) => {
       if (!resizingRef.current.isResizing) return;
 
+      // Convert mouse movement from screen pixels to world units.
       const deltaX = (e.clientX - startMousePos.current.x) / zoom;
       const deltaY = (e.clientY - startMousePos.current.y) / zoom;
+      const direction = resizingRef.current.direction;
 
+      // Calculate the original edges based on the starting position.
+      const startEdges = getEdges(startPos.current, startSize.current);
+
+      // Compute new edge positions by adding the delta.
+      const newLeft = startEdges.left + deltaX;
+      const newRight = startEdges.right + deltaX;
+      const newTop = startEdges.top + deltaY;
+      const newBottom = startEdges.bottom + deltaY;
+
+      // Default to the starting size.
       let newWidth = startSize.current.width;
       let newHeight = startSize.current.height;
-      let newX = startPos.current.x;
-      let newY = startPos.current.y;
+      let newCenter = { ...startPos.current };
 
-      switch (resizingRef.current.direction) {
+      // Update width and height based on the drag direction.
+      switch (direction) {
         case "se":
-          newWidth = Math.max(minWidth, startSize.current.width + deltaX);
-          newHeight = Math.max(minHeight, startSize.current.height + deltaY);
+          newWidth = Math.max(minWidth, newRight - startEdges.left);
+          newHeight = Math.max(minHeight, newBottom - startEdges.top);
           break;
         case "sw":
-          newWidth = Math.max(minWidth, startSize.current.width - deltaX);
-          newHeight = Math.max(minHeight, startSize.current.height + deltaY);
-          newX = startPos.current.x + deltaX;
+          newWidth = Math.max(minWidth, startEdges.right - newLeft);
+          newHeight = Math.max(minHeight, newBottom - startEdges.top);
           break;
         case "ne":
-          newWidth = Math.max(minWidth, startSize.current.width + deltaX);
-          newHeight = Math.max(minHeight, startSize.current.height - deltaY);
-          newY = startPos.current.y + deltaY;
+          newWidth = Math.max(minWidth, newRight - startEdges.left);
+          newHeight = Math.max(minHeight, startEdges.bottom - newTop);
           break;
         case "nw":
-          newWidth = Math.max(minWidth, startSize.current.width - deltaX);
-          newHeight = Math.max(minHeight, startSize.current.height - deltaY);
-          newX = startPos.current.x + deltaX;
-          newY = startPos.current.y + deltaY;
+          newWidth = Math.max(minWidth, startEdges.right - newLeft);
+          newHeight = Math.max(minHeight, startEdges.bottom - newTop);
           break;
-        case "n":
-          newHeight = Math.max(minHeight, startSize.current.height - deltaY);
-          newY = startPos.current.y + deltaY;
-          break;
-        case "s":
-          newHeight = Math.max(minHeight, startSize.current.height + deltaY);
-          break;
-        case "e":
-          newWidth = Math.max(minWidth, startSize.current.width + deltaX);
-          break;
-        case "w":
-          newWidth = Math.max(minWidth, startSize.current.width - deltaX);
-          newX = startPos.current.x + deltaX;
+        default:
           break;
       }
 
+      // Calculate the new center based on the anchored corner.
+      newCenter = getAnchoredCenter(direction, startEdges, newWidth, newHeight);
+
+      // Enforce the aspect ratio, if provided.
       if (aspectRatio) {
         const aspectLimitedWidth = newHeight * aspectRatio;
         const aspectLimitedHeight = newWidth / aspectRatio;
@@ -116,29 +156,23 @@ export function useResize({
           newHeight = aspectLimitedHeight;
         }
 
-        if (resizingRef.current.direction.includes("w")) {
-          newX = startPos.current.x + (startSize.current.width - newWidth);
-        }
-        if (resizingRef.current.direction.includes("n")) {
-          newY = startPos.current.y + (startSize.current.height - newHeight);
-        }
+        // Recalculate the center to keep the anchor fixed.
+        newCenter = getAnchoredCenter(direction, startEdges, newWidth, newHeight);
       }
 
       setSize({ width: newWidth, height: newHeight });
-      setPosition({ x: newX, y: newY });
-
-      onResize?.(
-        { width: newWidth, height: newHeight },
-        { x: newX, y: newY }
-      );
+      setPosition(newCenter);
+      onResize?.({ width: newWidth, height: newHeight }, newCenter);
     },
     [zoom, minWidth, minHeight, aspectRatio, onResize]
   );
 
+  // End resizing on mouse up.
   const onMouseUpResize = useCallback(() => {
     resizingRef.current.isResizing = false;
   }, []);
 
+  // Attach global mouse events.
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMoveResize);
     window.addEventListener("mouseup", onMouseUpResize);

@@ -87,9 +87,9 @@ export default function TransformRect(props: TransformRectProps) {
     const containerStyle: CSSProperties = {
         position: "absolute",
         pointerEvents: "all",
-        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-        width: size.width,
-        height: size.height,
+        transform: `translate3d(${Math.round(position.x) - size.width / 2}px, ${Math.round(position.y) - size.height / 2}px, 0)`,
+        width: Math.round(size.width),
+        height: Math.round(size.height),
     };
 
     return (

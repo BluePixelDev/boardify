@@ -1,8 +1,8 @@
-import "./boardgrid.css";
+import "../graphviewStyles.css";
 import { CSSProperties } from "react";
-import { useGraphViewContext } from "../view/GraphView";
+import { useGraphViewContext } from "./GraphView";
 
-export default function GridBackground() {
+export default function GraphGrid() {
   const { zoom: scale, translate } = useGraphViewContext();
 
   const baseDotSize = 2;
@@ -20,11 +20,11 @@ export default function GridBackground() {
 
   const style: CSSProperties = {
     backgroundImage,
-    backgroundPosition: `${translate.x}px ${translate.y}px`,
+    backgroundPosition: `calc(50% + ${translate.x}px) calc(50% + ${translate.y}px)`,
     backgroundSize: `${gridSpacing}px ${gridSpacing}px`,
     backgroundRepeat: "repeat",
     opacity: 0.1,
   };
 
-  return <div className="board-grid-default" style={style} />;
+  return <div className="graph-grid" style={style} />;
 }

@@ -1,0 +1,46 @@
+.graph-view {
+    position: relative;
+    cursor: grab;
+    overflow: hidden;
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #222224;
+}
+
+.graph-view-content {
+    width: 0;
+    height: 0;
+    will-change: transform;
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    image-rendering: pixelated;
+}
+
+/*---- GRID ----*/
+.graph-grid {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+/*---- NODE ----*/
+.graph-node {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.graph-node-content {
+    box-sizing: border-box;
+    pointer-events: none;
+}

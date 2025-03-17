@@ -1,11 +1,11 @@
-import "./graphnode.css";
+import "../graphviewStyles.css";
 import { useRef } from "react";
-import { useGraphViewContext } from "../view/GraphView";
+import { useGraphViewContext } from "./GraphView";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { updateNode } from "@/redux/nodesSlice";
-import { GraphNodeSize } from "../../types"
-import TransformRect from "../transform/TransformRect";
+import { GraphNodeSize } from "../types"
+import TransformRect from "./transform/TransformRect";
 
 type GraphNodeProps = {
   nodeId: string;
@@ -23,16 +23,19 @@ export default function GraphNode(props: GraphNodeProps) {
   });
 
   const handleMove = (newPos: { x: number; y: number }) => {
-    dispatch(updateNode({ id: props.nodeId, position: newPos }));
+    dispatch(
+      updateNode({ 
+        id: props.nodeId, 
+        position: newPos 
+      })
+    );
   };
 
-  // When the node is resized, update its size in the store.
   const handleResize = (newSize: GraphNodeSize) => {
     dispatch(
       updateNode({
         id: props.nodeId,
         size: newSize,
-        position: node?.position,
       })
     );
   };
