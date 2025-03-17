@@ -12,6 +12,7 @@ export default defineConfig(async () => ({
       '@shared': path.resolve(__dirname, './src/shared'),
       '@redux': path.resolve(__dirname, './src/redux'),
       '@views': path.resolve(__dirname, './src/views'),
+      '@utils': path.resolve(__dirname, './src/utils'),
       '@features': path.resolve(__dirname, './src/features'),
       '@graphview': path.resolve(__dirname, './src/features/graphview'),
       '@file-drop': path.resolve(__dirname, './src/features/file-drop'),

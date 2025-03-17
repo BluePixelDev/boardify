@@ -1,25 +1,25 @@
-import { GraphViewNode } from "@/features/graphview/types/graphTypes";
+import { GraphNodeData } from "@/features/graphview/types/graphTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface GraphNodeState {
-    nodes: GraphViewNode[];
+    nodes: GraphNodeData[];
 }
 
 const initialState: GraphNodeState = {
     nodes: []
 };
 
-const graphNodesSlice = createSlice({
+const nodesSlice = createSlice({
     name: "graphNodes",
     initialState,
     reducers: {
-        addNode: (state, action: PayloadAction<GraphViewNode>) => {
+        addNode: (state, action: PayloadAction<GraphNodeData>) => {
             state.nodes.push(action.payload);
         },
         removeNode: (state, action: PayloadAction<string>) => {
             state.nodes = state.nodes.filter(node => node.id !== action.payload);
         },
-        updateNode: (state, action: PayloadAction<Partial<GraphViewNode> & { id: string }>) => {
+        updateNode: (state, action: PayloadAction<Partial<GraphNodeData> & { id: string }>) => {
             const { id, ...updatedProperties } = action.payload;
             state.nodes = state.nodes.map(node =>
                 node.id === id ? { ...node, ...updatedProperties } : node
@@ -29,5 +29,5 @@ const graphNodesSlice = createSlice({
 });
 
 export type { GraphNodeState };
-export const { addNode, removeNode, updateNode } = graphNodesSlice.actions;
-export default graphNodesSlice.reducer;
+export const { addNode, removeNode, updateNode } = nodesSlice.actions;
+export default nodesSlice.reducer;

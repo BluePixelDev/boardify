@@ -1,115 +1,104 @@
-import React, { CSSProperties, MouseEventHandler, useCallback, useMemo, useState } from "react";
+import React, { CSSProperties, MouseEventHandler, useCallback, useMemo } from "react";
 import ResizeHandle from "./ResizeHandle";
 import { useDrag, useResize } from "../../hooks";
 import { GraphNodePosition, GraphNodeSize } from "../../types";
 
 type TransformRectProps = {
-    zoom: number;
-    initialX: number;
-    initialY: number;
-    initialWidth: number;
-    initialHeight: number;
-    draggable?: boolean;
-    resizable?: boolean;
-    aspectRatio?: number;
-    minWidth?: number;
-    minHeight?: number;
-    onMove?: (position: { x: number; y: number }) => void;
-    onResize?: (size: { width: number; height: number }) => void;
-    children: React.ReactNode;
+  zoom: number;
+  posX: number;
+  posY: number;
+  width: number;
+  height: number;
+  draggable?: boolean;
+  resizable?: boolean;
+  aspectRatio?: number;
+  minWidth?: number;
+  minHeight?: number;
+  onMove?: (position: GraphNodePosition) => void;
+  onResize?: (size: GraphNodeSize) => void;
+  children: React.ReactNode;
 };
 
-type Directions = "se" | "ne" | "sw" | "nw";
+type Directions = "se" | "ne" | "sw" | "nw" | "n" | "s" | "e" | "w";
 const RESIZE_HANDLE_SIZE = 8;
-const MIN_DIMENSION = 10;
+const MIN_DIMENSION = 100;
 
 export default function TransformRect(props: TransformRectProps) {
-    const {
-        zoom,
-        initialX,
-        initialY,
-        initialWidth,
-        initialHeight,
-        aspectRatio,
-        minWidth = MIN_DIMENSION,
-        minHeight = MIN_DIMENSION,
-        resizable = true,
-        draggable = true,
-        onMove,
-        onResize,
-        children,
-    } = props;
+  const {
+    zoom,
+    posX,
+    posY,
+    width,
+    height,
+    aspectRatio,
+    minWidth = MIN_DIMENSION,
+    minHeight = MIN_DIMENSION,
+    resizable = true,
+    draggable = true,
+    onMove,
+    onResize,
+    children,
+  } = props;
 
-    const [position, setPosition] = useState({ x: initialX, y: initialY });
-    const [size, setSize] = useState({ width: initialWidth, height: initialHeight });
+  const position = useMemo(() => ({ x: posX, y: posY }), [posX, posY]);
+  const size = useMemo(() => ({ width: width, height: height }), [width, height]);
 
-    const updatePosition = useCallback((pos: GraphNodePosition) => {
-        setPosition(pos);
-        onMove?.(pos)
-    }, [setPosition])
+  const { onMouseDown: onDragMouseDown } = useDrag({
+    zoom,
+    onMove: onMove,
+    position: position,
+    draggable,
+  });
 
-    const updateSize = useCallback((size: GraphNodeSize) => {
-        setSize(size);
-        onResize?.(size)
-    }, [setPosition])
+  const { onMouseDownResize } = useResize({
+    zoom,
+    aspectRatio,
+    minWidth,
+    minHeight,
+    onResize: onResize,
+    onMove: onMove,
+    size: size,
+    position: position,
+    resizable,
+  });
 
-    const memoizedInitialPosition = useMemo(() => ({ x: initialX, y: initialY }), [initialX, initialY]);
-    const memoizedInitialSize = useMemo(() => ({ width: initialWidth, height: initialHeight }), [initialWidth, initialHeight]);
-    const { onMouseDown: onDragMouseDown } = useDrag({
-        zoom,
-        onMove: (newPos) => {
-            updatePosition(newPos);
-            onMove?.(newPos);
-        },
-        initialPosition: memoizedInitialPosition,
-        draggable,
-    });
+  const handleDrag: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
+    if (event.button !== 0) return;
+    onDragMouseDown(event);
+  }, [onDragMouseDown]);
 
-    const { onMouseDownResize } = useResize({
-        zoom,
-        aspectRatio,
-        minWidth,
-        minHeight,
-        onResize: (newSize, newPos) => {
-            updateSize(newSize)
-            updatePosition(newPos)
-        },
-        initialSize: memoizedInitialSize,
-        initialPosition: memoizedInitialPosition,
-        resizable,
-    });
+  const containerStyle: CSSProperties = {
+    position: "absolute",
+    pointerEvents: "all",
+    transform: `translate3d(${Math.round(posX) - width / 2}px, ${Math.round(posY) - height / 2}px, 0)`,
+    width: Math.round(width),
+    height: Math.round(height),
+  };
 
-    const handleDrag: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
-        if (event.button != 0) return;
-        onDragMouseDown(event)
-    }, [onDragMouseDown])
-
-    const containerStyle: CSSProperties = {
-        position: "absolute",
-        pointerEvents: "all",
-        transform: `translate3d(${Math.round(position.x) - size.width / 2}px, ${Math.round(position.y) - size.height / 2}px, 0)`,
-        width: Math.round(size.width),
-        height: Math.round(size.height),
-    };
-
-    return (
-        <div style={containerStyle} onMouseDown={handleDrag}>
-            {children}
-            {resizable &&
-                (["se", "ne", "sw", "nw"] as Directions[]).map((direction) => (
-                    <ResizeHandle
-                        key={direction}
-                        direction={direction}
-                        style={{
-                            position: "absolute",
-                            ...(direction.includes("e") ? { right: 0 } : { left: 0 }),
-                            ...(direction.includes("s") ? { bottom: 0 } : { top: 0 }),
-                        }}
-                        width={RESIZE_HANDLE_SIZE / zoom}
-                        height={RESIZE_HANDLE_SIZE / zoom}
-                        onMouseDown={(e) => onMouseDownResize(e, direction)}
-                    />
-                ))}
-        </div>
-    );
+  return (
+    <div style={containerStyle} onMouseDown={handleDrag}>
+      {children}
+      {resizable &&
+        (["n", "s", "e", "w", "se", "ne", "sw", "nw"] as Directions[]).map((direction) => (
+          <ResizeHandle
+            key={direction}
+            direction={direction}
+            style={{
+              position: "absolute",
+              ...(direction === "e" ? { right: 0, top: "50%", transform: "translateY(-50%)" } : {}),
+              ...(direction === "w" ? { left: 0, top: "50%", transform: "translateY(-50%)" } : {}),
+              ...(direction === "s" ? { bottom: 0, left: "50%", transform: "translateX(-50%)" } : {}),
+              ...(direction === "n" ? { top: 0, left: "50%", transform: "translateX(-50%)" } : {}),
+              ...(direction === "se" ? { right: 0, bottom: 0 } : {}),
+              ...(direction === "ne" ? { right: 0, top: 0 } : {}),
+              ...(direction === "sw" ? { left: 0, bottom: 0 } : {}),
+              ...(direction === "nw" ? { left: 0, top: 0 } : {}),
+            }}
+            width={RESIZE_HANDLE_SIZE / zoom}
+            height={RESIZE_HANDLE_SIZE / zoom}
+            onMouseDown={(e) => onMouseDownResize(e, direction)}
+          />
+        ))}
+    </div>
+  );
 }

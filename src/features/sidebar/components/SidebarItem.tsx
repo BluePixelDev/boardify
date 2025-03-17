@@ -10,10 +10,10 @@ interface SidebarItemProps {
 export default function SidebarItem({ onClick, label, selected, icon }: SidebarItemProps) {
     return (
         <button
-            className={`app-sidebar-item ${selected ? "selected" : ""}`}
+            className={`sidebar-item ${selected ? "selected" : ""}`}
             onClick={onClick}
         >
-            {icon && <Icon icon={icon} className="app-sidebar-icon" />}
+            {icon && <Icon icon={icon} className="sidebar-icon" />}
             
             {label}
         </button>

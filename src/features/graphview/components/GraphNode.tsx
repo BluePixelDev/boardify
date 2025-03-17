@@ -4,8 +4,9 @@ import { useGraphViewContext } from "./GraphView";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { updateNode } from "@/redux/nodesSlice";
-import { GraphNodeSize } from "../types"
+import { GraphNodePosition, GraphNodeSize } from "../types"
 import TransformRect from "./transform/TransformRect";
+import { selectNodeById } from "@/redux/nodeSelector";
 
 type GraphNodeProps = {
   nodeId: string;
@@ -13,29 +14,30 @@ type GraphNodeProps = {
   aspectRatio?: number;
 };
 
-export default function GraphNode(props: GraphNodeProps) {
+export default function GraphNode({
+  nodeId,
+  aspectRatio,
+  children
+}: GraphNodeProps) {
   const { zoom: scale } = useGraphViewContext();
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const node = useSelector((state: RootState) => {
-    return state.graphNodes.nodes.find((n: any) => n.id === props.nodeId)
-  });
+  const node = useSelector((state: RootState) => selectNodeById(state, nodeId))
 
-  const handleMove = (newPos: { x: number; y: number }) => {
+  const handleMove = (newPos: GraphNodePosition) =>
     dispatch(
-      updateNode({ 
-        id: props.nodeId, 
-        position: newPos 
+      updateNode({
+        id: nodeId,
+        position: newPos,
       })
     );
-  };
 
   const handleResize = (newSize: GraphNodeSize) => {
     dispatch(
       updateNode({
-        id: props.nodeId,
-        size: newSize,
+        id: nodeId,
+        size: { ...newSize },
       })
     );
   };
@@ -43,18 +45,18 @@ export default function GraphNode(props: GraphNodeProps) {
   return (
     <TransformRect
       zoom={scale}
-      initialX={node?.position.x ?? 0}
-      initialY={node?.position.y ?? 0}
-      initialWidth={node?.size.width ?? 100}
-      initialHeight={node?.size.height ?? 100}
+      posX={node?.position.x ?? 0}
+      posY={node?.position.y ?? 0}
+      width={node?.size.width ?? 100}
+      height={node?.size.height ?? 100}
       draggable
       resizable
-      aspectRatio={props.aspectRatio}
+      aspectRatio={aspectRatio}
       onMove={handleMove}
       onResize={handleResize}
     >
       <div ref={nodeRef} className="graph-node">
-        <div className="graph-node-content">{props.children}</div>
+        {children}
       </div>
     </TransformRect>
   );

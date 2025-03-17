@@ -5,6 +5,7 @@ import AppSnippets from "./features/snippets/AppSnippets";
 import { Provider } from "react-redux";
 import store from "./redux/store"
 import { Titlebar } from "./features/titlebar";
+import "./utils/appSetup"
 
 function App() {
   return (

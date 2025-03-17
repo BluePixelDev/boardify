@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { GraphNodePosition, GraphNodeSize } from "../types";
 
-type Directions = "n" | "s" | "e" | "w" | "se" | "ne" | "sw" | "nw";
+export type Directions = "n" | "s" | "e" | "w" | "se" | "ne" | "sw" | "nw";
 
 export type ResizeResult = {
-  size: { width: number; height: number };
-  position: { x: number; y: number };
+  size: GraphNodeSize;
+  position: GraphNodePosition;
   onMouseDownResize: (e: React.MouseEvent, direction: Directions) => void;
 };
 
@@ -15,35 +15,30 @@ export function useResize({
   minWidth,
   minHeight,
   onResize,
-  initialSize,
-  initialPosition,
+  onMove,
+  size,
+  position,
   resizable,
 }: {
-  zoom: number;
-  aspectRatio?: number;
-  minWidth: number;
-  minHeight: number;
-  onResize?: (size: GraphNodeSize, position: GraphNodePosition) => void;
-  initialSize: { width: number; height: number };
-  initialPosition: { x: number; y: number };
-  resizable: boolean;
+  zoom: number
+  aspectRatio?: number
+  minWidth: number
+  minHeight: number
+  onResize?: (size: GraphNodeSize) => void;
+  onMove?: (position: GraphNodePosition) => void
+  size: GraphNodeSize
+  position: GraphNodePosition
+  resizable: boolean
 }): ResizeResult {
-  const [size, setSize] = useState(initialSize);
-  const [position, setPosition] = useState(initialPosition);
-
   // Store the current resizing state and starting values.
-  const resizingRef = useRef<{ isResizing: boolean; direction: Directions }>({
+  const resizingRef = useRef<{ isResizing: boolean; direction: Directions, dominantAxis?: 'horizontal' | 'vertical'}>({
     isResizing: false,
     direction: "se",
   });
-  const startMousePos = useRef({ x: 0, y: 0 });
-  const startSize = useRef(initialSize);
-  const startPos = useRef(initialPosition);
 
-  // Update the position when initialPosition changes.
-  useEffect(() => {
-    setPosition(initialPosition);
-  }, [initialPosition]);
+  const startMousePos = useRef<GraphNodePosition>({ x: 0, y: 0 });
+  const startSize = useRef<GraphNodeSize>(size);
+  const startPos = useRef<GraphNodePosition>(position);
 
   // Helper: Convert center-based coordinates into edge coordinates.
   const getEdges = (
@@ -55,32 +50,6 @@ export function useResize({
     top: pos.y - size.height / 2,
     bottom: pos.y + size.height / 2,
   });
-
-  // Helper: Given an anchor (based on drag direction), compute the new center.
-  const getAnchoredCenter = (
-    direction: Directions,
-    edges: ReturnType<typeof getEdges>,
-    width: number,
-    height: number
-  ) => {
-    switch (direction) {
-      case "se":
-        // Top-left
-        return { x: edges.left + width / 2, y: edges.top + height / 2 };
-      case "sw":
-        // Top-right
-        return { x: edges.right - width / 2, y: edges.top + height / 2 };
-      case "ne":
-        // Bottom-left
-        return { x: edges.left + width / 2, y: edges.bottom - height / 2 };
-      case "nw":
-        // Bottom-right
-        return { x: edges.right - width / 2, y: edges.bottom - height / 2 };
-      default:
-        // For non-corner directions, just return the starting center.
-        return { x: startPos.current.x, y: startPos.current.y };
-    }
-  };
 
   // When a resize starts, record the starting mouse, size and position.
   const onMouseDownResize = useCallback(
@@ -109,60 +78,71 @@ export function useResize({
       // Calculate the original edges based on the starting position.
       const startEdges = getEdges(startPos.current, startSize.current);
 
-      // Compute new edge positions by adding the delta.
-      const newLeft = startEdges.left + deltaX;
-      const newRight = startEdges.right + deltaX;
-      const newTop = startEdges.top + deltaY;
-      const newBottom = startEdges.bottom + deltaY;
+      const isWest = direction.includes("w")
+      const isEast = direction.includes("e")
+      const isNorth = direction.includes("n")
+      const isSouth = direction.includes("s")
 
-      // Default to the starting size.
-      let newWidth = startSize.current.width;
-      let newHeight = startSize.current.height;
-      let newCenter = { ...startPos.current };
+      // We copy the original edge position
+      let newEdges = { ...startEdges };
+      if (isWest) newEdges.left = startEdges.left + deltaX;
+      if (isEast) newEdges.right = startEdges.right + deltaX;
+      if (isNorth) newEdges.top = startEdges.top + deltaY;
+      if (isSouth) newEdges.bottom = startEdges.bottom + deltaY;
 
-      // Update width and height based on the drag direction.
-      switch (direction) {
-        case "se":
-          newWidth = Math.max(minWidth, newRight - startEdges.left);
-          newHeight = Math.max(minHeight, newBottom - startEdges.top);
-          break;
-        case "sw":
-          newWidth = Math.max(minWidth, startEdges.right - newLeft);
-          newHeight = Math.max(minHeight, newBottom - startEdges.top);
-          break;
-        case "ne":
-          newWidth = Math.max(minWidth, newRight - startEdges.left);
-          newHeight = Math.max(minHeight, startEdges.bottom - newTop);
-          break;
-        case "nw":
-          newWidth = Math.max(minWidth, startEdges.right - newLeft);
-          newHeight = Math.max(minHeight, startEdges.bottom - newTop);
-          break;
-        default:
-          break;
+      let newWidth = newEdges.right - newEdges.left;
+      let newHeight = newEdges.bottom - newEdges.top;
+
+      // Width limiting
+      if (newWidth < minWidth) {
+        newWidth = minWidth;
+        if (isWest) newEdges.left = newEdges.right - minWidth
+        if (isEast) newEdges.right = newEdges.left + minWidth
       }
 
-      // Calculate the new center based on the anchored corner.
-      newCenter = getAnchoredCenter(direction, startEdges, newWidth, newHeight);
+      // Height Limiting
+      if (newHeight < minHeight) {
+        newHeight = minHeight;
+        if (isNorth) newEdges.top = newEdges.bottom - minHeight
+        if (isSouth) newEdges.bottom = newEdges.top + minHeight
+      }
 
-      // Enforce the aspect ratio, if provided.
       if (aspectRatio) {
-        const aspectLimitedWidth = newHeight * aspectRatio;
-        const aspectLimitedHeight = newWidth / aspectRatio;
+        // Calculate aspect ratio constrained size
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
 
-        if (newWidth / newHeight > aspectRatio) {
-          newWidth = aspectLimitedWidth;
-        } else {
-          newHeight = aspectLimitedHeight;
+        if (!resizingRef.current.dominantAxis) {
+          resizingRef.current.dominantAxis = absDeltaX > absDeltaY ? 'horizontal' : 'vertical';
         }
 
-        // Recalculate the center to keep the anchor fixed.
-        newCenter = getAnchoredCenter(direction, startEdges, newWidth, newHeight);
+        if (resizingRef.current.dominantAxis === 'horizontal') {
+          // Horizontal resizing is dominant
+          newHeight = newWidth / aspectRatio;
+        } else {
+          // Vertical resizing is dominant
+          newWidth = newHeight * aspectRatio;
+        }
+      
+        // Update edges to ensure proper positioning
+        if (isWest) newEdges.left = startEdges.right - newWidth;
+        if (isEast) newEdges.right = startEdges.left + newWidth;
+        if (isNorth) newEdges.top = startEdges.bottom - newHeight;
+        if (isSouth) newEdges.bottom = startEdges.top + newHeight;
       }
 
-      setSize({ width: newWidth, height: newHeight });
-      setPosition(newCenter);
-      onResize?.({ width: newWidth, height: newHeight }, newCenter);
+      const newSize = {
+        width: newWidth,
+        height: newHeight,
+      }
+
+      const newCenter = {
+        x: (newEdges.left + newEdges.right) / 2,
+        y: (newEdges.top + newEdges.bottom) / 2,
+      };
+
+      onResize?.(newSize);
+      onMove?.(newCenter)
     },
     [zoom, minWidth, minHeight, aspectRatio, onResize]
   );

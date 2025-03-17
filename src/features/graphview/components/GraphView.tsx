@@ -127,7 +127,7 @@ export default function GraphView({ children, graph }: GraphViewProps) {
 
   const { onMouseDown: onDragMouseDown } = useDrag({
     zoom: 1,
-    initialPosition: translate,
+    position: translate,
     draggable: true,
     onMove: (newPosition) => {
       setTargetTranslate(newPosition);

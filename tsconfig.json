@@ -26,6 +26,7 @@
       "@shared":["./src/shared/"],
       "@redux/*":["./src/redux/"],
       "@views":["./src/views/"],
+      "@utils":["./src/utils/"],
       "@features":["./src/features/"],
       "@graphview":["./src/features/graphview"],
       "@file-drop":["./src/features/file-drop"],

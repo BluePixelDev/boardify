@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cssSnippetsSlice from "../features/snippets/redux/snippetSlice"
 import nodesSlice from './nodesSlice'
+import appSlice from './appSlice'
 
 const store = configureStore({
     reducer: {
         cssSnippets: cssSnippetsSlice,
-        graphNodes: nodesSlice
+        graphNodes: nodesSlice,
+        app: appSlice
     }
 })
 

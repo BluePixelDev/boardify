@@ -1,20 +1,30 @@
+import { useDispatch } from "react-redux";
 import "../sidebarStyles.css"
-import { motion } from "framer-motion";
+import { toggleSidebar } from "@/redux/appSlice";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 type SidebarProps = {
-    expanded?: boolean;
+    isExpanded?: boolean;
     children?: React.ReactNode;
 };
 
-export default function Sidebar({ expanded, children }: SidebarProps) {
+export default function Sidebar({ isExpanded, children }: SidebarProps) {
+    const dispatch = useDispatch();
+    const handleSidebarToggle = () => dispatch(toggleSidebar());
+
     return (
-        <motion.div
-            initial={{ width: expanded ? 250 : 0 }}
-            animate={{ width: expanded ? 250 : 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="app-sidebar"
-        >
-            {children}
-        </motion.div>
+        <>
+            <aside className={`sidebar ${isExpanded ? 'expanded' : 'collapsed'}`}>
+                <div className="sidebar-content">
+                    <div className="sidebar-inner">
+                        {children}
+                    </div>
+                </div>
+
+                <button className="sidebar-toggle" onClick={handleSidebarToggle}>
+                    <Icon icon={isExpanded ? "bi:chevron-left" : "bi:chevron-right"} />
+                </button>
+            </aside>
+        </>
     );
 }

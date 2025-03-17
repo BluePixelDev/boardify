@@ -1,29 +1,25 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect,  useRef } from "react";
+import { GraphNodePosition } from "../types";
 
 type DragResult = {
-  position: { x: number; y: number };
+  position: GraphNodePosition;
   onMouseDown: (e: React.MouseEvent) => void;
 };
 
 export function useDrag({
   zoom,
   onMove,
-  initialPosition,
+  position,
   draggable,
 }: {
   zoom: number;
-  onMove?: (position: { x: number; y: number }) => void;
-  initialPosition: { x: number; y: number };
+  onMove?: (position: GraphNodePosition) => void;
+  position: GraphNodePosition;
   draggable: boolean;
 }): DragResult {
-  const [position, setPosition] = useState(initialPosition);
   const draggingRef = useRef(false);
   const startMousePos = useRef({ x: 0, y: 0 });
-  const startPos = useRef(initialPosition);
-
-  useEffect(() => {
-    setPosition(initialPosition);
-  }, [initialPosition]);
+  const startPos = useRef(position);
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent) => {
@@ -45,14 +41,12 @@ export function useDrag({
         return;
       }
 
-      // Otherwise, update the position normally.
       const deltaX = e.clientX - startMousePos.current.x;
       const deltaY = e.clientY - startMousePos.current.y;
-      const newPos = {
+      const newPos: GraphNodePosition = {
         x: startPos.current.x + deltaX / zoom,
         y: startPos.current.y + deltaY / zoom,
       };
-      setPosition(newPos);
       onMove?.(newPos);
     },
     [zoom, onMove]

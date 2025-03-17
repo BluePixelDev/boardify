@@ -1,31 +1,82 @@
-.app-sidebar {
+/* Sidebar container */
+.sidebar {
     display: flex;
-    background-color: #212426;
+    position: relative;
     flex-direction: column;
+    background-color: #212426;
     height: 100%;
     z-index: 50;
-    padding: 0.5em;
-
+    box-sizing: border-box;
     border-right: 1px solid #2e3434;
+    transition: width 0.3s ease-in-out;
 }
 
-.app-sidebar-item {
+/* Sidebar states */
+.sidebar.expanded {
+    width: 250px;
+}
+
+.sidebar.collapsed {
+    width: 0;
+}
+
+/* Sidebar content wrapper */
+.sidebar-content {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 30px;
+}
+
+/* Sidebar inner content box (with padding) */
+.sidebar-inner {
+    padding: 0.5em;
+}
+
+/* Sidebar item */
+.sidebar-item {
     display: flex;
+    width: 100%;
     gap: 5px;
     text-align: left;
     padding: 5px;
     border-radius: 4px;
     outline: none;
 }
-.app-sidebar-item .app-sidebar-icon {
+
+/* Sidebar item icon */
+.sidebar-item .sidebar-icon {
     width: 24px;
     height: 24px;
 }
 
-.app-sidebar-item:hover {
+/* Hover effect for sidebar item */
+.sidebar-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.app-sidebar-item.selected {
+/* Selected sidebar item */
+.sidebar-item.selected {
     background-color: #8c33eb;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -50px;
+    transition: left 0.3s ease-in-out;
+    z-index: 100;
+    background-color: #8c33eb;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Hover effect for toggle button */
+.sidebar-toggle:hover {
+    background-color: #6b27b6;
 }
