@@ -7,10 +7,10 @@ interface SidebarItemProps {
     onClick?: () => void
 }
 
-export default function SidebarItem({ onClick, label, selected, icon }: SidebarItemProps) {
+export default function SidebarButton({ onClick, label, selected, icon }: SidebarItemProps) {
     return (
         <button
-            className={`sidebar-item ${selected ? "selected" : ""}`}
+            className={`sidebar-button ${selected ? "selected" : ""}`}
             onClick={onClick}
         >
             {icon && <Icon icon={icon} className="sidebar-icon" />}

@@ -1,2 +1,2 @@
 export { default as Sidebar } from "./components/Sidebar"
-export { default as SidebarItem } from "./components/SidebarItem"
+export { default } from "./components/SidebarButton"

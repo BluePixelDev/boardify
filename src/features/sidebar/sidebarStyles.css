@@ -33,9 +33,11 @@
 }
 
 /* Sidebar item */
-.sidebar-item {
+.sidebar-button {
     display: flex;
+    align-items: center;
     width: 100%;
+    font-size: medium;
     gap: 5px;
     text-align: left;
     padding: 5px;
@@ -44,18 +46,18 @@
 }
 
 /* Sidebar item icon */
-.sidebar-item .sidebar-icon {
+.sidebar-button .sidebar-icon {
     width: 24px;
     height: 24px;
 }
 
 /* Hover effect for sidebar item */
-.sidebar-item:hover {
+.sidebar-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Selected sidebar item */
-.sidebar-item.selected {
+.sidebar-button.selected {
     background-color: #8c33eb;
 }
 

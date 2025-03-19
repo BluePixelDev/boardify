@@ -1,7 +1,7 @@
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux"
 
-export default function () {
+export const CSSnippets = () => {
     const snippets = useSelector((state: RootState) => state.cssSnippets.snippets)
 
     return <style>
@@ -10,3 +10,5 @@ export default function () {
         }
     </style>
 }
+
+export default CSSnippets;

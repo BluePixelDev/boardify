@@ -31,7 +31,7 @@ export function useResize({
   resizable: boolean
 }): ResizeResult {
   // Store the current resizing state and starting values.
-  const resizingRef = useRef<{ isResizing: boolean; direction: Directions, dominantAxis?: 'horizontal' | 'vertical'}>({
+  const resizingRef = useRef<{ isResizing: boolean; direction: Directions, dominantAxis?: 'horizontal' | 'vertical' }>({
     isResizing: false,
     direction: "se",
   });
@@ -123,7 +123,7 @@ export function useResize({
           // Vertical resizing is dominant
           newWidth = newHeight * aspectRatio;
         }
-      
+
         // Update edges to ensure proper positioning
         if (isWest) newEdges.left = startEdges.right - newWidth;
         if (isEast) newEdges.right = startEdges.left + newWidth;

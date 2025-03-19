@@ -18,6 +18,14 @@ export default function AppTheme(props: Props) {
     const theme = useContext(ThemeContext)
 
     return <ThemeContext.Provider value={theme}>
+        <style>
+            {`
+          button, body {
+            font-family: ${theme.fontFamily};
+            font-size: ${theme.fontSize};
+          }
+        `}
+        </style>
         {props.children}
     </ThemeContext.Provider>
 }

@@ -1,12 +1,14 @@
-import { GraphNodeData } from "@/features/graphview/types/graphTypes";
+import { GraphNodeData } from "@/features/graph/graphview/types/graphTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface GraphNodeState {
-    nodes: GraphNodeData[];
+    nodes: GraphNodeData[]
+    selected: string[]
 }
 
 const initialState: GraphNodeState = {
-    nodes: []
+    nodes: [],
+    selected: []
 };
 
 const nodesSlice = createSlice({
@@ -25,9 +27,21 @@ const nodesSlice = createSlice({
                 node.id === id ? { ...node, ...updatedProperties } : node
             );
         },
+        selectNode: (state, action: PayloadAction<{ id: string }>) => {
+            const { id } = action.payload
+            state.selected.push(id)
+        },
+        deselectNode: (state, action: PayloadAction<{ id: string }>) => {
+            const { id } = action.payload
+            state.selected = state.selected.filter(selId => selId !== id);
+
+        },
+        deselectAllNodes: (state) => {
+            state.selected = []
+        }
     }
 });
 
 export type { GraphNodeState };
-export const { addNode, removeNode, updateNode } = nodesSlice.actions;
+export const { addNode, removeNode, updateNode, selectNode, deselectNode, deselectAllNodes } = nodesSlice.actions;
 export default nodesSlice.reducer;

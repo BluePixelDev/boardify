@@ -1,4 +1,4 @@
-import { GraphNodeData } from "../../graphview/types/graphTypes";
+import { GraphNodeData } from "../graphview/types/graphTypes";
 
 export type NodeRenderer<T = any> = (props: { node: GraphNodeData<T> }) => JSX.Element | JSX.Element[];
 

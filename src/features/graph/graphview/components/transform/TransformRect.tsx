@@ -4,25 +4,29 @@ import { useDrag, useResize } from "../../hooks";
 import { GraphNodePosition, GraphNodeSize } from "../../types";
 
 type TransformRectProps = {
-  zoom: number;
-  posX: number;
-  posY: number;
-  width: number;
-  height: number;
-  draggable?: boolean;
-  resizable?: boolean;
-  aspectRatio?: number;
-  minWidth?: number;
-  minHeight?: number;
-  onMove?: (position: GraphNodePosition) => void;
-  onResize?: (size: GraphNodeSize) => void;
-  children: React.ReactNode;
+  zoom: number
+  posX: number
+  posY: number
+  width: number
+  height: number
+  draggable?: boolean
+  resizable?: boolean
+  aspectRatio?: number
+  minWidth?: number
+  minHeight?: number
+  className?: string
+  onMove?: (position: GraphNodePosition) => void
+  onResize?: (size: GraphNodeSize) => void
+  children: React.ReactNode
 };
 
 type Directions = "se" | "ne" | "sw" | "nw" | "n" | "s" | "e" | "w";
 const RESIZE_HANDLE_SIZE = 8;
 const MIN_DIMENSION = 100;
 
+/**
+ * A component for handling transform positioning.
+ */
 export default function TransformRect(props: TransformRectProps) {
   const {
     zoom,
@@ -35,6 +39,7 @@ export default function TransformRect(props: TransformRectProps) {
     minHeight = MIN_DIMENSION,
     resizable = true,
     draggable = true,
+    className,
     onMove,
     onResize,
     children,
@@ -76,7 +81,7 @@ export default function TransformRect(props: TransformRectProps) {
   };
 
   return (
-    <div style={containerStyle} onMouseDown={handleDrag}>
+    <div style={containerStyle} onMouseDown={handleDrag} className={className ?? ""}>
       {children}
       {resizable &&
         (["n", "s", "e", "w", "se", "ne", "sw", "nw"] as Directions[]).map((direction) => (

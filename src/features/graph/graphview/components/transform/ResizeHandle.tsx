@@ -16,7 +16,8 @@ export default function ResizeHandle(props: ResizeHandleProps) {
                 ...style,
                 width,
                 height,
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                backgroundColor: "purple",
+                borderRadius: "100%",
                 cursor: `${direction}-resize`,
             }}
             onMouseDown={(e) => onMouseDown(e, direction)}
