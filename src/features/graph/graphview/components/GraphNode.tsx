@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { selectNode, updateNode } from "@/redux/nodesSlice";
 import { GraphNodePosition, GraphNodeSize } from "../types"
-import TransformRect from "./transform/TransformRect";
+import InteractiveRect from "./InteractiveRect";
 import { selectNodeById } from "@/redux/nodeSelector";
-import { useGraphViewContext } from "./transform/GraphViewContext";
+import { useGraphViewContext } from "../context/GraphViewContext";
 
 type GraphNodeProps = {
   nodeId: string
@@ -60,7 +60,7 @@ export default function raphNode({
   };
 
   return (
-    <TransformRect
+    <InteractiveRect
       zoom={zoom}
       posX={node?.position.x ?? 0}
       posY={node?.position.y ?? 0}
@@ -80,6 +80,6 @@ export default function raphNode({
       >
         {children}
       </div>
-    </TransformRect>
+    </InteractiveRect>
   );
 }

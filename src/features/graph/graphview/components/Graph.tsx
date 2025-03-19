@@ -1,8 +1,8 @@
-import React, { CSSProperties, useCallback, useEffect, useRef, useState, WheelEventHandler, MouseEventHandler, useLayoutEffect } from 'react';
+import React, { CSSProperties, useCallback, useRef, WheelEventHandler, MouseEventHandler, useState } from 'react';
 import GraphGrid from './GraphGrid';
 import "../graphStyles.css";
 import { useDrag } from '../hooks';
-import { useGraphViewContext } from './transform/GraphViewContext';
+import { useGraphViewContext } from '../context/GraphViewContext';
 
 // TYPES & DEFAULTS
 export type GraphProperties = {
@@ -25,103 +25,36 @@ export default function Graph({ children, graph }: GraphViewProps) {
   const maxZoom = graph?.maxZoom ?? DEFAULT_MAX_ZOOM;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-  const { setPosition, setZoom, targetPosition, position, zoom } = useGraphViewContext();
+  const { transform, setZoom, setPosition, position, zoom } = useGraphViewContext();
+  const [mousePosition, setMousePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
 
-  useLayoutEffect(() => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setContainerSize({ width: rect.width, height: rect.height });
-    }
-  }, []);
-
-  useEffect(() => {
+  const handleWheel: WheelEventHandler<HTMLDivElement> = useCallback((e) => {
     if (!containerRef.current) return;
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        const { width, height } = entry.contentRect;
-        setContainerSize({ width, height });
-      }
-    });
-    resizeObserver.observe(containerRef.current);
-    return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
-      }
-      resizeObserver.disconnect();
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const mousePosition = { x: e.clientX - containerRect.left, y: e.clientY - containerRect.top };
+
+    const factor = 1 - 0.1 * Math.sign(e.deltaY);
+    const newZoom = zoom * factor;
+
+    const worldX = (mousePosition.x - position.x) / zoom;
+    const worldY = (mousePosition.y - position.y) / zoom;
+
+    const newPosition = {
+      x: mousePosition.x - worldX * newZoom,
+      y: mousePosition.y - worldY * newZoom
     };
-  }, []);
 
-  // Update zoom while keeping the point under the mouse fixed.
-  const updateZoom = useCallback(
-    (delta: number, mousePosition?: { x: number; y: number }) => {
-      if (!containerRef.current) return;
-
-      setZoom((prevZoom) => {
-        const newZoom = Math.max(minZoom, Math.min(maxZoom, prevZoom * (1 + delta)));
-        if (!mousePosition || !containerRef.current) return newZoom;
-
-        const rect = containerRef.current.getBoundingClientRect();
-        const mouseX = mousePosition.x - rect.left;
-        const mouseY = mousePosition.y - rect.top;
-
-        const worldMouseX = (mouseX + position.x) / prevZoom;
-        const worldMouseY = (mouseY + position.y) / prevZoom;
-
-        const newTargetPosition = {
-          x: mouseX - worldMouseX * newZoom,
-          y: mouseY - worldMouseY * newZoom,
-        };
-
-        setPosition((prevPosition) => {
-          return {
-            x: prevPosition.x + (newTargetPosition.x - prevPosition.x),
-            y: prevPosition.y + (newTargetPosition.y - prevPosition.y),
-          };
-        });
-        return newZoom;
-      });
-    },
-    [minZoom, maxZoom, targetPosition, setZoom, setPosition]
-  );
+    setZoom(newZoom);
+    setPosition(newPosition);
+  }, [minZoom, maxZoom, setPosition, setZoom]);
 
   const { onMouseDown: onDragMouseDown } = useDrag({
     zoom: 1,
     position: position,
     draggable: true,
-    onMove: (newPosition) => {
-      setPosition(newPosition);
-    },
+    onMove: (newPosition) => setPosition(newPosition),
   });
-
-  // New wheel handler that adjusts the translation to keep the point under the mouse fixed
-  const handleWheel: WheelEventHandler<HTMLDivElement> = useCallback(
-    (e) => {
-      if (!containerRef.current) return;
-
-      // Prevent default scrolling behavior
-      e.preventDefault();
-
-      // Get container's bounding box to compute mouse coordinates relative to it
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - containerRect.left;
-      const mouseY = e.clientY - containerRect.top;
-
-      // Determine scaling factor from the wheel delta
-      const factor = 1 - 0.1 * Math.sign(e.deltaY);
-
-      // Update zoom and adjust the translation so the mouse point stays fixed
-      setZoom(prevZoom => {
-        const newZoom = Math.max(minZoom, Math.min(maxZoom, prevZoom * factor));
-        setPosition(prevPos => ({
-          x: prevPos.x + (1 - newZoom / prevZoom) * (mouseX - prevPos.x),
-          y: prevPos.y + (1 - newZoom / prevZoom) * (mouseY - prevPos.y),
-        }));
-        return newZoom;
-      });
-    },
-    [minZoom, maxZoom, setZoom, setPosition]
-  );
 
   const handleDrag: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     if (event.button !== 1) return;
@@ -129,8 +62,17 @@ export default function Graph({ children, graph }: GraphViewProps) {
   }, [onDragMouseDown]);
 
   const contentStyle: CSSProperties = {
-    transform: `translate3d(${Math.round(position.x)}px, ${Math.round(position.y)}px, 0) scale(${zoom})`,
+    transform: `matrix(${transform.matrix[0]}, ${transform.matrix[1]}, ${transform.matrix[2]}, ${transform.matrix[3]}, ${transform.matrix[4]}, ${transform.matrix[5]})`,
   };
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const mousePos = { x: e.clientX - containerRect.left, y: e.clientY - containerRect.top };
+
+    setMousePosition(mousePos);
+  }, [transform]);
 
   return (
     <div
@@ -138,9 +80,22 @@ export default function Graph({ children, graph }: GraphViewProps) {
       className="graph-view"
       onWheel={handleWheel}
       onMouseDown={handleDrag}
+      onMouseMove={handleMouseMove}
     >
       <GraphGrid />
       <div className="graph-view-content" style={contentStyle}>
+        <div
+          className="mouse-position-overlay"
+          style={{
+            position: 'relative',
+            transform: `translate3d(${(mousePosition.x - position.x) / zoom}px, ${(mousePosition.y - position.y) / zoom}px, 0)`,
+            backgroundColor: 'red',
+            padding: '5px',
+            color: 'white',
+            fontSize: '12px',
+            pointerEvents: 'none',
+          }}
+        />
         {children}
       </div>
     </div>

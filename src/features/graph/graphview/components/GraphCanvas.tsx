@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraphViewProvider } from './transform/GraphViewContext';
+import { GraphViewProvider } from '../context/GraphViewContext';
 import Graph from './Graph';
 
 export const GraphCanvas = ({ children }: { children: React.ReactNode }) => {

@@ -1,0 +1,4 @@
+.interact-rect {
+    position: absolute;
+    pointer-events: all;
+}

@@ -1,9 +1,9 @@
 import "../graphStyles.css";
 import { CSSProperties } from "react";
-import { useGraphViewContext } from "./transform/GraphViewContext";
+import { useGraphViewContext } from "../context/GraphViewContext";
 
 export default function GraphGrid() {
-  const { zoom, position } = useGraphViewContext();
+  const { position, zoom } = useGraphViewContext();
 
   const baseDotSize = 2;
   const dotRadius = baseDotSize;
@@ -23,8 +23,8 @@ export default function GraphGrid() {
   const encodedSvg = encodeURIComponent(svg).replace(/'/g, "%27").replace(/"/g, "%22");
   const backgroundImage = `url("data:image/svg+xml,${encodedSvg}")`;
 
-  const backgroundPosX = `calc(50% - ${gridSpacing / 2}px + ${position.x}px)`;
-  const backgroundPosY = `calc(50% - ${gridSpacing / 2}px + ${position.y}px)`;
+  const backgroundPosX = `${position.x}px`;
+  const backgroundPosY = `${position.y}px`;
 
   const style: CSSProperties = {
     backgroundImage,

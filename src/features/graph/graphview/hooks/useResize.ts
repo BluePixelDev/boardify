@@ -2,13 +2,12 @@ import { useCallback, useEffect, useRef } from "react";
 import { GraphNodePosition, GraphNodeSize } from "../types";
 
 export type Directions = "n" | "s" | "e" | "w" | "se" | "ne" | "sw" | "nw";
-
 export type ResizeResult = {
   size: GraphNodeSize;
   position: GraphNodePosition;
   onMouseDownResize: (e: React.MouseEvent, direction: Directions) => void;
 };
-
+export type GraphNodeAnchor = { x: number; y: number };
 export function useResize({
   zoom,
   aspectRatio,
@@ -19,6 +18,7 @@ export function useResize({
   size,
   position,
   resizable,
+  anchor = { x: 0, y: 0 }
 }: {
   zoom: number
   aspectRatio?: number
@@ -29,7 +29,9 @@ export function useResize({
   size: GraphNodeSize
   position: GraphNodePosition
   resizable: boolean
+  anchor?: GraphNodeAnchor;
 }): ResizeResult {
+
   // Store the current resizing state and starting values.
   const resizingRef = useRef<{ isResizing: boolean; direction: Directions, dominantAxis?: 'horizontal' | 'vertical' }>({
     isResizing: false,
@@ -39,17 +41,6 @@ export function useResize({
   const startMousePos = useRef<GraphNodePosition>({ x: 0, y: 0 });
   const startSize = useRef<GraphNodeSize>(size);
   const startPos = useRef<GraphNodePosition>(position);
-
-  // Helper: Convert center-based coordinates into edge coordinates.
-  const getEdges = (
-    pos: GraphNodePosition,
-    size: GraphNodeSize
-  ) => ({
-    left: pos.x - size.width / 2,
-    right: pos.x + size.width / 2,
-    top: pos.y - size.height / 2,
-    bottom: pos.y + size.height / 2,
-  });
 
   // When a resize starts, record the starting mouse, size and position.
   const onMouseDownResize = useCallback(
@@ -76,7 +67,12 @@ export function useResize({
       const direction = resizingRef.current.direction;
 
       // Calculate the original edges based on the starting position.
-      const startEdges = getEdges(startPos.current, startSize.current);
+      const startEdges = {
+        left: startPos.current.x,
+        top: startPos.current.y,
+        right: startPos.current.x + startSize.current.width,
+        bottom: startPos.current.y + startSize.current.height,
+      };
 
       const isWest = direction.includes("w")
       const isEast = direction.includes("e")
@@ -117,10 +113,8 @@ export function useResize({
         }
 
         if (resizingRef.current.dominantAxis === 'horizontal') {
-          // Horizontal resizing is dominant
           newHeight = newWidth / aspectRatio;
         } else {
-          // Vertical resizing is dominant
           newWidth = newHeight * aspectRatio;
         }
 
@@ -131,20 +125,20 @@ export function useResize({
         if (isSouth) newEdges.bottom = startEdges.top + newHeight;
       }
 
-      const newSize = {
-        width: newWidth,
-        height: newHeight,
-      }
-
-      const newCenter = {
-        x: (newEdges.left + newEdges.right) / 2,
-        y: (newEdges.top + newEdges.bottom) / 2,
+      const newPos = {
+        x: newEdges.left - newWidth * anchor.x,
+        y: newEdges.top - newHeight * anchor.y,
       };
 
+      const newSize = {
+        width: newWidth,
+        height: newHeight
+      }
+
       onResize?.(newSize);
-      onMove?.(newCenter)
+      onMove?.(newPos)
     },
-    [zoom, minWidth, minHeight, aspectRatio, onResize]
+    [zoom, minWidth, minHeight, aspectRatio, onResize, onMove, anchor]
   );
 
   // End resizing on mouse up.

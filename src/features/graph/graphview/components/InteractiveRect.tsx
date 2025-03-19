@@ -1,47 +1,68 @@
+import './interactRect.css'
 import React, { CSSProperties, MouseEventHandler, useCallback, useMemo } from "react";
 import ResizeHandle from "./ResizeHandle";
-import { useDrag, useResize } from "../../hooks";
-import { GraphNodePosition, GraphNodeSize } from "../../types";
+import { useDrag, useResize } from "../hooks";
+import { GraphNodePosition, GraphNodeSize } from "../types";
 
-type TransformRectProps = {
+type InteractiveRectProps = {
   zoom: number
+
+  // Position
   posX: number
   posY: number
+  draggable?: boolean
+
+  // Size
   width: number
   height: number
-  draggable?: boolean
-  resizable?: boolean
+  minWidth?: number;
+  minHeight?: number;
   aspectRatio?: number
-  minWidth?: number
-  minHeight?: number
+  resizable?: boolean
+
+  // Rotation
+  rotation?: number;
+
+  // Styling
   className?: string
+
+  // Functions
   onMove?: (position: GraphNodePosition) => void
   onResize?: (size: GraphNodeSize) => void
+  onClick?: () => void;
   children: React.ReactNode
 };
 
+// Constants
 type Directions = "se" | "ne" | "sw" | "nw" | "n" | "s" | "e" | "w";
 const RESIZE_HANDLE_SIZE = 8;
 const MIN_DIMENSION = 100;
 
 /**
- * A component for handling transform positioning.
+ * InteractiveRect is a draggable, resizable, and optionally rotatable rectangle.
  */
-export default function TransformRect(props: TransformRectProps) {
+export default function InteractiveRect(props: InteractiveRectProps) {
   const {
     zoom,
+    // Position
     posX,
     posY,
+    draggable = true,
+
+    // Size
     width,
     height,
-    aspectRatio,
     minWidth = MIN_DIMENSION,
     minHeight = MIN_DIMENSION,
+    aspectRatio,
     resizable = true,
-    draggable = true,
+    // Rotation
+    rotation = 0,
+
     className,
     onMove,
     onResize,
+    onClick,
     children,
   } = props;
 
@@ -50,8 +71,8 @@ export default function TransformRect(props: TransformRectProps) {
 
   const { onMouseDown: onDragMouseDown } = useDrag({
     zoom,
-    onMove: onMove,
-    position: position,
+    onMove,
+    position,
     draggable,
   });
 
@@ -60,10 +81,10 @@ export default function TransformRect(props: TransformRectProps) {
     aspectRatio,
     minWidth,
     minHeight,
-    onResize: onResize,
-    onMove: onMove,
-    size: size,
-    position: position,
+    onResize,
+    onMove,
+    size,
+    position,
     resizable,
   });
 
@@ -73,15 +94,17 @@ export default function TransformRect(props: TransformRectProps) {
   }, [onDragMouseDown]);
 
   const containerStyle: CSSProperties = {
-    position: "absolute",
-    pointerEvents: "all",
-    transform: `translate3d(${Math.round(posX) - width / 2}px, ${Math.round(posY) - height / 2}px, 0)`,
+    transform: `translate3d(${Math.round(posX)}px, ${Math.round(posY)}px, 0px) rotate(${rotation}deg)`,
     width: Math.round(width),
     height: Math.round(height),
   };
 
   return (
-    <div style={containerStyle} onMouseDown={handleDrag} className={className ?? ""}>
+    <div
+      style={containerStyle}
+      onMouseDown={handleDrag}
+      onClick={onClick}
+      className={`interact-rect ${className ?? ""}`}>
       {children}
       {resizable &&
         (["n", "s", "e", "w", "se", "ne", "sw", "nw"] as Directions[]).map((direction) => (

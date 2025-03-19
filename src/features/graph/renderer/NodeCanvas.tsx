@@ -12,9 +12,7 @@ export default function NodeCanvas() {
 
         if (Renderer) {
           return (
-            <div key={node.id} className="node-wrapper">
-              <Renderer node={node} />
-            </div>
+            <Renderer key={node.id} node={node} />
           );
         }
 
