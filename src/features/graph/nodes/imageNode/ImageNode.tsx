@@ -1,7 +1,8 @@
+import './imageNode.styles.css'
 import { GraphNode } from "@/features/graph/graphview";
 import React from "react";
-import { type NodeRenderer } from "../renderer/rendererRegistry";
-import './nodeStyles.css'
+import { type NodeRenderer } from "../../renderer/rendererRegistry";
+
 
 type ImageNodeData = {
     src: string;
@@ -11,8 +12,8 @@ const OptimizedImage = React.memo(({ src, alt }: { src: string; alt?: string }) 
     <img
         src={src}
         loading="lazy"
-        className="image-node-content"
-        alt={alt ?? "Graph node image"}
+        className="image-node__image"
+        alt={alt ?? "Image node"}
         onError={(e) => (e.currentTarget.src = "/fallback-image.png")}
     />
 ));

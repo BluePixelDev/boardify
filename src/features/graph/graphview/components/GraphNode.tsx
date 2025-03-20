@@ -13,6 +13,7 @@ type GraphNodeProps = {
   children?: React.ReactNode
   aspectRatio?: number
   className?: string
+  resizable?: boolean
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
   onDoubleClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 };
@@ -22,6 +23,7 @@ export default function raphNode({
   aspectRatio,
   children,
   className,
+  resizable,
   onClick,
   onDoubleClick
 }: GraphNodeProps) {
@@ -67,7 +69,7 @@ export default function raphNode({
       width={node?.size.width ?? 100}
       height={node?.size.height ?? 100}
       draggable
-      resizable
+      resizable={resizable ?? true}
       aspectRatio={aspectRatio}
       onMove={handleMove}
       onResize={handleResize}

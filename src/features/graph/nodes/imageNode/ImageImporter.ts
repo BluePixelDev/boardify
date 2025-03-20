@@ -1,7 +1,7 @@
-import { IImporter } from "./IImporter";
 import { addNode } from "@/redux/nodesSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createNode } from "@/utils/nodeUtils";
+import { IImporter } from "@/features/importer/IImporter";
 
 export class ImageImporter extends IImporter {
     importData(file: File, dispatch: Dispatch): void {

@@ -18,7 +18,7 @@ export function useResize({
   size,
   position,
   resizable,
-  anchor = { x: 0, y: 0 }
+  anchor = { x: 0, y: 0 },
 }: {
   zoom: number
   aspectRatio?: number
@@ -32,7 +32,6 @@ export function useResize({
   anchor?: GraphNodeAnchor;
 }): ResizeResult {
 
-  // Store the current resizing state and starting values.
   const resizingRef = useRef<{ isResizing: boolean; direction: Directions, dominantAxis?: 'horizontal' | 'vertical' }>({
     isResizing: false,
     direction: "se",
@@ -42,12 +41,24 @@ export function useResize({
   const startSize = useRef<GraphNodeSize>(size);
   const startPos = useRef<GraphNodePosition>(position);
 
-  // When a resize starts, record the starting mouse, size and position.
   const onMouseDownResize = useCallback(
     (e: React.MouseEvent, direction: Directions) => {
       if (!resizable) return;
+
+      const overlay = document.createElement("div");
+      overlay.style.position = "fixed";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100vw";
+      overlay.style.height = "100vh";
+      overlay.style.zIndex = "9999";
+      overlay.style.cursor = "grabbing";
+      overlay.id = "resize-overlay";
+      document.body.appendChild(overlay);
+
       e.stopPropagation();
       e.preventDefault();
+
       resizingRef.current = { isResizing: true, direction };
       startMousePos.current = { x: e.clientX, y: e.clientY };
       startSize.current = size;
@@ -56,7 +67,13 @@ export function useResize({
     [resizable, size, position]
   );
 
-  // Calculate new size and position as the mouse moves.
+  const getEdges = (pos: GraphNodePosition, size: GraphNodeSize) => ({
+    left: pos.x,
+    top: pos.y,
+    right: pos.x + size.width,
+    bottom: pos.y + size.height,
+  });
+
   const onMouseMoveResize = useCallback(
     (e: MouseEvent) => {
       if (!resizingRef.current.isResizing) return;
@@ -67,12 +84,7 @@ export function useResize({
       const direction = resizingRef.current.direction;
 
       // Calculate the original edges based on the starting position.
-      const startEdges = {
-        left: startPos.current.x,
-        top: startPos.current.y,
-        right: startPos.current.x + startSize.current.width,
-        bottom: startPos.current.y + startSize.current.height,
-      };
+      const startEdges = getEdges(startPos.current, startSize.current)
 
       const isWest = direction.includes("w")
       const isEast = direction.includes("e")
@@ -85,6 +97,27 @@ export function useResize({
       if (isEast) newEdges.right = startEdges.right + deltaX;
       if (isNorth) newEdges.top = startEdges.top + deltaY;
       if (isSouth) newEdges.bottom = startEdges.bottom + deltaY;
+
+      if (e.ctrlKey) {
+        if (isEast || isWest) {
+          // for horizontal, adjust both left and right from center
+          const centerX = (startEdges.left + startEdges.right) / 2;
+          newEdges.left = centerX - (startSize.current.width + deltaX) / 2;
+          newEdges.right = centerX + (startSize.current.width + deltaX) / 2;
+        }
+        if (isNorth || isSouth) {
+          const centerY = (startEdges.top + startEdges.bottom) / 2;
+          newEdges.top = centerY - (startSize.current.height + deltaY) / 2;
+          newEdges.bottom = centerY + (startSize.current.height + deltaY) / 2;
+        }
+      }
+
+      if (e.altKey) {
+        if (isEast) newEdges.left = startEdges.left - deltaX;
+        if (isWest) newEdges.right = startEdges.right - deltaX;
+        if (isNorth) newEdges.bottom = startEdges.bottom - deltaY;
+        if (isSouth) newEdges.top = startEdges.top - deltaY;
+      }
 
       let newWidth = newEdges.right - newEdges.left;
       let newHeight = newEdges.bottom - newEdges.top;
@@ -141,18 +174,18 @@ export function useResize({
     [zoom, minWidth, minHeight, aspectRatio, onResize, onMove, anchor]
   );
 
-  // End resizing on mouse up.
   const onMouseUpResize = useCallback(() => {
+    const overlay = document.getElementById("resize-overlay");
+    if (overlay) document.body.removeChild(overlay);
     resizingRef.current.isResizing = false;
   }, []);
 
-  // Attach global mouse events.
   useEffect(() => {
-    window.addEventListener("mousemove", onMouseMoveResize);
-    window.addEventListener("mouseup", onMouseUpResize);
+    document.addEventListener("mousemove", onMouseMoveResize);
+    document.addEventListener("mouseup", onMouseUpResize);
     return () => {
-      window.removeEventListener("mousemove", onMouseMoveResize);
-      window.removeEventListener("mouseup", onMouseUpResize);
+      document.removeEventListener("mousemove", onMouseMoveResize);
+      document.removeEventListener("mouseup", onMouseUpResize);
     };
   }, [onMouseMoveResize, onMouseUpResize]);
 

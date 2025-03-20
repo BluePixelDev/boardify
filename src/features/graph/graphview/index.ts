@@ -1,3 +1,2 @@
-export { default as BoardGrid } from "./components/GraphGrid"
 export { default as GraphNode } from "./components/GraphNode"
-export { default as GraphView } from "./components/Graph"
+export { default as GraphCanvas } from "./components/GraphCanvas"

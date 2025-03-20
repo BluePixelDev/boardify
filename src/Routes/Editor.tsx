@@ -1,5 +1,5 @@
 import { AppDropzone } from "@/features/file-drop";
-import { GraphCanvas } from "@/features/graph/graphview/components/GraphCanvas";
+import { GraphCanvas } from "@/features/graph/graphview";
 import NodeCanvas from "@/features/graph/renderer/NodeCanvas";
 import SidebarButton, { Sidebar } from "@/features/sidebar";
 import { isSidebarOpen } from "@/redux/appSelector";

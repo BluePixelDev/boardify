@@ -1,9 +1,10 @@
-import './nodeStyles.css'
+import './GifNode.styles.css'
 import { GraphNode } from "@/features/graph/graphview";
 import React, { useEffect, useState } from "react";
-import { type NodeRenderer } from "../renderer/rendererRegistry";
+import { type NodeRenderer } from "../../renderer/rendererRegistry";
 import { useDispatch } from "react-redux";
 import { updateNode } from "@/redux/nodesSlice";
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 type GIFNodeData = {
     src: string;
@@ -14,7 +15,7 @@ const OptimizedImage = React.memo(({ src, alt }: { src: string; alt?: string }) 
     <img
         src={src}
         loading="lazy"
-        className="gif-node-content"
+        className="gif-node__image"
         alt={alt ?? "GIF node image"}
         onError={(e) => (e.currentTarget.src = "/fallback-image.png")}
     />
@@ -59,16 +60,22 @@ const GIFNode: NodeRenderer<GIFNodeData> = ({ node }) => {
 
 
     const imageSrc = isPlaying ? src : firstFrame ?? "/fallback-image.png";
-    console.log(imageSrc)
+    const icon = isPlaying ? "mdi:pause" : "mdi:play";
 
     return (
         <GraphNode
             nodeId={node.id}
             aspectRatio={node.aspect ?? 1}
             className="gif-node"
-            onClick={toggleIsPlaying}
         >
             <OptimizedImage src={imageSrc} />
+            <button
+                className="gif-node__control-button no-drag"
+                onClick={toggleIsPlaying}
+                aria-label={isPlaying ? "Pause GIF" : "Play GIF"}
+            >
+                <Icon icon={icon} className='gif-node__control-icon'/>
+            </button>
         </GraphNode>
     );
 }

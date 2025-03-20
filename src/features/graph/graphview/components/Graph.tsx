@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useRef, WheelEventHandler, MouseEventHandler, useState } from 'react';
+import React, { CSSProperties, useCallback, useRef, WheelEventHandler, MouseEventHandler } from 'react';
 import GraphGrid from './GraphGrid';
 import "../graphStyles.css";
 import { useDrag } from '../hooks';
@@ -25,8 +25,7 @@ export default function Graph({ children, graph }: GraphViewProps) {
   const maxZoom = graph?.maxZoom ?? DEFAULT_MAX_ZOOM;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { transform, setZoom, setPosition, position, zoom } = useGraphViewContext();
-  const [mousePosition, setMousePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+  const { setZoom, setPosition, position, zoom, transform } = useGraphViewContext();
 
   const handleWheel: WheelEventHandler<HTMLDivElement> = useCallback((e) => {
     if (!containerRef.current) return;
@@ -65,37 +64,15 @@ export default function Graph({ children, graph }: GraphViewProps) {
     transform: `matrix(${transform.matrix[0]}, ${transform.matrix[1]}, ${transform.matrix[2]}, ${transform.matrix[3]}, ${transform.matrix[4]}, ${transform.matrix[5]})`,
   };
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const mousePos = { x: e.clientX - containerRect.left, y: e.clientY - containerRect.top };
-
-    setMousePosition(mousePos);
-  }, [transform]);
-
   return (
     <div
       ref={containerRef}
       className="graph-view"
       onWheel={handleWheel}
       onMouseDown={handleDrag}
-      onMouseMove={handleMouseMove}
     >
       <GraphGrid />
       <div className="graph-view-content" style={contentStyle}>
-        <div
-          className="mouse-position-overlay"
-          style={{
-            position: 'relative',
-            transform: `translate3d(${(mousePosition.x - position.x) / zoom}px, ${(mousePosition.y - position.y) / zoom}px, 0)`,
-            backgroundColor: 'red',
-            padding: '5px',
-            color: 'white',
-            fontSize: '12px',
-            pointerEvents: 'none',
-          }}
-        />
         {children}
       </div>
     </div>

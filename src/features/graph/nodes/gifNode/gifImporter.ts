@@ -1,35 +1,35 @@
-import { IImporter } from "./IImporter";
 import { addNode } from "@/redux/nodesSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createNode } from "@/utils/nodeUtils";
+import { IImporter } from "@/features/importer/IImporter";
 
-export class TextImporter extends IImporter {
+export class GIFImporter extends IImporter {
     importData(file: File, dispatch: Dispatch): void {
-        const reader = new FileReader();
+        const imageUrl = URL.createObjectURL(file);
+        const img = new Image();
 
-        reader.onload = (event) => {
-            const contents = event.target?.result as string;
+        img.onload = () => {
             const newNode = createNode({
-                type: "note",
+                type: "gif",
                 position: { 
                     x: 0, 
                     y: 0,
                 },
                 size: {
-                    width: 100,
-                    height: 200,
+                    width: img.naturalWidth,
+                    height: img.naturalHeight,
                 },
+                aspect: img.naturalWidth / img.naturalHeight,
                 data: {
-                    text: contents,
+                    src: imageUrl,
                 }
             })
             dispatch(addNode(newNode));
         }
-
-        reader.readAsText(file);
+        img.src = imageUrl;
     }
 
     getSupportedFormats(): string[] {
-        return ['txt']
+        return ['gif']
     }
 }
