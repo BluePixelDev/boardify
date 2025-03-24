@@ -1,4 +1,4 @@
-import "../ToolbarStyles.css";
+import "../titlebar.styles.css";
 import React from "react";
 
 export type ToolbarButtonProps = {
@@ -17,7 +17,7 @@ export default function ToolbarButton({
     return (
         <button
             onClick={onClick}
-            className={`titlebar-button ${className ?? ""}`}
+            className={`titlebar__button ${className ?? ""}`}
             aria-label={label}
         >
             {children ? children : label && <span>{label}</span>}
