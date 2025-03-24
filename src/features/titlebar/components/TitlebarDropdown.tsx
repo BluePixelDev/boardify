@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Dropdown, DropdownItem } from "@/features/dropdown";
+import { DropdownItem } from "@/features/dropdown";
 import { ToolbarItem } from "@/redux/appSlice";
 import { selectToolbarItems } from "@/redux/appSelector";
 
@@ -35,20 +35,14 @@ function renderToolbarItems(items: Record<string, any>, parentPath: string = '')
         const currentPath = parentPath ? `${parentPath}/${key}` : key;
         const subItems = items[key];
 
-        if (Array.isArray(subItems)) {
-            return subItems.map((item) => (
-                <DropdownItem
-                    key={item.path}
-                    label={key}
-                    onClick={item.action}
-                />
-            ));
-        }
-
         return (
-            <Dropdown key={currentPath} label={key}>
-                {renderToolbarItems(subItems, currentPath)} {/* Recursively render nested items */}
-            </Dropdown>
+            <DropdownItem
+                key={currentPath}
+                label={key}
+                onClick={Array.isArray(subItems) ? subItems[0].action : undefined}
+            >
+                {Array.isArray(subItems) ? null : renderToolbarItems(subItems, currentPath)} {/* Recursively render nested items */}
+            </DropdownItem>
         );
     });
 }

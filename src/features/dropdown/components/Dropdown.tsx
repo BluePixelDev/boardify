@@ -1,5 +1,5 @@
+import "../dropdown.styles.css";
 import React, { useState, useRef, useEffect } from "react";
-import "../dropdownStyles.css";
 
 interface DropdownProps {
   label: string;
@@ -28,10 +28,10 @@ export default function Dropdown({ label, children, className }: DropdownProps) 
       className={`dropdown ${className ?? ""}`}
       ref={dropdownRef}
     >
-      <button onClick={toggleDropdown} className="dropdown-trigger">
+      <button onClick={toggleDropdown} className="dropdown__trigger">
         {label}
       </button>
-      {isOpen && <div className="dropdown-menu">{children}</div>}
+      {isOpen && <div className="dropdown__menu">{children}</div>}
     </div>
   );
 }

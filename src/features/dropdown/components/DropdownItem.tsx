@@ -1,3 +1,4 @@
+import "../dropdown.styles.css"
 import React, { useState, useRef, useEffect } from "react";
 
 interface DropdownItemProps {
@@ -30,17 +31,12 @@ export default function DropdownItem({ label, onClick, children }: DropdownItemP
     }
 
     return (
-        <div className="dropdown-item" ref={itemRef} onClick={handleClick}>
-            <div className="dropdown-item-content">
+        <div className="dropdown__item" ref={itemRef} onClick={handleClick}>
+            <div className="dropdown__item-content">
                 <span>{label}</span>
-                {children && (
-                    <button className="dropdown-submenu-toggle">
-                        {isSubmenuOpen ? "▶" : "▲"}
-                    </button>
-                )}
             </div>
             {children && isSubmenuOpen && (
-                <div className="dropdown-submenu">{children}</div>
+                <div className="dropdown__submenu">{children}</div>
             )}
         </div>
     );
