@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import cssSnippetsSlice from "../features/snippets/redux/snippetSlice"
+import cssSnippetsSlice from "../features/app/snippets/redux/snippetSlice"
 import nodesSlice from './nodesSlice'
 import appSlice from './appSlice'
 

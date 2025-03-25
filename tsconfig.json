@@ -30,7 +30,7 @@
       "@features":["./src/features/"],
       "@graphview":["src/features/graph/graphview"],
       "@file-drop":["./src/features/file-drop"],
-      "@theme":["./src/features/theme"],
+      "@theme":["src/features/app/theme"],
       "@snippets":["./src/features/snipets"],
     }
   },

@@ -51,6 +51,22 @@
 
 }
 
+.titlebar-dropdown__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.titlebar-dropdown__container>.dropdown__item>.dropdown__submenu {
+    top: 100%;
+    left: 0;
+}
+
 .titlebar-dropdown__container .dropdown .dropdown-trigger {
     height: 100%;
     display: flex;
@@ -64,7 +80,8 @@
     border-radius: 4px;
     background-color: #312e34;
 }
-.titlebar-dropdown__container .dropdown-submenu {
+
+.titlebar-dropdown__container .dropdown__submenu {
     border-radius: 4px;
     background-color: #312e34;
 }

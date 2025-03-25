@@ -1,10 +1,10 @@
 import "./App.css";
 import "./utils/appSetup"
-import AppTheme from "@/features/theme/AppTheme";
-import CSSSnippets from "./features/snippets/CSSSnippets";
+import AppTheme from "@/features/app/theme/AppTheme";
+import CSSSnippets from "./features/app/snippets/CSSSnippets";
 import { Provider } from "react-redux";
 import store from "./redux/store"
-import { Titlebar } from "./features/titlebar";
+import { Titlebar } from "./features/app/titlebar";
 
 import {
   BrowserRouter as Router,
@@ -14,25 +14,37 @@ import {
 } from 'react-router-dom'
 import Home from "./Routes/Home";
 import Editor from "./Routes/Editor";
+import { MenuContextProvider } from "./features/app/context-menu/MenuContextProvider";
+import { ToolbarProvider } from "./features/app/titlebar/context/ToolbarProvider";
 
 function App() {
 
   return (
     <Provider store={store}>
-      <Router>
-        <AppTheme>
+      <MenuContextProvider>
+        <ToolbarProvider>
 
-          <CSSSnippets />
-          <Titlebar />
-          <Routes>
-            {/*TODO: Remove default redirect*/}
-            <Route path="/" element={<Navigate to="/editor" replace />} />
-            <Route path="/  " element={<Home />} />
-            <Route path="/editor" element={<Editor />} />
-          </Routes>
+        {/* Routing */}
+        <Router>
+          
+          {/* Styling */}
+          <AppTheme>
+            <CSSSnippets />
+            
+            {/* Components */}
+            <Titlebar />
+            <Routes>
+              {/*TODO: Remove default redirect*/}
+              <Route path="/" element={<Navigate to="/editor" replace />} />
+              <Route path="/  " element={<Home />} />
+              <Route path="/editor" element={<Editor />} />
+            </Routes>
 
-        </AppTheme>
-      </Router>
+          </AppTheme>
+        </Router>
+
+        </ToolbarProvider>
+      </MenuContextProvider>
     </Provider>
   );
 }
