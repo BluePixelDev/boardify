@@ -1,8 +1,9 @@
 import './interactRect.css'
-import React, { CSSProperties, MouseEventHandler, useCallback, useMemo } from "react";
-import ResizeHandle from "./ResizeHandle";
-import { useDrag, useResize } from "../hooks";
-import { GraphNodePosition, GraphNodeSize } from "../types";
+import React, { CSSProperties, MouseEventHandler, useCallback, useMemo } from "react"
+import ResizeHandle from "./ResizeHandle"
+import { useDrag, useResize } from "../../graphview/hooks"
+import { GraphNodePosition, GraphNodeSize } from "../../graphview/types"
+import { DragDelta } from '../../graphview/hooks/useDrag'
 
 type InteractiveRectProps = {
   zoom: number
@@ -15,13 +16,14 @@ type InteractiveRectProps = {
   // Size
   width: number
   height: number
-  minWidth?: number;
-  minHeight?: number;
+  minWidth?: number
+  minHeight?: number
   aspectRatio?: number
   resizable?: boolean
+  showHandles?: boolean
 
   // Rotation
-  rotation?: number;
+  rotation?: number
 
   // Styling
   className?: string
@@ -29,14 +31,14 @@ type InteractiveRectProps = {
   // Functions
   onMove?: (position: GraphNodePosition) => void
   onResize?: (size: GraphNodeSize) => void
-  onClick?: () => void;
+  onClick?: () => void
   children: React.ReactNode
-};
+}
 
 // Constants
-type Directions = "se" | "ne" | "sw" | "nw" | "n" | "s" | "e" | "w";
-const RESIZE_HANDLE_SIZE = 8;
-const MIN_DIMENSION = 100;
+type Directions = "se" | "ne" | "sw" | "nw" | "n" | "s" | "e" | "w"
+const RESIZE_HANDLE_SIZE = 8
+const MIN_DIMENSION = 100
 
 /**
  * InteractiveRect is a draggable, resizable, and optionally rotatable rectangle.
@@ -56,6 +58,7 @@ export default function InteractiveRect(props: InteractiveRectProps) {
     minHeight = MIN_DIMENSION,
     aspectRatio,
     resizable = true,
+    showHandles = true,
     // Rotation
     rotation = 0,
 
@@ -64,17 +67,22 @@ export default function InteractiveRect(props: InteractiveRectProps) {
     onResize,
     onClick,
     children,
-  } = props;
+  } = props
 
-  const position = useMemo(() => ({ x: posX, y: posY }), [posX, posY]);
-  const size = useMemo(() => ({ width: width, height: height }), [width, height]);
+  const position = useMemo(() => ({ x: posX, y: posY }), [posX, posY])
+  const size = useMemo(() => ({ width: width, height: height }), [width, height])
+
+  const onDragMove = useCallback((drag: DragDelta) => {
+    if(!draggable) return
+    onMove?.({
+      x: posX + drag.deltaX / zoom,
+      y: posY + drag.deltaY / zoom
+    })
+  }, [position, draggable])
 
   const { onMouseDown: onDragMouseDown } = useDrag({
-    zoom,
-    onMove,
-    position,
-    draggable,
-  });
+    onDrag: onDragMove
+  })
 
   const { onMouseDownResize } = useResize({
     zoom,
@@ -86,18 +94,18 @@ export default function InteractiveRect(props: InteractiveRectProps) {
     size,
     position,
     resizable,
-  });
+  })
 
   const handleDrag: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
-    if (event.button !== 0) return;
-    onDragMouseDown(event);
-  }, [onDragMouseDown]);
+    if (event.button !== 0) return
+    onDragMouseDown(event)
+  }, [onDragMouseDown])
 
   const containerStyle: CSSProperties = {
     transform: `translate3d(${Math.round(posX)}px, ${Math.round(posY)}px, 0px) rotate(${rotation}deg)`,
     width: Math.round(width),
     height: Math.round(height),
-  };
+  }
 
   return (
     <div
@@ -106,7 +114,7 @@ export default function InteractiveRect(props: InteractiveRectProps) {
       onClick={onClick}
       className={`interact-rect ${className ?? ""}`}>
       {children}
-      {resizable &&
+      {resizable && showHandles &&
         (["n", "s", "e", "w", "se", "ne", "sw", "nw"] as Directions[]).map((direction) => (
           <ResizeHandle
             key={direction}
@@ -128,5 +136,5 @@ export default function InteractiveRect(props: InteractiveRectProps) {
           />
         ))}
     </div>
-  );
+  )
 }

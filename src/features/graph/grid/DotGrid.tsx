@@ -1,8 +1,8 @@
-import "../graphStyles.css";
+import "./grid.styles.css";
 import { CSSProperties } from "react";
-import { useGraphViewContext } from "../context/GraphViewContext";
+import { useGraphViewContext } from "../graphview";
 
-export default function GraphGrid() {
+export default function DotGrid({ color, opacity = 0.1 }: { color?: string, opacity?: number }) {
   const { position, zoom } = useGraphViewContext();
 
   const baseDotSize = 2;
@@ -10,13 +10,13 @@ export default function GraphGrid() {
   const baseSpacing = 50;
 
   const zoomFactor = Math.log2(zoom);
-  const fractional = ((zoomFactor % 1) + 1) % 1; // ensures positive fractional part
+  const fractional = ((zoomFactor % 1) + 1) % 1;
   const gridSpacing = baseSpacing * Math.pow(2, fractional);
 
 
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${gridSpacing}" height="${gridSpacing}" viewBox="0 0 ${gridSpacing} ${gridSpacing}">
-      <circle cx="${gridSpacing / 2}" cy="${gridSpacing / 2}" r="${dotRadius}" fill="white" />
+      <circle cx="${gridSpacing / 2}" cy="${gridSpacing / 2}" r="${dotRadius}" fill="${color ?? "white"}" />
     </svg>
   `.trim();
 
@@ -31,8 +31,8 @@ export default function GraphGrid() {
     backgroundPosition: `${backgroundPosX} ${backgroundPosY}`,
     backgroundSize: `${gridSpacing}px ${gridSpacing}px`,
     backgroundRepeat: "repeat",
-    opacity: 0.1,
+    opacity,
   };
 
-  return <div className="graph-grid" style={style} />;
+  return <div className="graph-view__grid" style={style} />;
 }

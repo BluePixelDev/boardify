@@ -1,89 +1,83 @@
-import { useCallback, useEffect, useRef } from "react";
-import { GraphNodePosition } from "../types";
+import { useCallback, useEffect, useRef, useState } from "react"
 
-type DragResult = {
-  position: GraphNodePosition;
-  onMouseDown: (e: React.MouseEvent) => void;
-};
+export interface DragDelta {
+  deltaX: number
+  deltaY: number
+}
+
+export interface DragStartInfo {
+  startX: number
+  startY: number
+  target: HTMLElement | null
+}
+
+interface DragHookProps {
+  onDrag: (drag: DragDelta) => void
+  onDragStart?: (info: DragStartInfo) => void
+  dragThreshold?: number
+}
 
 export function useDrag({
-  zoom,
-  onMove,
-  position,
-  draggable,
-  dragThreshold = 5,
-}: {
-  zoom: number;
-  onMove?: (position: GraphNodePosition) => void;
-  position: GraphNodePosition;
-  draggable: boolean;
-  dragThreshold?: number;
-}): DragResult {
+  onDrag,
+  onDragStart,
+  dragThreshold = 0,
+}: DragHookProps) {
+  const [dragging, setDragging] = useState(false)
+  const [draggedElement, setDraggedElement] = useState<HTMLElement | null>(null)
+  const startMousePos = useRef({ x: 0, y: 0 })
+  const previousMousePos = useRef({ x: 0, y: 0 })
+  const hasDragged = useRef(false)
 
-  const draggingRef = useRef(false);
-  const startMousePos = useRef({ x: 0, y: 0 });
-  const startPos = useRef(position);
-  const draggedElementRef = useRef<HTMLElement | null>(null);
-  const hasDragged = useRef(false);
+  const onMouseDown = useCallback((e: React.MouseEvent) => {
+    setDragging(true)
+    startMousePos.current = { x: e.clientX, y: e.clientY }
+    previousMousePos.current = { x: e.clientX, y: e.clientY }
+    setDraggedElement(e.currentTarget as HTMLElement)
+    hasDragged.current = false
+  }, [])
 
-  const onMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      if (!draggable) return;
+  const onMouseMove = useCallback((e: MouseEvent) => {
+    if (!dragging) return
 
-      const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
-      if (elementUnderCursor && elementUnderCursor.closest(".no-drag")) {
-        return
+    const deltaX = e.clientX - previousMousePos.current.x
+    const deltaY = e.clientY - previousMousePos.current.y
+    const totalX = e.clientX - startMousePos.current.x
+    const totalY = e.clientY - startMousePos.current.y
+
+    if (!hasDragged.current && Math.sqrt(totalX ** 2 + totalY ** 2) >= dragThreshold) {
+      hasDragged.current = true
+      if (draggedElement) {
+        draggedElement.style.pointerEvents = "none"
       }
+      onDragStart?.({
+        startX: startMousePos.current.x,
+        startY: startMousePos.current.y,
+        target: draggedElement,
+      })
+    }
 
-      draggingRef.current = true;
-      startMousePos.current = { x: e.clientX, y: e.clientY };
-      startPos.current = position;
-      draggedElementRef.current = e.currentTarget as HTMLElement;
-      hasDragged.current = false;
-    },
-    [draggable, position]
-  );
+    if (hasDragged.current) {
+      onDrag({ deltaX: deltaX, deltaY: deltaY })
+    }
 
-  const onMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!draggingRef.current) return;
-
-      const deltaX = e.clientX - startMousePos.current.x;
-      const deltaY = e.clientY - startMousePos.current.y;
-
-      if (!hasDragged.current && Math.sqrt(deltaX ** 2 + deltaY ** 2) >= dragThreshold) {
-        hasDragged.current = true;
-        if (draggedElementRef.current) {
-          draggedElementRef.current.style.pointerEvents = "none";
-        }
-      }
-
-      if (hasDragged.current) {
-        const newPos: GraphNodePosition = {
-          x: startPos.current.x + deltaX / zoom,
-          y: startPos.current.y + deltaY / zoom,
-        };
-        onMove?.(newPos);
-      }
-    },
-    [zoom, onMove, hasDragged]
-  );
+    previousMousePos.current = { x: e.clientX, y: e.clientY }
+  }, [dragging, onDrag, onDragStart, draggedElement, dragThreshold])
 
   const onMouseUp = useCallback(() => {
-    draggingRef.current = false;
-    if (draggedElementRef.current) {
-      draggedElementRef.current.style.pointerEvents = "";
+    setDragging(false)
+    if (draggedElement) {
+      draggedElement.style.pointerEvents = ""
     }
-  }, []);
+  }, [draggedElement, dragging])
 
   useEffect(() => {
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("mousemove", onMouseMove)
+    window.addEventListener("mouseup", onMouseUp)
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-    };
-  }, [onMouseMove, onMouseUp]);
+      window.removeEventListener("mousemove", onMouseMove)
+      window.removeEventListener("mouseup", onMouseUp)
+    }
+  }, [onMouseMove, onMouseUp])
 
-  return { position, onMouseDown };
+  return { onMouseDown, onDrag, onDragStart }
 }

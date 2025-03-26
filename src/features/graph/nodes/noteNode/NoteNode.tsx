@@ -1,5 +1,5 @@
 import './noteNode.styles.css'
-import GraphNode from "../../graphview/components/GraphNode";
+import GraphNode from "../components/GraphNode"
 import { type NodeRenderer } from "../../renderer/rendererRegistry";
 import { useDispatch } from "react-redux";
 import { updateNode } from "@/redux/nodesSlice";

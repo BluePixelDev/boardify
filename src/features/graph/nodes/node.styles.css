@@ -1,0 +1,11 @@
+.graph-node {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    will-change: transform;
+}
+
+.graph-node__content {
+    box-sizing: border-box;
+    pointer-events: none;
+}

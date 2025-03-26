@@ -1,12 +1,12 @@
-import "../graphStyles.css";
+import "../node.styles.css"
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { selectNode, updateNode } from "@/redux/nodesSlice";
-import { GraphNodePosition, GraphNodeSize } from "../types"
+import { deselectAllNodes, toggleNodeSelection, updateNode } from "@/redux/nodesSlice";
+import { GraphNodePosition, GraphNodeSize } from "../../graphview/types"
 import InteractiveRect from "./InteractiveRect";
-import { selectNodeById } from "@/redux/nodeSelector";
-import { useGraphViewContext } from "../context/GraphViewContext";
+import { isNodeSelected, getNodeById } from "@/redux/nodeSelector";
+import { useGraphViewContext } from "../../graphview/context/GraphViewProvider";
 
 type GraphNodeProps = {
   nodeId: string
@@ -18,30 +18,27 @@ type GraphNodeProps = {
   onDoubleClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 };
 
-export default function raphNode({
+export default function GraphNode({
   nodeId,
   aspectRatio,
   children,
   className,
   resizable,
   onClick,
-  onDoubleClick
 }: GraphNodeProps) {
   const { zoom } = useGraphViewContext();
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const node = useSelector((state: RootState) => selectNodeById(state, nodeId))
+  const nodeData = useSelector((state: RootState) => getNodeById(state, nodeId))
+  const isSelected = useSelector((state: RootState) => isNodeSelected(state, nodeId))
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     onClick?.(event);
-    dispatch(selectNode({ id: nodeId }));
+    dispatch(deselectAllNodes())
+    dispatch(toggleNodeSelection(nodeId));
   };
 
-  const handleDoubleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    onDoubleClick?.(event);
-    dispatch(selectNode({ id: nodeId }));
-  };
 
   const handleMove = (newPos: GraphNodePosition) => {
     dispatch(
@@ -64,11 +61,12 @@ export default function raphNode({
   return (
     <InteractiveRect
       zoom={zoom}
-      posX={node?.position.x ?? 0}
-      posY={node?.position.y ?? 0}
-      width={node?.size.width ?? 100}
-      height={node?.size.height ?? 100}
+      posX={nodeData?.position.x ?? 0}
+      posY={nodeData?.position.y ?? 0}
+      width={nodeData?.size.width ?? 100}
+      height={nodeData?.size.height ?? 100}
       draggable
+      showHandles={isSelected}
       resizable={resizable ?? true}
       aspectRatio={aspectRatio}
       onMove={handleMove}
@@ -76,9 +74,8 @@ export default function raphNode({
     >
       <div
         ref={nodeRef}
-        className={`graph-node ${className}`}
+        className={`graph-node ${isSelected ? "selected" : ""} ${className}`}
         onClick={handleClick}
-        onDoubleClick={handleDoubleClick}
       >
         {children}
       </div>

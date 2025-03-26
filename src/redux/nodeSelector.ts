@@ -1,10 +1,10 @@
 import { RootState } from "./store";
 
-export const selectNodeById = (state: RootState, id: string) =>
+export const getNodeById = (state: RootState, id: string) =>
     state.graphNodes.nodes.find((node) => node.id === id);
 
-export const selectAllNodes = (state: RootState) => state.graphNodes.nodes;
+export const getAllNodes = (state: RootState) =>
+    state.graphNodes.nodes;
 
-export const isNodeSelected = (state: RootState, id: string): boolean => {
-    return state.graphNodes.selected.find((selId) => selId == id) != undefined
-}
+export const isNodeSelected = (state: RootState, id: string): boolean =>
+    state.graphNodes.selectedNodeIds.find((selId) => selId == id) != undefined

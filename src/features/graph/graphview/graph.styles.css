@@ -8,25 +8,13 @@
     background-color: #222224;
 }
 
-.graph-view-content {
-    width: 0;
-    height: 0;
-    will-change: transform;
+.graph-view__content {
     position: absolute;
+    will-change: transform;
     pointer-events: none;
     user-select: none;
-    image-rendering: pixelated;
-}
-
-/*---- GRID ----*/
-.graph-grid {
-    position: absolute;
-    overflow: hidden;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    pointer-events: none;
+    width: 0;
+    height: 0;
 }
 
 /*---- NODE ----*/

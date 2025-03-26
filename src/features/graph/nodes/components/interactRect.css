@@ -2,3 +2,7 @@
     position: absolute;
     pointer-events: all;
 }
+
+.interact-rect .selected {
+    outline: 2px red solid;
+}

@@ -57,7 +57,6 @@ export default function DropdownItem({
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log(children)
         if (!children) {
             onClick?.();
             return;
