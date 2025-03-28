@@ -2,7 +2,7 @@ import { AppDropzone } from "@/features/file-drop";
 import { GraphView } from "@/features/graph/graphview";
 import { GraphViewProvider } from "@/features/graph/graphview/context/GraphViewProvider";
 import DotGrid from "@/features/graph/grid/DotGrid";
-import NodeCanvas from "@/features/graph/renderer/NodeCanvas";
+import NodeCanvas from "@/features/graph/renderer/NodesRenderer";
 import SidebarButton, { Sidebar } from "@/features/sidebar";
 import { isSidebarOpen } from "@/redux/appSelector";
 import { useSelector } from "react-redux";

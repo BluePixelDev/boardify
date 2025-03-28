@@ -1,11 +1,7 @@
-export interface IRendererProps {
-    nodeType: string
-    nodeId: string
-    data: any
-}
+import { GraphNodeData } from "../graphview/types"
 
 export interface IRenderer {
-    render: (props: IRendererProps) => JSX.Element | null
+    render: (node: GraphNodeData<any>) => JSX.Element | null
 }
 
 export interface IRendererRegistry {

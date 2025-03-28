@@ -6,23 +6,25 @@ export default function NodeCanvas() {
   const nodes = useSelector(getAllNodes);
 
   return (
-    <div className="node-canvas-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div className="node-canvas__container">
       {nodes.map((node) => {
         const Renderer = rendererRegistry.getRenderer(node.type);
 
         if (Renderer) {
-          return (
-            <Renderer key={node.id} node={node} />
-          );
+          const renderedNode = Renderer.render(node);
+
+          if (renderedNode) {
+            return (
+              <div key={node.id} className="node-canvas__item">
+                {renderedNode}
+              </div>
+            )
+          }
         }
 
-        {/*==== FALLBACK ====*/ }
         return (
-          <div key={node.id} className="error-node">
-            Unknown node type: {node.type}
-          </div>
-        );
-
+          <h1 key={node.id}>No node found!</h1>
+        )
       })}
     </div>
   );

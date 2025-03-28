@@ -19,10 +19,8 @@ export class ImageImporter extends IImporter {
                     width: img.naturalWidth,
                     height: img.naturalHeight,
                 },
-                aspect: img.naturalWidth / img.naturalHeight,
                 data: {
-                    src: imageUrl,
-                    alt: file.name
+                    imageUrl: imageUrl,
                 }
             })
             dispatch(addNode(newNode));

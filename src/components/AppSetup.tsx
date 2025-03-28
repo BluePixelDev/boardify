@@ -1,18 +1,15 @@
-import { ImageImporter } from "@/features/graph/nodes/imageNode/ImageImporter"
-import { ImageNodeRenderer } from "@/features/graph/nodes/imageNode/ImageNodeRenderer"
-import { rendererRegistry } from "@/features/graph/renderer/RendererRegistry"
-import { importerRegistry } from "@/features/importer"
 import { useEffect } from "react"
 
 const AppSetup = () => {
     useEffect(() => {
-        importerRegistry.registerImporter(new ImageImporter())
-        rendererRegistry.registerRenderer("image", new ImageNodeRenderer())
+        const nodeModules = import.meta.glob("@/features/graph/nodes/**/index.ts");
 
-        return () => {
-            rendererRegistry.removeRenderer("image")
-        }
-    })
-}
+        Object.values(nodeModules).forEach((importModule) => {
+            importModule();
+        });
+    }, []);
+
+    return null;
+};
 
 export default AppSetup;

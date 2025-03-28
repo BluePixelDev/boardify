@@ -1,5 +1,4 @@
 import "./App.css";
-import "./utils/appSetup"
 import AppTheme from "@/features/app/theme/AppTheme";
 import CSSSnippets from "./features/app/snippets/CSSSnippets";
 import { Provider } from "react-redux";
@@ -16,6 +15,7 @@ import Home from "./Routes/Home";
 import Editor from "./Routes/Editor";
 import { MenuContextProvider } from "./features/app/context-menu/MenuContextProvider";
 import { ToolbarProvider } from "./features/app/titlebar/context/ToolbarProvider";
+import AppSetup from "./components/AppSetup";
 
 function App() {
 
@@ -23,25 +23,26 @@ function App() {
     <Provider store={store}>
       <MenuContextProvider>
         <ToolbarProvider>
+          <AppSetup />
 
-        {/* Routing */}
-        <Router>
-          
-          {/* Styling */}
-          <AppTheme>
-            <CSSSnippets />
-            
-            {/* Components */}
-            <Titlebar />
-            <Routes>
-              {/*TODO: Remove default redirect*/}
-              <Route path="/" element={<Navigate to="/editor" replace />} />
-              <Route path="/  " element={<Home />} />
-              <Route path="/editor" element={<Editor />} />
-            </Routes>
+          {/* Routing */}
+          <Router>
 
-          </AppTheme>
-        </Router>
+            {/* Styling */}
+            <AppTheme>
+              <CSSSnippets />
+
+              {/* Components */}
+              <Titlebar />
+              <Routes>
+                {/*TODO: Remove default redirect*/}
+                <Route path="/" element={<Navigate to="/editor" replace />} />
+                <Route path="/  " element={<Home />} />
+                <Route path="/editor" element={<Editor />} />
+              </Routes>
+
+            </AppTheme>
+          </Router>
 
         </ToolbarProvider>
       </MenuContextProvider>

@@ -4,13 +4,20 @@ import { createNode } from "@/utils/nodeUtils";
 import { IImporter } from "@/features/importer/IImporter";
 
 export class GIFImporter extends IImporter {
+    private type: string
+
+    constructor(type: string){
+        super()
+        this.type = type
+    }
+
     importData(file: File, dispatch: Dispatch): void {
-        const imageUrl = URL.createObjectURL(file);
+        const gifUrl = URL.createObjectURL(file);
         const img = new Image();
 
         img.onload = () => {
             const newNode = createNode({
-                type: "gif",
+                type: this.type,
                 position: { 
                     x: 0, 
                     y: 0,
@@ -19,14 +26,14 @@ export class GIFImporter extends IImporter {
                     width: img.naturalWidth,
                     height: img.naturalHeight,
                 },
-                aspect: img.naturalWidth / img.naturalHeight,
                 data: {
-                    src: imageUrl,
+                    gifURL: gifUrl,
+                    isPlaying: false
                 }
             })
             dispatch(addNode(newNode));
         }
-        img.src = imageUrl;
+        img.src = gifUrl;
     }
 
     getSupportedFormats(): string[] {

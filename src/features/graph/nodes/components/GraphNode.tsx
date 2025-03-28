@@ -3,10 +3,10 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { deselectAllNodes, toggleNodeSelection, updateNode } from "@/redux/nodesSlice";
-import { GraphNodePosition, GraphNodeSize } from "../../graphview/types"
 import InteractiveRect from "./InteractiveRect";
 import { isNodeSelected, getNodeById } from "@/redux/nodeSelector";
 import { useGraphViewContext } from "../../graphview/context/GraphViewProvider";
+import { GraphNodePosition, GraphNodeSize } from "../node.types";
 
 type GraphNodeProps = {
   nodeId: string
