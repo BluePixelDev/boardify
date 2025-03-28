@@ -1,7 +1,7 @@
 import './GifNode.styles.css'
 import { GraphNode } from "@/features/graph/graphview";
 import React, { useEffect, useState } from "react";
-import { type NodeRenderer } from "../../renderer/rendererRegistry";
+import { type NodeRenderer } from "../../renderer/RendererRegistry";
 import { useDispatch } from "react-redux";
 import { updateNode } from "@/redux/nodesSlice";
 import { Icon } from '@iconify/react/dist/iconify.js';

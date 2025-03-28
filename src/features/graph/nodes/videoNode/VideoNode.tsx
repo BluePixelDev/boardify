@@ -1,7 +1,7 @@
 import './videoNode.style.css'
 import { GraphNode } from "@/features/graph/graphview";
 import React from "react";
-import { type NodeRenderer } from "../../renderer/rendererRegistry";
+import { type NodeRenderer } from "../../renderer/RendererRegistry";
 
 type VideoNodeData = {
     src: string;

@@ -1,31 +1,35 @@
 import './imageNode.styles.css'
-import { GraphNode } from "@/features/graph/graphview";
-import React from "react";
-import { type NodeRenderer } from "../../renderer/rendererRegistry";
+import { GraphNode } from "@/features/graph/graphview"
+import { getNodeById } from '@/redux/nodeSelector'
+import { RootState } from '@/redux/store'
+import React from "react"
+import { useSelector } from 'react-redux'
 
 
-type ImageNodeData = {
-    src: string;
+type ImageNodeProps = {
+    id: string
 }
 
-const OptimizedImage = React.memo(({ src, alt }: { src: string; alt?: string }) => (
+const OptimizedImage = React.memo(({ src }: { src: string}) => (
     <img
         src={src}
         loading="lazy"
         className="image-node__image"
-        alt={alt ?? "Image node"}
+        alt={"Image node"}
         onError={(e) => (e.currentTarget.src = "/fallback-image.png")}
     />
-));
+))
 
 
-const ImageNode: NodeRenderer<ImageNodeData> = ({ node }) => {
+const ImageNode = ({ id }: ImageNodeProps) => {
+
+    const node = useSelector((state: RootState) => getNodeById(state, id))
 
     return (
-        <GraphNode nodeId={node.id} aspectRatio={node.aspect ?? 1} className="image-node">
-            <OptimizedImage src={node.data.src ?? "/fallback-image.png"} />
+        <GraphNode nodeId={id} aspectRatio={node?.aspect ?? 1} className="image-node">
+            <OptimizedImage src={node?.data.src ?? "/fallback-image.png"} />
         </GraphNode>
-    );
+    )
 }
 
-export default ImageNode;
+export default ImageNode

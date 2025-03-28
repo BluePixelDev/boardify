@@ -1,5 +1,5 @@
 import { importerRegistry } from "@/features/importer/ImporterRegistry";
-import { rendererRegistry } from "@/features/graph/renderer/rendererRegistry";
+import { rendererRegistry } from "@/features/graph/renderer/RendererRegistry";
 
 import NoteNode from "@/features/graph/nodes/noteNode/NoteNode";
 import ImageNode from "@/features/graph/nodes/imageNode/ImageNode";
