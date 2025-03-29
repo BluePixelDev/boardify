@@ -30,7 +30,7 @@ export default function GraphView({
     const mousePosition = { x: e.clientX - containerRect.left, y: e.clientY - containerRect.top }
 
     const factor = 1 - 0.1 * Math.sign(e.deltaY)
-    let newZoom = Math.min(Math.max(zoom * factor, minZoom), maxZoom);
+    const newZoom = Math.min(Math.max(zoom * factor, minZoom), maxZoom);
     if (newZoom === zoom) return;
 
     const worldX = (mousePosition.x - position.x) / zoom
@@ -40,7 +40,7 @@ export default function GraphView({
       x: mousePosition.x - worldX * newZoom,
       y: mousePosition.y - worldY * newZoom
     }
-    
+
     setZoom(newZoom)
     setPosition(newPosition)
   }, [minZoom, maxZoom, setPosition, setZoom])

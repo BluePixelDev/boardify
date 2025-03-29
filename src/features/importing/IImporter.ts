@@ -6,18 +6,13 @@ export type ImportEvent = {
     position: { x: number; y: number };
 };
 
-export class IImporter {
+export abstract class IImporter {
     constructor() {
         if (new.target === IImporter) {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
     }
 
-    importData(_event: ImportEvent) {
-        throw new Error("importData method must be implemented.");
-    }
-
-    getSupportedFormats(): string[] {
-        throw new Error("getSupportedFormats method must be implemented.");
-    }
+    abstract importData(event: ImportEvent): void
+    abstract getSupportedFormats(): string[]
 }

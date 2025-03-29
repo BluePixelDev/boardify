@@ -1,7 +1,7 @@
-import { GraphNodeData } from "../graphview/types/graphTypes";
+import { GraphNodeData } from "../nodes";
 import { IRenderer, IRendererRegistry } from "./IRenderer";
 
-export type NodeRenderer<T = any> = (props: { node: GraphNodeData<T> }) => JSX.Element | JSX.Element[];
+export type NodeRenderer<T = unknown> = (props: { node: GraphNodeData<T> }) => JSX.Element | JSX.Element[];
 class RendererRegistry implements IRendererRegistry {
     private renderers: Record<string, IRenderer> = {};
 

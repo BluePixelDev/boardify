@@ -11,12 +11,11 @@ export interface GraphNodeSize {
 /**
  * Represents a node in the GraphView.
  */
-export interface GraphNodeData<T = any> {
+export interface GraphNodeData<T> {
     id: string;
     type: string;
     position: GraphNodePosition;
     size: GraphNodeSize;
-    aspect?: number
     data: T;
 }
 

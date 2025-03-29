@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { GraphNodePosition, GraphNodeSize } from "../types";
+import { GraphNodePosition, GraphNodeSize } from "../../nodes";
 
 export type Directions = "n" | "s" | "e" | "w" | "se" | "ne" | "sw" | "nw";
 export type ResizeResult = {
@@ -92,7 +92,7 @@ export function useResize({
       const isSouth = direction.includes("s")
 
       // We copy the original edge position
-      let newEdges = { ...startEdges };
+      const newEdges = { ...startEdges };
       if (isWest) newEdges.left = startEdges.left + deltaX;
       if (isEast) newEdges.right = startEdges.right + deltaX;
       if (isNorth) newEdges.top = startEdges.top + deltaY;

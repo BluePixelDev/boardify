@@ -1,19 +1,19 @@
-import "./contextmenu.styles.css";
-import { DropdownItem } from "@/features/app/dropdown";
-import { MenuContextItem } from "./types/menuContext";
+import "./contextmenu.styles.css"
+import { DropdownItem } from "@/features/app/dropdown"
+import { MenuContextItem } from "./types/menuContext"
 
 interface ContextMenuProps {
-  x: number;
-  y: number;
-  items: MenuContextItem[];
-  onClose: () => void;
+  x: number
+  y: number
+  items: MenuContextItem[]
+  onClose: () => void
 }
 
 // Recursive function to render menu items
 function renderItems(items: MenuContextItem[], parentPath: string = '') {
   return items.map((item) => {
-    const currentPath = parentPath ? `${parentPath}/${item.path}` : item.path;
-    const hasChildren = item.children && item.children.length > 0;
+    const currentPath = parentPath ? `${parentPath}/${item.path}` : item.path
+    const hasChildren = item.children && item.children.length > 0
 
     return (
       <DropdownItem
@@ -25,8 +25,8 @@ function renderItems(items: MenuContextItem[], parentPath: string = '') {
       >
         {item.children && item.children.length > 0 && renderItems(item.children, currentPath)}
       </DropdownItem>
-    );
-  });
+    )
+  })
 }
 
 export const ContextMenu: React.FC<ContextMenuProps> = ({ items, x, y }) => {
@@ -37,7 +37,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ items, x, y }) => {
     >
       {renderItems(items)}
     </div>
-  );
-};
+  )
+}
 
-export default ContextMenu;
+export default ContextMenu

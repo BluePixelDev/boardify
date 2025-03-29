@@ -1,7 +1,7 @@
-import { GraphNodeData } from "../graphview/types"
+import { GraphNodeData } from "../nodes"
 
-export interface IRenderer {
-    render: (node: GraphNodeData<any>) => JSX.Element | null
+export interface IRenderer<T = unknown> {
+    render: (node: GraphNodeData<T>) => JSX.Element | null
 }
 
 export interface IRendererRegistry {
