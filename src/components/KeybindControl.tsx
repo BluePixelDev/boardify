@@ -66,7 +66,6 @@ export const KeybindControl = () => {
                 break
 
             case KeyAction.DELETE_SELECTED:
-                console.log(selectedNodes)
                 selectedNodes.forEach(x => {
                     dispatch(removeNode(x.id))
                 })

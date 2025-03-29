@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Boardify"
+authors:
+  - given-names: "Ondřej"
+    family-names: "Kačírek"
+version: "0.0.5"
+date-released: "2024-03-29"
+epository-code: "https://github.com/BluePixelDev/boardify"

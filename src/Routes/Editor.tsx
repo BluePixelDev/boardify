@@ -14,7 +14,7 @@ export default function Editor() {
     return (
         <>
             <AppDropzone />
-            <KeybindControl/>
+            <KeybindControl />
             <div className="expand-box">
                 <Sidebar isExpanded={sidebarOpen}>
                     <SidebarButton label="Hello" icon="mdi:close" selected={true} />
