@@ -1,5 +1,5 @@
-import { GraphNodeData } from "@/features/graph/graphview/types/graphTypes";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GraphNodeData } from "@/features/graph/nodes"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface GraphNodeState {
     nodes: GraphNodeData[]
@@ -9,61 +9,73 @@ interface GraphNodeState {
 const initialState: GraphNodeState = {
     nodes: [],
     selectedNodeIds: []
-};
+}
 
 const nodesSlice = createSlice({
     name: "graphNodes",
     initialState,
     reducers: {
         addNode: (state, action: PayloadAction<GraphNodeData>) => {
-            state.nodes.push(action.payload);
+            state.nodes.push(action.payload)
         },
         removeNode: (state, action: PayloadAction<string>) => {
-            state.nodes = state.nodes.filter(node => node.id !== action.payload);
+            state.nodes = state.nodes.filter(node => node.id !== action.payload)
+            state.selectedNodeIds = state.selectedNodeIds.filter(id => id !== action.payload)
         },
         updateNode: (state, action: PayloadAction<Partial<GraphNodeData> & { id: string }>) => {
-            const { id, ...updatedProperties } = action.payload;
+            const { id, ...updatedProperties } = action.payload
             state.nodes = state.nodes.map(node =>
                 node.id === id ? { ...node, ...updatedProperties } : node
-            );
+            )
         },
 
         // Selection
         selectNode: (state, action: PayloadAction<{ id: string }>) => {
             const { id } = action.payload
-            state.selectedNodeIds.push(id)
+            if (!state.selectedNodeIds.includes(id)) {
+                state.selectedNodeIds.push(id)
+            }
+        },
+        selectAllNodes: (state) => {
+            state.nodes.forEach(node => {
+                if (!state.selectedNodeIds.includes(node.id)) {
+                    state.selectedNodeIds.push(node.id)
+                }
+            })
         },
         deselectNode: (state, action: PayloadAction<{ id: string }>) => {
             const { id } = action.payload
-            state.selectedNodeIds = state.selectedNodeIds.filter(selId => selId !== id);
-
+            state.selectedNodeIds = state.selectedNodeIds.filter(selId => selId !== id)
         },
         deselectAllNodes: (state) => {
             state.selectedNodeIds = []
         },
         replaceSelection: (state, action: PayloadAction<string>) => {
-            state.selectedNodeIds = [action.payload];
+            state.selectedNodeIds = [action.payload]
         },
         toggleNodeSelection: (state, action: PayloadAction<string>) => {
-            const id = action.payload;
+            const id = action.payload
             if (state.selectedNodeIds.includes(id)) {
-                state.selectedNodeIds = state.selectedNodeIds.filter((selId) => selId !== id);
+                state.selectedNodeIds = state.selectedNodeIds.filter(selId => selId !== id)
             } else {
-                state.selectedNodeIds.push(id);
+                state.selectedNodeIds.push(id)
             }
         },
     }
-});
+})
 
-export type { GraphNodeState };
+export type { GraphNodeState }
 export const {
     addNode,
     removeNode,
     updateNode,
+
+    // Selection
     selectNode,
+    selectAllNodes,
     deselectNode,
     deselectAllNodes,
     replaceSelection,
     toggleNodeSelection
-} = nodesSlice.actions;
-export default nodesSlice.reducer;
+} = nodesSlice.actions
+export default nodesSlice.reducer

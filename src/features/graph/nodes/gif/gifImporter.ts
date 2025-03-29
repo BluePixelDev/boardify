@@ -1,4 +1,4 @@
-import { addNode } from "@/redux/nodesSlice";
+import { addNode } from "@/redux/nodes/nodesSlice";
 import { createNode } from "@/utils/nodeUtils";
 import { IImporter, ImportEvent } from "@/features/importing/IImporter";
 

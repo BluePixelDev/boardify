@@ -2,11 +2,11 @@ import "../node.styles.css"
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { deselectAllNodes, toggleNodeSelection, updateNode } from "@/redux/nodesSlice";
+import { deselectAllNodes, toggleNodeSelection, updateNode } from "@/redux/nodes/nodesSlice";
 import InteractiveRect from "./InteractiveRect";
-import { isNodeSelected, getNodeById } from "@/redux/nodeSelector";
 import { useGraphViewContext } from "../../graphview/context/GraphViewProvider";
 import { GraphNodePosition, GraphNodeSize } from "../node.types";
+import { getNodeById, isNodeSelected } from "@/redux/nodes/nodeSelector";
 
 type GraphNodeProps = {
   nodeId: string

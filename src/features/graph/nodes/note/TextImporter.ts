@@ -1,4 +1,4 @@
-import { addNode } from "@/redux/nodesSlice";
+import { addNode } from "@/redux/nodes/nodesSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createNode } from "@/utils/nodeUtils";
 import { IImporter } from "@/features/importing/IImporter";

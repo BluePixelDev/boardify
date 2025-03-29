@@ -2,7 +2,7 @@ import './noteNode.styles.css'
 import GraphNode from "../components/GraphNode"
 import { type NodeRenderer } from "../../renderer/RendererRegistry";
 import { useDispatch } from "react-redux";
-import { updateNode } from "@/redux/nodesSlice";
+import { updateNode } from "@/redux/nodes/nodesSlice";
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import 'github-markdown-css';

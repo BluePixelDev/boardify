@@ -2,7 +2,7 @@ import './GifNode.styles.css'
 import { GraphNode } from "@/features/graph/graphview"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { updateNode } from "@/redux/nodesSlice"
+import { updateNode } from "@/redux/nodes/nodesSlice"
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { GraphNodeProps } from '../node.types'
 import { GIFNodeData } from './gifNode.types'
