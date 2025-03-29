@@ -1,25 +1,24 @@
 import { addNode } from "@/redux/nodesSlice";
-import { Dispatch } from "@reduxjs/toolkit";
 import { createNode } from "@/utils/nodeUtils";
-import { IImporter } from "@/features/importer/IImporter";
+import { IImporter, ImportEvent } from "@/features/importing/IImporter";
 
 export class GIFImporter extends IImporter {
     private type: string
 
-    constructor(type: string){
+    constructor(type: string) {
         super()
         this.type = type
     }
 
-    importData(file: File, dispatch: Dispatch): void {
-        const gifUrl = URL.createObjectURL(file);
+    importData(event: ImportEvent): void {
+        const gifUrl = URL.createObjectURL(event.file);
         const img = new Image();
 
         img.onload = () => {
             const newNode = createNode({
                 type: this.type,
-                position: { 
-                    x: 0, 
+                position: {
+                    x: 0,
                     y: 0,
                 },
                 size: {
@@ -31,7 +30,7 @@ export class GIFImporter extends IImporter {
                     isPlaying: false
                 }
             })
-            dispatch(addNode(newNode));
+            event.dispatch(addNode(newNode));
         }
         img.src = gifUrl;
     }

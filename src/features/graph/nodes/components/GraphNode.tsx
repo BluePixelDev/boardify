@@ -16,6 +16,7 @@ type GraphNodeProps = {
   resizable?: boolean
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
   onDoubleClick?: (event: React.MouseEvent<HTMLDivElement>) => void
+  onContextMenu?: (event: React.MouseEvent<HTMLDivElement>) => void
 };
 
 export default function GraphNode({
@@ -25,6 +26,8 @@ export default function GraphNode({
   className,
   resizable,
   onClick,
+  onDoubleClick,
+  onContextMenu
 }: GraphNodeProps) {
   const { zoom } = useGraphViewContext();
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -75,7 +78,9 @@ export default function GraphNode({
       <div
         ref={nodeRef}
         className={`graph-node ${isSelected ? "selected" : ""} ${className}`}
+        onContextMenu={onContextMenu}
         onClick={handleClick}
+        onDoubleClick={onDoubleClick}
       >
         {children}
       </div>

@@ -1,4 +1,4 @@
-import { importerRegistry } from "@/features/importer";
+import { importerRegistry } from "@/features/importing";
 import { rendererRegistry } from "../../renderer";
 import { GifNodeRenderer } from "./GifNodeRenderer";
 import { GIFImporter } from "./gifImporter";

@@ -4,7 +4,9 @@ class ImporterRegistry {
     private importers: IImporter[] = []
 
     registerImporter(importer: IImporter) {
-        this.importers.push(importer);
+        if (!this.importers.includes(importer)) {
+            this.importers.push(importer);
+        }
     }
 
     getImporterForFormat(format: string) {

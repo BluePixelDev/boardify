@@ -1,7 +1,7 @@
 import { addNode } from "@/redux/nodesSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createNode } from "@/utils/nodeUtils";
-import { IImporter } from "@/features/importer/IImporter";
+import { IImporter } from "@/features/importing/IImporter";
 
 export class TextImporter extends IImporter {
     importData(file: File, dispatch: Dispatch): void {

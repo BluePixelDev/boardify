@@ -1,5 +1,11 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
+export type ImportEvent = {
+    file: File;
+    dispatch: Dispatch;
+    position: { x: number; y: number };
+};
+
 export class IImporter {
     constructor() {
         if (new.target === IImporter) {
@@ -7,7 +13,7 @@ export class IImporter {
         }
     }
 
-    importData(_file: File, _dispatch: Dispatch) {
+    importData(_event: ImportEvent) {
         throw new Error("importData method must be implemented.");
     }
 

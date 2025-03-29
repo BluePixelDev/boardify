@@ -1,19 +1,17 @@
 import { addNode } from "@/redux/nodesSlice";
-import { Dispatch } from "@reduxjs/toolkit";
 import { createNode } from "@/utils/nodeUtils";
-import { IImporter } from "@/features/importer/IImporter";
+import { IImporter, ImportEvent } from "@/features/importing/IImporter";
 
 export class ImageImporter extends IImporter {
-    importData(file: File, dispatch: Dispatch): void {
-        const imageUrl = URL.createObjectURL(file);
+    importData(event: ImportEvent): void {
+        const imageUrl = URL.createObjectURL(event.file);
         const img = new Image();
 
         img.onload = () => {
             const newNode = createNode({
                 type: "image",
                 position: { 
-                    x: 0, 
-                    y: 0,
+                    ...event.position,
                 },
                 size: {
                     width: img.naturalWidth,
@@ -23,7 +21,7 @@ export class ImageImporter extends IImporter {
                     imageUrl: imageUrl,
                 }
             })
-            dispatch(addNode(newNode));
+            event.dispatch(addNode(newNode))
         }
         img.src = imageUrl;
     }

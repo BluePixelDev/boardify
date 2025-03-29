@@ -1,9 +1,10 @@
-import "../fildedropStyles.css"
+import "../fildedrop.styles.css"
 import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import FileDropDialog from "./FileDropDialog";
-import { importerRegistry } from "@/features/importer/ImporterRegistry";
+import { importerRegistry } from "@/features/importing/ImporterRegistry";
 import { useDispatch } from "react-redux";
+import { ImportEvent } from "@/features/importing";
 
 export default function () {
     const [draggingFiles, setDraggingFiles] = useState(false);
@@ -23,17 +24,20 @@ export default function () {
         }
     }
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onDrop = useCallback((acceptedFiles: File[], _fileRejections: FileRejection[], event: DropEvent) => {
         acceptedFiles.forEach((file) => {
-            const fileExtension = file.name.split('.').pop()?.toLowerCase(); // Get file extension (e.g., csv, json)
+            const fileExtension = file.name.split('.').pop()?.toLowerCase();
 
-            // Check if there's an importer available for this file type
             const importer = importerRegistry.getImporterForFormat(fileExtension || "");
-
             if (importer) {
-                // If importer exists for the file type, use it to process the file
-                importer.importData(file, dispatch);
-                console.log(`File ${file.name} imported successfully.`);
+                const dragEvent = event as DragEvent;
+                const importEvent: ImportEvent = {
+                    file,
+                    dispatch,
+                    position: { x: dragEvent.clientX || 100, y: dragEvent.clientY || 100 }
+                };
+                
+                importer.importData(importEvent);
             } else {
                 console.error(`No importer found for file type: ${fileExtension}`);
             }
@@ -50,7 +54,6 @@ export default function () {
             setDraggingFiles(false)
         }
     });
-
 
     return (
         <div

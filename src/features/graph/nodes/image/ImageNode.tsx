@@ -17,7 +17,11 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
 const ImageNode = ({ node }: GraphNodeProps<ImageNodeData>) => {
     const { width, height } = node.size
     return (
-        <GraphNode nodeId={node.id} aspectRatio={width / height} className="image-node">
+        <GraphNode
+            nodeId={node.id}
+            aspectRatio={width / height}
+            className="image-node"
+        >
             <OptimizedImage src={node?.data.imageUrl ?? "/fallback-image.png"} />
         </GraphNode>
     )
