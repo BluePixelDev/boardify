@@ -1,0 +1,11 @@
+.context-menu-dropdown__container {
+    position: absolute;
+    width: 100px;
+    height: 250px;
+    z-index: 1000;
+}
+.context-menu-dropdown__item > .dropdown__submenu {
+    width: 100px;
+    min-width: 0;
+
+}
