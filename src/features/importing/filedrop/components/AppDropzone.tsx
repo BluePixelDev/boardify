@@ -1,69 +1,93 @@
-import "../fildedrop.styles.css"
-import { useCallback, useEffect, useState } from "react";
-import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
-import FileDropDialog from "./FileDropDialog";
-import { importerRegistry } from "@/features/importing/ImporterRegistry";
-import { useDispatch } from "react-redux";
-import { ImportEvent } from "@/features/importing";
+import "../fildedropStyles.css"
+import { useEffect, useRef, useState } from "react"
+import { useDispatch } from "react-redux"
 
-export default function () {
-    const [draggingFiles, setDraggingFiles] = useState(false);
-    const dispatch = useDispatch();
-    
+import FileDropDialog from "./FileDropDialog"
+import { importerRegistry } from "@/features/importer/ImporterRegistry"
+
+import { getCurrentWebview } from "@tauri-apps/api/webview"
+import { readFile } from "@tauri-apps/plugin-fs"
+import { info, error } from "@tauri-apps/plugin-log"
+
+export default function DragDropHandler(): JSX.Element {
+    const [draggingFiles, setDraggingFiles] = useState(false)
+    const dispatch = useDispatch()
+    const internalDrag = useRef(false)
+
     useEffect(() => {
-        addEventListener("dragenter", handleDragEnter)
+        const markInternalDragStart = () => {
+            internalDrag.current = true
+        }
+        const clearInternalDrag = () => {
+            internalDrag.current = false
+        }
+        window.addEventListener("dragstart", markInternalDragStart)
+        window.addEventListener("dragend", clearInternalDrag)
+        window.addEventListener("mouseup", clearInternalDrag)
+
+        let unlisten: (() => void) | undefined
+
+        const setupDragDropListener = async () => {
+            try {
+                const webview = getCurrentWebview()
+                unlisten = await webview.onDragDropEvent(async (event) => {
+                    if (internalDrag.current) {
+                        setDraggingFiles(false)
+                        return
+                    }
+                    const { type } = event.payload
+
+                    if (type === "over") {
+                        setDraggingFiles(true)
+                    } else if (type === "drop") {
+                        setDraggingFiles(false)
+                        const paths = event.payload.paths
+
+                        if (paths?.length) {
+                            for (const path of paths) {
+                                const fileName = path.split(/[\\/]/).pop() || ""
+                                const fileExtension = fileName.split(".").pop()?.toLowerCase() || ""
+                                const importer = importerRegistry.getImporterForFormat(fileExtension)
+
+                                if (importer) {
+                                    try {
+                                        const fileData = await readFile(path)
+                                        const file = new File([fileData], fileName)
+                                        importer.importData(file, dispatch)
+                                        await info(`File ${fileName} imported successfully.`)
+                                    } catch (err) {
+                                        await error(`Failed to import ${fileName}: ${err}`)
+                                    }
+                                } else {
+                                    await error(`No importer found for file type: ${fileExtension}`)
+                                }
+                            }
+                        } else {
+                            await error("No file paths available on drop event.")
+                        }
+                    } else {
+                        setDraggingFiles(false)
+                        await info(`Drag drop event of type '${type}' was not handled.`)
+                    }
+                })
+            } catch (err) {
+                await error(`Failed to setup drag and drop listener: ${err}`)
+            }
+        }
+
+        setupDragDropListener()
 
         return () => {
-            removeEventListener("dragenter", handleDragEnter)
+            if (unlisten) unlisten()
+            window.removeEventListener("dragstart", markInternalDragStart)
+            window.removeEventListener("dragend", clearInternalDrag)
+            window.removeEventListener("mouseup", clearInternalDrag)
         }
-    })
-
-    const handleDragEnter = (event: DragEvent) => {
-        if (event.dataTransfer?.items) {
-            setDraggingFiles(true);
-        }
-    }
-
-    const onDrop = useCallback((acceptedFiles: File[], _fileRejections: FileRejection[], event: DropEvent) => {
-        acceptedFiles.forEach((file) => {
-            const fileExtension = file.name.split('.').pop()?.toLowerCase();
-
-            const importer = importerRegistry.getImporterForFormat(fileExtension || "");
-            if (importer) {
-                const dragEvent = event as DragEvent;
-                const importEvent: ImportEvent = {
-                    file,
-                    dispatch,
-                    position: { x: dragEvent.clientX || 100, y: dragEvent.clientY || 100 }
-                };
-                
-                importer.importData(importEvent);
-            } else {
-                console.error(`No importer found for file type: ${fileExtension}`);
-            }
-        });
-        setDraggingFiles(false);
-    }, [dispatch]);
-
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        noClick: true,
-        noKeyboard: true,
-        noDragEventsBubbling: false,
-        onDragLeave: () => {
-            setDraggingFiles(false)
-        }
-    });
+    }, [dispatch])
 
     return (
-        <div
-            className={`app-dropzone ${draggingFiles ? 'dragging' : ''}`}
-            {...getRootProps()}
-        >
-            <input {...getInputProps()} />
-            {draggingFiles &&
-                <FileDropDialog></FileDropDialog>
-            }
+        <div className={`app-dropzone ${draggingFiles ? "dragging" : ""}`}>
+            {draggingFiles && <FileDropDialog />}
         </div>
-    );
+    )
 }
