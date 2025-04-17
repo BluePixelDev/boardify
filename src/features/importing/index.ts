@@ -1,3 +1,3 @@
 export { importerRegistry } from "./ImporterRegistry"
-export { IImporter } from "./IImporter"
-export { type ImportEvent } from "./IImporter"
+export type * from "./types"
+export type { IImporter } from "./types"

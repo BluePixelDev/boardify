@@ -2,10 +2,10 @@ import './GifNode.styles.css'
 import { GraphNode } from "@/features/graph/graphview"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { updateNode } from "@/redux/nodes/nodesSlice"
 import { Icon } from '@iconify/react/dist/iconify.js'
-import { GraphNodeProps } from '../node.types'
 import { GIFNodeData } from './gifNode.types'
+import { GraphNodeProps } from '../../store'
+import { updateNode } from '../../store/graphSlice'
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
     <img
@@ -16,6 +16,8 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
         onError={(e) => (e.currentTarget.src = "/fallback-image.png")}
     />
 ))
+OptimizedImage.displayName = "OptimizedImage"
+
 
 const GIFNode = ({ node }: GraphNodeProps<GIFNodeData>) => {
     const { gifURL, isPlaying } = node.data
@@ -25,10 +27,12 @@ const GIFNode = ({ node }: GraphNodeProps<GIFNodeData>) => {
     const toggleIsPlaying = () => {
         dispatch(updateNode({
             id: node.id,
-            data: {
-                ...node.data,
-                isPlaying: !isPlaying
-            },
+            changes: {
+                data: {
+                    ...node.data,
+                    isPlaying: !isPlaying
+                },
+            }
         }))
     }
 
@@ -55,7 +59,7 @@ const GIFNode = ({ node }: GraphNodeProps<GIFNodeData>) => {
 
     const imageSrc = isPlaying ? gifURL : firstFrame ?? "/fallback-image.png"
     const icon = isPlaying ? "mdi:pause" : "mdi:play"
-    const aspectRatio = node.size.width / node.size.height 
+    const aspectRatio = node.size.width / node.size.height
 
     return (
         <GraphNode

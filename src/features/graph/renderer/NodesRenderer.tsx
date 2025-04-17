@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { rendererRegistry } from "./RendererRegistry";
-import { getAllNodes } from "@/redux/nodes/nodeSelector";
+import { selectAllNodes } from "../store/selectors";
 
 export default function NodeCanvas() {
-  const nodes = useSelector(getAllNodes);
+  const nodes = useSelector(selectAllNodes);
 
   return (
     <div className="node-canvas__container">

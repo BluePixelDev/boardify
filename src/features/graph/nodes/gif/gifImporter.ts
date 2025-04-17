@@ -1,41 +1,39 @@
-import { addNode } from "@/redux/nodes/nodesSlice";
+import { IImporter, ImportEvent, ImportResult } from "@/features/importing";
 import { createNode } from "@/utils/nodeUtils";
-import { IImporter, ImportEvent } from "@/features/importing/IImporter";
+import { addNode, selectCurrentLayer } from "../../store";
 
-export class GIFImporter extends IImporter {
-    private type: string
-
-    constructor(type: string) {
-        super()
-        this.type = type
+export class GIFImporter implements IImporter {
+    canHandle(_file: File, content: ArrayBuffer): boolean {
+        const header = new Uint8Array(content.slice(0, 6));
+        const headerString = String.fromCharCode(...header);
+        return headerString === 'GIF89a' || headerString === 'GIF87a';
     }
 
-    importData(event: ImportEvent): void {
-        const gifUrl = URL.createObjectURL(event.file);
-        const img = new Image();
+    async importData(event: ImportEvent): Promise<ImportResult> {
+        try {
+            const gifUrl = URL.createObjectURL(event.file);
+            const img = new Image();
 
-        img.onload = () => {
+            await new Promise<void>((resolve, reject) => {
+                img.onload = () => resolve();
+                img.onerror = () => reject(new Error('Failed to load image.'));
+                img.src = gifUrl;
+            });
+
             const newNode = createNode({
-                type: this.type,
-                position: {
-                    x: 0,
-                    y: 0,
-                },
-                size: {
-                    width: img.naturalWidth,
-                    height: img.naturalHeight,
-                },
-                data: {
-                    gifURL: gifUrl,
-                    isPlaying: false
-                }
-            })
-            event.dispatch(addNode(newNode));
-        }
-        img.src = gifUrl;
-    }
+                type: 'gif',
+                position: event.position,
+                size: { width: img.naturalWidth, height: img.naturalHeight },
+                data: { gifURL: gifUrl, isPlaying: false },
+                layerId: selectCurrentLayer(event.getState())?.id ?? "",
+            });
 
-    getSupportedFormats(): string[] {
-        return ['gif']
+            event.dispatch(addNode(newNode));
+
+            return { success: true, message: 'GIF imported successfully.' };
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error)
+            return { success: false, message: `Error importing GIF: ${message}` };
+        }
     }
 }

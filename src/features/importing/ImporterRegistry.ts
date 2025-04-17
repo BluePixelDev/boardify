@@ -1,19 +1,31 @@
-import { IImporter } from "./IImporter"
+import { IImporter, ImportEvent, ImportResult } from "./types"
+
+type ImporterEntry = {
+    importer: IImporter
+    priority: number
+}
 
 class ImporterRegistry {
-    private importers: IImporter[] = []
+    private importers: ImporterEntry[] = []
 
-    registerImporter(importer: IImporter) {
-        if (!this.importers.includes(importer)) {
-            this.importers.push(importer);
+    registerImporter(importer: IImporter, priority = 0) {
+        if (!this.importers.includes({ importer, priority })) {
+            this.importers.push({ importer, priority })
+            this.importers.sort((a, b) => b.priority - a.priority)
         }
     }
 
-    getImporterForFormat(format: string) {
-        return this.importers.find((importer) =>
-            importer.getSupportedFormats().includes(format)
-        );
+    async import(event: ImportEvent): Promise<ImportResult> {
+        const fileBuffer = await event.file.arrayBuffer();
+
+        for (const { importer } of this.importers) {
+            if (importer.canHandle(event.file, fileBuffer)) {
+                return await importer.importData(event);
+            }
+        }
+
+        return { success: false, message: 'No suitable importer found.' };
     }
 }
 
-export const importerRegistry = new ImporterRegistry();
+export const importerRegistry = new ImporterRegistry()

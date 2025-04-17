@@ -1,8 +1,8 @@
 import "./App.css";
 import AppTheme from "@/features/app/theme/AppTheme";
-import CSSSnippets from "./features/app/snippets/CSSSnippets";
+import CSSSnippets from "./features/snippets/CSSSnippets";
 import { Provider } from "react-redux";
-import store from "./redux/store"
+import { store } from "@store"
 import { Titlebar } from "./features/app/titlebar";
 
 import {
@@ -14,8 +14,10 @@ import {
 import Home from "./Routes/Home";
 import Editor from "./Routes/Editor";
 import { ToolbarProvider } from "./features/app/titlebar/context/ToolbarProvider";
-import AppSetup from "./components/AppSetup";
+import AppSetup from "./features/app/AppSetup";
 import { ContextMenuProvider } from "./features/app/context-menu";
+import { NotificationOverlay } from "./features/notifications";
+import { ToastContainer } from "react-toastify";
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
       <ContextMenuProvider>
         <ToolbarProvider>
           <AppSetup />
+          <NotificationOverlay />
+          <ToastContainer />
 
           {/* Routing */}
           <Router>

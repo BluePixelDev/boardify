@@ -1,12 +1,11 @@
 import "../node.styles.css"
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { deselectAllNodes, toggleNodeSelection, updateNode } from "@/redux/nodes/nodesSlice";
 import InteractiveRect from "./InteractiveRect";
 import { useGraphViewContext } from "../../graphview/context/GraphViewProvider";
-import { GraphNodePosition, GraphNodeSize } from "../node.types";
-import { getNodeById, isNodeSelected } from "@/redux/nodes/nodeSelector";
+import { clearAllNodeSelections, toggleNodeSelectionStatus, updateNode } from "../../store/graphSlice";
+import { isNodeSelected, selectNodeById } from "../../store/selectors";
+import { GraphNodePosition, GraphNodeSize } from "../../store";
 
 type GraphNodeProps = {
   nodeId: string
@@ -33,13 +32,13 @@ export default function GraphNode({
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const nodeData = useSelector((state: RootState) => getNodeById(state, nodeId))
-  const isSelected = useSelector((state: RootState) => isNodeSelected(state, nodeId))
+  const nodeData = useSelector(selectNodeById(nodeId))
+  const isSelected = useSelector(isNodeSelected(nodeId))
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     onClick?.(event);
-    dispatch(deselectAllNodes())
-    dispatch(toggleNodeSelection(nodeId));
+    dispatch(clearAllNodeSelections())
+    dispatch(toggleNodeSelectionStatus(nodeId));
   };
 
 
@@ -47,7 +46,9 @@ export default function GraphNode({
     dispatch(
       updateNode({
         id: nodeId,
-        position: newPos,
+        changes: {
+          position: newPos
+        }
       })
     );
   }
@@ -56,7 +57,9 @@ export default function GraphNode({
     dispatch(
       updateNode({
         id: nodeId,
-        size: { ...newSize },
+        changes: {
+          size: { ...newSize },
+        }
       })
     );
   };

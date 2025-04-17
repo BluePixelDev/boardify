@@ -1,7 +1,7 @@
 import { IRenderer } from "../../renderer";
 import { GIFNodeData } from "./gifNode.types";
 import GIFNode from "./GifNode";
-import { GraphNodeData } from "../node.types";
+import { GraphNodeData } from "../../store";
 
 export class GifNodeRenderer implements IRenderer<GIFNodeData> {
     render = (node: GraphNodeData<GIFNodeData>): JSX.Element | null => {

@@ -3,11 +3,11 @@ import { rendererRegistry } from "../../renderer";
 import { GifNodeRenderer } from "./GifNodeRenderer";
 import { GIFImporter } from "./gifImporter";
 
-const type = "image/gif"
+const type = "gif"
 export const nodeDefinition = {
     type,
     renderer: new GifNodeRenderer(),
-    importer: new GIFImporter(type),
+    importer: new GIFImporter(),
 };
 
 rendererRegistry.registerRenderer(nodeDefinition.type, nodeDefinition.renderer);

@@ -9,8 +9,8 @@ export default defineConfig(async () => ({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@store': path.resolve(__dirname, './src/store/index.ts'),
       '@shared': path.resolve(__dirname, './src/shared'),
-      '@redux': path.resolve(__dirname, './src/redux'),
       '@views': path.resolve(__dirname, './src/views'),
       '@utils': path.resolve(__dirname, './src/utils'),
       '@features': path.resolve(__dirname, './src/features'),
@@ -20,7 +20,7 @@ export default defineConfig(async () => ({
       "@snippets": path.resolve(__dirname, './src/features/app-snipets')
     },
   },
-  
+
   plugins: [react()],
 
   clearScreen: false,
@@ -30,10 +30,10 @@ export default defineConfig(async () => ({
     host: host || false,
     hmr: host
       ? {
-          protocol: "ws",
-          host,
-          port: 1421,
-        }
+        protocol: "ws",
+        host,
+        port: 1421,
+      }
       : undefined,
     watch: {
       // 3. tell vite to ignore watching `src-tauri`

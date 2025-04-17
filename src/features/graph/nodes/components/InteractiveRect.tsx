@@ -2,8 +2,8 @@ import './interactRect.css'
 import React, { CSSProperties, MouseEventHandler, useCallback, useMemo } from "react"
 import ResizeHandle from "./ResizeHandle"
 import { useDrag, useResize } from "../../graphview/hooks"
-import { GraphNodePosition, GraphNodeSize } from "../../graphview/types"
 import { DragDelta } from '../../graphview/hooks/useDrag'
+import { GraphNodePosition, GraphNodeSize } from '../../store'
 
 type InteractiveRectProps = {
   zoom: number
@@ -73,7 +73,7 @@ export default function InteractiveRect(props: InteractiveRectProps) {
   const size = useMemo(() => ({ width: width, height: height }), [width, height])
 
   const onDragMove = useCallback((drag: DragDelta) => {
-    if(!draggable) return
+    if (!draggable) return
     onMove?.({
       x: posX + drag.deltaX / zoom,
       y: posY + drag.deltaY / zoom
@@ -81,7 +81,8 @@ export default function InteractiveRect(props: InteractiveRectProps) {
   }, [position, draggable])
 
   const { onMouseDown: onDragMouseDown } = useDrag({
-    onDrag: onDragMove
+    onDrag: onDragMove,
+    dragThreshold: 10,
   })
 
   const { onMouseDownResize } = useResize({

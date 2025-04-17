@@ -31,8 +31,8 @@
       "@shared": [
         "./src/shared/"
       ],
-      "@redux/*": [
-        "./src/redux/"
+      "@store": [
+        "./src/store/index.ts"
       ],
       "@views": [
         "src/Routes"

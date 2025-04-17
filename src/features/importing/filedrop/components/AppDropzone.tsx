@@ -1,89 +1,94 @@
-import "../fildedropStyles.css"
+import { DragDropEvent, getCurrentWebview } from "@tauri-apps/api/webview"
+import { error } from "@tauri-apps/plugin-log"
 import { useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
-
+import { importFile } from "../../importAction"
+import "../fildedrop.styles.css"
 import FileDropDialog from "./FileDropDialog"
-import { importerRegistry } from "@/features/importer/ImporterRegistry"
-
-import { getCurrentWebview } from "@tauri-apps/api/webview"
-import { readFile } from "@tauri-apps/plugin-fs"
-import { info, error } from "@tauri-apps/plugin-log"
+import { readFile } from "@tauri-apps/plugin-fs";
+import { basename } from "@tauri-apps/api/path";
+import { useAppDispatch } from "@/store"
 
 export default function DragDropHandler(): JSX.Element {
     const [draggingFiles, setDraggingFiles] = useState(false)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const internalDrag = useRef(false)
 
+    const handleInternalDragStart = () => (internalDrag.current = true)
+    const handleInternalDragEnd = () => (internalDrag.current = false)
+
     useEffect(() => {
-        const markInternalDragStart = () => {
-            internalDrag.current = true
-        }
-        const clearInternalDrag = () => {
-            internalDrag.current = false
-        }
-        window.addEventListener("dragstart", markInternalDragStart)
-        window.addEventListener("dragend", clearInternalDrag)
-        window.addEventListener("mouseup", clearInternalDrag)
+        let isMounted = true
+        let cleanup: (() => void) | undefined
 
-        let unlisten: (() => void) | undefined
-
-        const setupDragDropListener = async () => {
+        const setupDragDrop = async () => {
             try {
                 const webview = getCurrentWebview()
-                unlisten = await webview.onDragDropEvent(async (event) => {
+                const unlisten = await webview.onDragDropEvent(async (event) => {
+                    if (!isMounted) return
                     if (internalDrag.current) {
                         setDraggingFiles(false)
                         return
                     }
+
                     const { type } = event.payload
-
-                    if (type === "over") {
-                        setDraggingFiles(true)
-                    } else if (type === "drop") {
-                        setDraggingFiles(false)
-                        const paths = event.payload.paths
-
-                        if (paths?.length) {
-                            for (const path of paths) {
-                                const fileName = path.split(/[\\/]/).pop() || ""
-                                const fileExtension = fileName.split(".").pop()?.toLowerCase() || ""
-                                const importer = importerRegistry.getImporterForFormat(fileExtension)
-
-                                if (importer) {
-                                    try {
-                                        const fileData = await readFile(path)
-                                        const file = new File([fileData], fileName)
-                                        importer.importData(file, dispatch)
-                                        await info(`File ${fileName} imported successfully.`)
-                                    } catch (err) {
-                                        await error(`Failed to import ${fileName}: ${err}`)
-                                    }
-                                } else {
-                                    await error(`No importer found for file type: ${fileExtension}`)
-                                }
-                            }
-                        } else {
-                            await error("No file paths available on drop event.")
-                        }
-                    } else {
-                        setDraggingFiles(false)
-                        await info(`Drag drop event of type '${type}' was not handled.`)
+                    switch (type) {
+                        case "over":
+                            handleDragOver()
+                            break
+                        case "drop":
+                            await handleDrop(event.payload)
+                            break
+                        default:
+                            await handleUnknownEvent()
+                            break
                     }
                 })
+
+                cleanup = unlisten
             } catch (err) {
                 await error(`Failed to setup drag and drop listener: ${err}`)
             }
         }
 
-        setupDragDropListener()
+        window.addEventListener("dragstart", handleInternalDragStart)
+        window.addEventListener("dragend", handleInternalDragEnd)
+        window.addEventListener("mouseup", handleInternalDragEnd)
+        setupDragDrop()
 
         return () => {
-            if (unlisten) unlisten()
-            window.removeEventListener("dragstart", markInternalDragStart)
-            window.removeEventListener("dragend", clearInternalDrag)
-            window.removeEventListener("mouseup", clearInternalDrag)
+            isMounted = false
+            if (cleanup) cleanup()
+            window.removeEventListener("dragstart", handleInternalDragStart)
+            window.removeEventListener("dragend", handleInternalDragEnd)
+            window.removeEventListener("mouseup", handleInternalDragEnd)
         }
-    }, [dispatch])
+    }, [])
+
+    const handleDragOver = () => {
+        setDraggingFiles(true)
+    }
+
+    const handleDrop = async (payload: Extract<DragDropEvent, { type: "drop" }>) => {
+        setDraggingFiles(false)
+
+        const { paths, position } = payload;
+        if (!paths?.length) {
+            await error("No file paths available on drop event.");
+            return;
+        }
+
+        for (const path of paths) {
+            const fileData = await readFile(path)
+            const fileName = await basename(path)
+            const file = new File([fileData], fileName)
+            const positionXY = { x: position.x, y: position.y }
+            dispatch(importFile(path, positionXY, file))
+        }
+    }
+
+    const handleUnknownEvent = async () => {
+        setDraggingFiles(false)
+    }
 
     return (
         <div className={`app-dropzone ${draggingFiles ? "dragging" : ""}`}>
