@@ -1,4 +1,4 @@
-import "../titlebar.styles.css";
+import "./titlebar.styles.css";
 import React from "react";
 
 export type ToolbarButtonProps = {
@@ -8,7 +8,7 @@ export type ToolbarButtonProps = {
     onClick?: () => void;
 };
 
-export default function ToolbarButton({
+export default function TitlebarButton({
     label,
     children,
     className,

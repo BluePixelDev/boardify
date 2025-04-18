@@ -1,57 +1,39 @@
-import "./App.css";
-import AppTheme from "@/features/app/theme/AppTheme";
-import CSSSnippets from "./features/snippets/CSSSnippets";
-import { Provider } from "react-redux";
+import AppTheme from "@/features/theme/AppTheme"
 import { store } from "@store"
-import { Titlebar } from "./features/app/titlebar";
+import { Provider } from "react-redux"
+import "./App.css"
 
 import {
+  Navigate,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from 'react-router-dom'
-import Home from "./Routes/Home";
-import Editor from "./Routes/Editor";
-import { ToolbarProvider } from "./features/app/titlebar/context/ToolbarProvider";
-import AppSetup from "./features/app/AppSetup";
-import { ContextMenuProvider } from "./features/app/context-menu";
-import { NotificationOverlay } from "./features/notifications";
-import { ToastContainer } from "react-toastify";
+import { AppLayout } from "./AppLayout"
+import Editor from "./Routes/Editor"
+import Home from "./Routes/Home"
+import { ContextMenuProvider } from "./features/app/context-menu"
 
 function App() {
 
   return (
     <Provider store={store}>
       <ContextMenuProvider>
-        <ToolbarProvider>
-          <AppSetup />
-          <NotificationOverlay />
-          <ToastContainer />
-
-          {/* Routing */}
-          <Router>
-
-            {/* Styling */}
-            <AppTheme>
-              <CSSSnippets />
-
-              {/* Components */}
-              <Titlebar />
+        <AppTheme>
+          <AppLayout>
+            <Router>
               <Routes>
                 {/*TODO: Remove default redirect*/}
                 <Route path="/" element={<Navigate to="/editor" replace />} />
                 <Route path="/  " element={<Home />} />
                 <Route path="/editor" element={<Editor />} />
               </Routes>
-
-            </AppTheme>
-          </Router>
-
-        </ToolbarProvider>
+            </Router>
+          </AppLayout>
+        </AppTheme>
       </ContextMenuProvider>
     </Provider>
-  );
+  )
 }
 
-export default App;
+export default App

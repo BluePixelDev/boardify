@@ -1,8 +1,11 @@
+import { useAppDispatch, useAppSelector } from "@/store"
+import React, { CSSProperties, MouseEventHandler, useCallback, useRef } from 'react'
+import { setPosition, setTransform } from "../../store"
 import "../graph.styles.css"
-import React, { CSSProperties, useCallback, useRef, WheelEventHandler, MouseEventHandler } from 'react'
 import { useDrag } from '../hooks'
-import { useGraphViewContext } from "../context/GraphViewProvider"
 import { DragDelta } from "../hooks/useDrag"
+import { useZoom, ZoomInfo } from "../hooks/useZoom"
+import { zoomAtPoint } from "../matrixUtils"
 
 //==== GRAPHVIEW ====
 export type GraphViewProps = {
@@ -18,42 +21,43 @@ export default function GraphView({
   children,
   overlay,
   minZoom = 0.1,
-  maxZoom = 10,
+  maxZoom = 1,
 }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { position, zoom, setZoom, setPosition, transform } = useGraphViewContext()
+  const dispatch = useAppDispatch()
+  const { position, transform } = useAppSelector((state) => state.graph.graphView)
 
-  const handleWheel: WheelEventHandler<HTMLDivElement> = useCallback((e) => {
-    if (!containerRef.current) return
+  const handleZoom = useCallback(
+    ({ scaleFactor, mouseX, mouseY }: ZoomInfo) => {
+      if (!containerRef.current) return;
 
-    const containerRect = containerRef.current.getBoundingClientRect()
-    const mousePosition = { x: e.clientX - containerRect.left, y: e.clientY - containerRect.top }
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const mousePosition = {
+        x: mouseX - containerRect.left,
+        y: mouseY - containerRect.top,
+      };
 
-    const factor = 1 - 0.1 * Math.sign(e.deltaY)
-    const newZoom = Math.min(Math.max(zoom * factor, minZoom), maxZoom);
-    if (newZoom === zoom) return;
-
-    const worldX = (mousePosition.x - position.x) / zoom
-    const worldY = (mousePosition.y - position.y) / zoom
-
-    const newPosition = {
-      x: mousePosition.x - worldX * newZoom,
-      y: mousePosition.y - worldY * newZoom
-    }
-
-    setZoom(newZoom)
-    setPosition(newPosition)
-  }, [minZoom, maxZoom, setPosition, setZoom])
+      const newTransform = zoomAtPoint(transform, scaleFactor, mousePosition);
+      dispatch(setTransform(newTransform));
+    },
+    [dispatch, transform]
+  );
 
 
   const onDragMove = (delta: DragDelta) => {
-    setPosition({
+    dispatch(setPosition({
       x: position.x + delta.deltaX,
       y: position.y + delta.deltaY
-    })
+    }))
   }
 
   const { onMouseDown } = useDrag({ onDrag: onDragMove })
+  const { onWheel } = useZoom({
+    onZoom: handleZoom,
+    minZoom,
+    maxZoom,
+    zoomSpeed: 0.1,
+  });
 
   const handleDrag: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     if (event.button !== 1) return
@@ -61,14 +65,14 @@ export default function GraphView({
   }, [onMouseDown])
 
   const contentStyle: CSSProperties = {
-    transform: `matrix(${transform.matrix.join(', ')})`,
+    transform: `matrix(${transform.join(', ')})`,
   }
 
   return (
     <div
       ref={containerRef}
       className="graph-view"
-      onWheel={handleWheel}
+      onWheel={onWheel}
       onMouseDown={handleDrag}
     >
       <div className="graph-view__grid">

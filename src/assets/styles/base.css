@@ -1,0 +1,81 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: var(--text-color, #f6f6f6);
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+body,
+#root {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+:root {
+    /* Colors */
+    --accent-color: #007bff;
+    --background-color: #1e1e1e;
+    --sidebar-bg: #2c2c2c;
+    --separator-color: #444;
+    --text-color: #f6f6f6;
+
+    /* Spacing */
+    --input-padding: 10px;
+    --border-radius: 6px;
+
+    /* Sizes */
+    --slider-thumb-size: 18px;
+
+    --z-index-base: 0;
+    --z-index-sidebar: 10;
+    --z-index-titlebar: 20;
+    --z-index-dropdown: 30;
+    --z-index-modal: 40;
+    --z-index-settings: 50;
+    --z-index-toast: 60;
+    --z-index-tooltip: 70;
+    --z-index-overlay: 80;
+    --z-index-always-on-top: 9999;
+}
+
+li {
+    border: none;
+    outline: none;
+}
+
+.expand-box {
+    display: flex;
+    flex: 1;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.editor-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}

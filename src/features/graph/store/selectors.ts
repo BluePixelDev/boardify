@@ -3,22 +3,22 @@ import { graphSelectors } from "./graphSlice"
 import { RootState } from "@/store"
 
 export const selectAllNodes = (state: RootState) =>
-    graphSelectors.selectAll(state.graphNodes)
+    graphSelectors.selectAll(state.graph)
 
 export const selectNodeById = (id: string) => (state: RootState) =>
-    graphSelectors.selectById(state.graphNodes, id)
+    graphSelectors.selectById(state.graph, id)
 
 export const selectAllSelectedNodeIds = (state: RootState) =>
-    state.graphNodes.selectedNodeIds
+    state.graph.selectedNodeIds
 
 export const selectSelectedNodes = createSelector(
-    (state: RootState) => graphSelectors.selectAll(state.graphNodes),
-    (state: RootState) => state.graphNodes.selectedNodeIds,
+    (state: RootState) => graphSelectors.selectAll(state.graph),
+    (state: RootState) => state.graph.selectedNodeIds,
     (nodes, selectedIds) => nodes.filter(node => selectedIds.includes(node.id))
 )
 
 export const isNodeSelected = (id: string) => (state: RootState): boolean =>
-    state.graphNodes.selectedNodeIds.includes(id)
+    state.graph.selectedNodeIds.includes(id)
 
 export const selectNodesByLayer = (layerId: string) =>
     createSelector(

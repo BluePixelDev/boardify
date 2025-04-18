@@ -11,8 +11,14 @@ export class GIFImporter implements IImporter {
 
     async importData(event: ImportEvent): Promise<ImportResult> {
         try {
+            const { position: eventPosition } = event;
             const gifUrl = URL.createObjectURL(event.file);
             const img = new Image();
+
+            const { transform } = event.getState().graph.graphView;
+            const [scaleX, , , scaleY, translateX, translateY] = transform;
+            const graphX = (eventPosition.x - translateX) / scaleX;
+            const graphY = (eventPosition.y - translateY) / scaleY;
 
             await new Promise<void>((resolve, reject) => {
                 img.onload = () => resolve();
@@ -22,7 +28,7 @@ export class GIFImporter implements IImporter {
 
             const newNode = createNode({
                 type: 'gif',
-                position: event.position,
+                position: { x: graphX, y: graphY },
                 size: { width: img.naturalWidth, height: img.naturalHeight },
                 data: { gifURL: gifUrl, isPlaying: false },
                 layerId: selectCurrentLayer(event.getState())?.id ?? "",

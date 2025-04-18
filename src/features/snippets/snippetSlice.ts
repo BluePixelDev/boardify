@@ -25,7 +25,7 @@ const cssSnippetsSlice = createSlice({
   initialState,
   reducers: {
     addSnippet: (state, action) => {
-      state.snippets.push(action.payload); 
+      state.snippets.push(action.payload);
     },
     removeSnippet: (state, action) => {
       state.snippets = state.snippets.filter(snippet => snippet.id !== action.payload);

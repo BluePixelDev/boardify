@@ -50,7 +50,7 @@
         "./src/features/file-drop"
       ],
       "@theme": [
-        "src/features/app/theme"
+        "src/features/theme"
       ],
       "@snippets": [
         "./src/features/snipets"

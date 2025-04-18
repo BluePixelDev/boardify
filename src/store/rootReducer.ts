@@ -9,7 +9,7 @@ import notificationsReducer from "./notificationsSlice"
 
 
 const rootReducer = combineReducers({
-    graphNodes: graphNodesReducer,
+    graph: graphNodesReducer,
     layers: layersReducer,
     app: appReducer,
     keybinds: keybindsReducer,

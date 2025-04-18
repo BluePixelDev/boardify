@@ -2,10 +2,10 @@ import "../node.styles.css"
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InteractiveRect from "./InteractiveRect";
-import { useGraphViewContext } from "../../graphview/context/GraphViewProvider";
 import { clearAllNodeSelections, toggleNodeSelectionStatus, updateNode } from "../../store/graphSlice";
 import { isNodeSelected, selectNodeById } from "../../store/selectors";
 import { GraphNodePosition, GraphNodeSize } from "../../store";
+import { useAppSelector } from "@/store";
 
 type GraphNodeProps = {
   nodeId: string
@@ -28,7 +28,7 @@ export default function GraphNode({
   onDoubleClick,
   onContextMenu
 }: GraphNodeProps) {
-  const { zoom } = useGraphViewContext();
+  const { zoom } = useAppSelector(state => state.graph.graphView);
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 

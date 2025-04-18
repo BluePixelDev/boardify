@@ -1,9 +1,9 @@
+import { useAppSelector } from "@/store";
 import "./grid.styles.css";
 import { CSSProperties } from "react";
-import { useGraphViewContext } from "../graphview";
 
 export default function DotGrid({ color, opacity = 0.1 }: { color?: string, opacity?: number }) {
-  const { position, zoom } = useGraphViewContext();
+  const { position, zoom } = useAppSelector((state) => state.graph.graphView);
 
   const baseDotSize = 2;
   const dotRadius = baseDotSize;
@@ -12,7 +12,6 @@ export default function DotGrid({ color, opacity = 0.1 }: { color?: string, opac
   const zoomFactor = Math.log2(zoom);
   const fractional = ((zoomFactor % 1) + 1) % 1;
   const gridSpacing = baseSpacing * Math.pow(2, fractional);
-
 
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${gridSpacing}" height="${gridSpacing}" viewBox="0 0 ${gridSpacing} ${gridSpacing}">

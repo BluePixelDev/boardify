@@ -1,6 +1,6 @@
 import { DropdownItem } from "@/features/app/dropdown"
 import { useToolbar } from "../context/ToolbarProvider"
-import { ToolbarItem } from "../types/toolbar"
+import { ToolbarItem } from "../types"
 
 function groupItemsByPath(items: ToolbarItem[]) {
     return items.reduce((acc, item) => {

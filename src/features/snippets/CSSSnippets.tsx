@@ -1,8 +1,7 @@
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux"
+import { useAppSelector } from "@/store";
 
 export const CSSnippets = () => {
-    const snippets = useSelector((state: RootState) => state.cssSnippets.snippets)
+    const snippets = useAppSelector((state) => state.cssSnippets.snippets)
 
     return <style>
         {snippets.length > 0 &&

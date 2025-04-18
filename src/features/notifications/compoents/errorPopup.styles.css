@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: var(--z-index-modal);
     animation: error-popup__fade-in 0.3s ease-in-out;
 }
 
