@@ -1,7 +1,7 @@
 name: CI - Fast Tauri Build Test
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 

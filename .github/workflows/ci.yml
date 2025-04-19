@@ -1,4 +1,4 @@
-name: CI - Build & Code Quality
+name: CI - Code Quality
 
 on:
   push:
