@@ -2,11 +2,12 @@ import { DragDropEvent, getCurrentWebview } from "@tauri-apps/api/webview"
 import { error } from "@tauri-apps/plugin-log"
 import { useEffect, useRef, useState } from "react"
 import { importFile } from "../../importAction"
-import "../fildedrop.styles.css"
-import FileDropDialog from "./FileDropDialog"
+import "./fildedrop.styles.css"
+import FileDropModal from "./FileDropModal"
 import { readFile } from "@tauri-apps/plugin-fs";
 import { basename } from "@tauri-apps/api/path";
 import { useAppDispatch } from "@/store"
+import { ModalContainer } from "@/features/modal"
 
 export default function DragDropHandler(): JSX.Element {
     const [draggingFiles, setDraggingFiles] = useState(false)
@@ -91,8 +92,8 @@ export default function DragDropHandler(): JSX.Element {
     }
 
     return (
-        <div className={`app-dropzone ${draggingFiles ? "dragging" : ""}`}>
-            {draggingFiles && <FileDropDialog />}
-        </div>
+        <ModalContainer show={draggingFiles} className="file-drop-modal__container">
+            <FileDropModal />
+        </ModalContainer >
     )
 }

@@ -43,6 +43,8 @@
     padding: 5px;
     border-radius: 4px;
     outline: none;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 /* Sidebar item icon */
@@ -76,9 +78,20 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    outline: none;
 }
 
 /* Hover effect for toggle button */
 .sidebar-toggle:hover {
     background-color: var(--accent-color);
+}
+
+.sidebar-toggle__icon {
+    rotate: 180deg;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar-toggle.expanded .sidebar-toggle__icon {
+    rotate: 0deg;
 }

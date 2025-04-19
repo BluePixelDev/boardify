@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import "../sidebarStyles.css"
+import "./sidebar.styles.css"
 import { toggleSidebar } from "@/features/app/appSlice";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
@@ -21,8 +21,8 @@ export default function Sidebar({ isExpanded, children }: SidebarProps) {
                     </div>
                 </div>
 
-                <button className="sidebar-toggle" onClick={handleSidebarToggle}>
-                    <Icon icon={isExpanded ? "bi:chevron-left" : "bi:chevron-right"} />
+                <button className={`sidebar-toggle ${isExpanded ? 'expanded' : ''}`} onClick={handleSidebarToggle}>
+                    <Icon icon="bxs:left-arrow" className="sidebar-toggle__icon" />
                 </button>
             </aside>
         </>

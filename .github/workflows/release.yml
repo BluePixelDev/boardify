@@ -1,4 +1,4 @@
-name: Tauri Multi-Platform Build & Release
+name: Release Workflow
 
 on:
   push:

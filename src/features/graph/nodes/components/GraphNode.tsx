@@ -1,4 +1,4 @@
-import "../node.styles.css"
+import "./node.styles.css"
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InteractiveRect from "./InteractiveRect";
@@ -84,6 +84,9 @@ export default function GraphNode({
         onContextMenu={onContextMenu}
         onClick={handleClick}
         onDoubleClick={onDoubleClick}
+        style={{
+          outlineWidth: `${Math.round(1 / zoom)}px`,
+        }}
       >
         {children}
       </div>

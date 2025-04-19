@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { GraphNodePosition, GraphNodeSize } from "../../nodes";
+import { GraphNodePosition, GraphNodeSize } from "../../store";
 
 export type Directions = "n" | "s" | "e" | "w" | "se" | "ne" | "sw" | "nw";
 export type ResizeResult = {

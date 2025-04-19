@@ -1,4 +1,4 @@
-import './interactRect.css'
+import "./node.styles.css"
 import React, { CSSProperties, MouseEventHandler, useCallback, useMemo } from "react"
 import ResizeHandle from "./ResizeHandle"
 import { useDrag, useResize } from "../../graphview/hooks"
@@ -37,37 +37,37 @@ type InteractiveRectProps = {
 
 // Constants
 type Directions = "se" | "ne" | "sw" | "nw" | "n" | "s" | "e" | "w"
+const DIRECTIONS: Directions[] = ["n", "s", "e", "w", "se", "ne", "sw", "nw"]
 const RESIZE_HANDLE_SIZE = 8
 const MIN_DIMENSION = 100
 
 /**
  * InteractiveRect is a draggable, resizable, and optionally rotatable rectangle.
  */
-export default function InteractiveRect(props: InteractiveRectProps) {
-  const {
-    zoom,
-    // Position
-    posX,
-    posY,
-    draggable = true,
+export default function InteractiveRect({
+  zoom,
+  // Position
+  posX,
+  posY,
+  draggable = true,
 
-    // Size
-    width,
-    height,
-    minWidth = MIN_DIMENSION,
-    minHeight = MIN_DIMENSION,
-    aspectRatio,
-    resizable = true,
-    showHandles = true,
-    // Rotation
-    rotation = 0,
+  // Size
+  width,
+  height,
+  minWidth = MIN_DIMENSION,
+  minHeight = MIN_DIMENSION,
+  aspectRatio,
+  resizable = true,
+  showHandles = true,
+  // Rotation
+  rotation = 0,
 
-    className,
-    onMove,
-    onResize,
-    onClick,
-    children,
-  } = props
+  className,
+  onMove,
+  onResize,
+  onClick,
+  children,
+}: InteractiveRectProps) {
 
   const position = useMemo(() => ({ x: posX, y: posY }), [posX, posY])
   const size = useMemo(() => ({ width: width, height: height }), [width, height])
@@ -116,21 +116,10 @@ export default function InteractiveRect(props: InteractiveRectProps) {
       className={`interact-rect ${className ?? ""}`}>
       {children}
       {resizable && showHandles &&
-        (["n", "s", "e", "w", "se", "ne", "sw", "nw"] as Directions[]).map((direction) => (
+        DIRECTIONS.map((direction) => (
           <ResizeHandle
             key={direction}
             direction={direction}
-            style={{
-              position: "absolute",
-              ...(direction === "e" ? { right: 0, top: "50%", transform: "translateY(-50%)" } : {}),
-              ...(direction === "w" ? { left: 0, top: "50%", transform: "translateY(-50%)" } : {}),
-              ...(direction === "s" ? { bottom: 0, left: "50%", transform: "translateX(-50%)" } : {}),
-              ...(direction === "n" ? { top: 0, left: "50%", transform: "translateX(-50%)" } : {}),
-              ...(direction === "se" ? { right: 0, bottom: 0 } : {}),
-              ...(direction === "ne" ? { right: 0, top: 0 } : {}),
-              ...(direction === "sw" ? { left: 0, bottom: 0 } : {}),
-              ...(direction === "nw" ? { left: 0, top: 0 } : {}),
-            }}
             width={RESIZE_HANDLE_SIZE / zoom}
             height={RESIZE_HANDLE_SIZE / zoom}
             onMouseDown={(e) => onMouseDownResize(e, direction)}

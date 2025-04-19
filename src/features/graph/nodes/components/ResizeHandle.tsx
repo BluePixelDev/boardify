@@ -1,26 +1,29 @@
-import React, { CSSProperties } from "react";
+import React from "react"
 
 type ResizeHandleProps = {
-    style?: CSSProperties;
-    direction: string;
-    width: number;
-    height: number;
-    onMouseDown: (event: React.MouseEvent, direction: string) => void;
-};
+    className?: string
+    direction: string
+    width: number
+    height: number
+    onMouseDown: (event: React.MouseEvent, direction: string) => void
+}
 
-export default function ResizeHandle(props: ResizeHandleProps) {
-    const { style, direction, width, height, onMouseDown } = props;
+export default function ResizeHandle({
+    className,
+    direction,
+    width,
+    height,
+    onMouseDown
+}: ResizeHandleProps) {
     return (
         <div
+            className={`interact-handle handle-${direction} ${className ?? ""}`}
             style={{
-                ...style,
                 width,
                 height,
-                backgroundColor: "purple",
-                borderRadius: "100%",
                 cursor: `${direction}-resize`,
             }}
             onMouseDown={(e) => onMouseDown(e, direction)}
         />
-    );
+    )
 }

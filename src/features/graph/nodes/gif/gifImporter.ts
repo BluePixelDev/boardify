@@ -1,6 +1,7 @@
 import { IImporter, ImportEvent, ImportResult } from "@/features/importing";
-import { createNode } from "@/utils/nodeUtils";
-import { addNode, selectCurrentLayer } from "../../store";
+import { createNodeFromImportEvent } from "@/utils/nodeUtils";
+import { addNode } from "../../store";
+import { GIFNodeData } from "./gifNode.types";
 
 export class GIFImporter implements IImporter {
     canHandle(_file: File, content: ArrayBuffer): boolean {
@@ -11,14 +12,8 @@ export class GIFImporter implements IImporter {
 
     async importData(event: ImportEvent): Promise<ImportResult> {
         try {
-            const { position: eventPosition } = event;
             const gifUrl = URL.createObjectURL(event.file);
             const img = new Image();
-
-            const { transform } = event.getState().graph.graphView;
-            const [scaleX, , , scaleY, translateX, translateY] = transform;
-            const graphX = (eventPosition.x - translateX) / scaleX;
-            const graphY = (eventPosition.y - translateY) / scaleY;
 
             await new Promise<void>((resolve, reject) => {
                 img.onload = () => resolve();
@@ -26,13 +21,14 @@ export class GIFImporter implements IImporter {
                 img.src = gifUrl;
             });
 
-            const newNode = createNode({
+            const nodeSize = {
+                width: img.width,
+                height: img.height
+            }
+            const newNode = createNodeFromImportEvent<GIFNodeData>(event, nodeSize, {
                 type: 'gif',
-                position: { x: graphX, y: graphY },
-                size: { width: img.naturalWidth, height: img.naturalHeight },
                 data: { gifURL: gifUrl, isPlaying: false },
-                layerId: selectCurrentLayer(event.getState())?.id ?? "",
-            });
+            })
 
             event.dispatch(addNode(newNode));
 
