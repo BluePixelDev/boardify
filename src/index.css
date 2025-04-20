@@ -1,0 +1,38 @@
+:root {
+  --header-height: 4rem;
+  --header-background: #333333;
+  --background-color: #222224;
+  --text-color: #ffffff;
+
+  font-family: roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  background-color: var(--background-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+html,
+body {
+  margin: 0;
+  color: var(--text-color);
+  overflow-x: hidden;
+}
+
+.app__container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+}

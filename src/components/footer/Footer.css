@@ -1,0 +1,15 @@
+.footer {
+    background-color: var(--header-background);
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1rem;
+    z-index: 10;
+}
+
+.footer__bottom {
+    text-align: center;
+}
+
+.footer__contacts {
+    margin-bottom: 0.5rem;
+}
