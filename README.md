@@ -88,7 +88,7 @@ We welcome contributions from the community! Whether it's a bug fix, feature req
 
 ## License
 
-MIT License
+[License](https://github.com/BluePixelDev/boardify/blob/main/LICENSE)
 
 ---
 
