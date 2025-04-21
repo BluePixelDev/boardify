@@ -1,5 +1,5 @@
 import "./Header.css"
-import logo from "@assets/logo.png"
+import logo from "/favicon.png"
 
 export const Header = () => {
     return (
