@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import TimelineItem from './Timelineitem'
+import TimelineItem from './TimelineItem'
 import { SectionBox } from '@/components/SectionBox'
 
 const roadmapItems = [
