@@ -71,7 +71,7 @@ npm run tauri dev
 
 ---
 
-## Roadmap (Ideas)
+## Roadmap
 
 - Support for more file types (PDF, audio, documents)
 - Search and tagging system
