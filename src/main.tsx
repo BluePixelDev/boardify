@@ -7,7 +7,7 @@ import Home from './routes/Home/Home.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HashRouter basename={import.meta.env.DEV ? '/' : '/boardify'}>
+    <HashRouter basename={'/'}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
