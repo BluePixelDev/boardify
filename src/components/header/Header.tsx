@@ -1,3 +1,4 @@
+import LanguageSwapHeader from "../LanguageSwap"
 import "./Header.css"
 import logo from "/favicon.png"
 
@@ -10,6 +11,9 @@ export const Header = () => {
                         <img src={logo} alt="Logo" />
                     </a>
                     <h1>Boardify</h1>
+                </div>
+                <div className="header__language">
+                    <LanguageSwapHeader />
                 </div>
             </div>
         </header>

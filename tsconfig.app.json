@@ -26,6 +26,7 @@
       "@components/*": ["./src/components/*"],
       "@routes/*": ["./src/routes/*"],
       "@assets/*": ["./src/assets/*"],
+      "@locales/*": ["./src/locales/*"],
     }
   },
   "include": ["src"]

@@ -1,0 +1,67 @@
+{
+    "translation": {
+        "home": {
+            "title": "Welcome to Boardify!",
+            "description": "<strong>Boardify</strong> is your infinite digital board for organizing media — ideal for moodboards, research collections, and visual planning. Built with <strong>React</strong> and <strong>Tauri</strong> for speed and flexibility.",
+            "view_on_github": "View on GitHub",
+            "footer": {
+                "copyright": "Ondřej Kačírek. All rights reserved."
+            },
+            "features": {
+                "title": "Features",
+                "items": [
+                    {
+                        "title": "Infinite Canvas",
+                        "description": "Arrange media and notes freely in a boundless space. Perfect for creative brainstorming and visual workflows.",
+                        "icon": "mdi:infinity"
+                    },
+                    {
+                        "title": "Drag & Drop",
+                        "description": "Quickly upload and organize images, videos, and documents using intuitive drag-and-drop gestures.",
+                        "icon": "mdi:mouse"
+                    },
+                    {
+                        "title": "Plugin-Ready",
+                        "description": "Designed to be extended — easily integrate new tools or build custom functionality.",
+                        "icon": "mdi:rocket"
+                    },
+                    {
+                        "title": "Tauri-Powered",
+                        "description": "Fast, lightweight, and native-feeling performance through Tauri — ideal for power users.",
+                        "icon": "mdi:flash"
+                    },
+                    {
+                        "title": "Custom UI",
+                        "description": "Built with React and MUI. You can restyle and reshape the interface to match your workflow.",
+                        "icon": "mdi:palette"
+                    }
+                ]
+            }
+        },
+        "roadmap": {
+            "title": "Roadmap",
+            "items": [
+                {
+                    "title": "Support for additional file types",
+                    "description": "Add support for PDF, audio, and docs.",
+                    "status": "In Progress"
+                },
+                {
+                    "title": "Media search and tagging system",
+                    "description": "Implement search and tagging for media files.",
+                    "status": "Upcoming"
+                },
+                {
+                    "title": "Plugin API for custom extensions",
+                    "description": "Enable third-party plugins to extend functionality.",
+                    "status": "Completed"
+                },
+                {
+                    "title": "Markdown note support for contextual boards",
+                    "description": "Support for markdown syntax in notes.",
+                    "status": "Upcoming"
+                }
+            ]
+        }
+    }
+}

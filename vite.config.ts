@@ -11,6 +11,7 @@ export default defineConfig(({ command }) => ({
       '@components': path.resolve(__dirname, './src/components'),
       '@routes': path.resolve(__dirname, './src/routes'),
       '@assets': path.resolve(__dirname, './src/assets'),
+      '@locales': path.resolve(__dirname, './src/locales'),
     },
   },
 }))

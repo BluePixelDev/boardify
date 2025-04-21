@@ -1,0 +1,67 @@
+{
+    "translation": {
+        "home": {
+            "title": "Vítejte na Boardify!",
+            "description": "<strong>Boardify</strong> je vaše nekonečná digitální tabule pro organizování médií — ideální pro moodboardy, sbírky výzkumů a vizuální plánování. Postaveno s <strong>Reactem</strong> a <strong>Tauri</strong> pro rychlost a flexibilitu.",
+            "view_on_github": "Zobrazit na GitHubu",
+            "footer": {
+                "copyright": "Ondřej Kačírek. Všechna práva vyhrazena."
+            },
+            "features": {
+                "title": "Funkce",
+                "items": [
+                    {
+                        "title": "Nekonečné plátno",
+                        "description": "Uspořádejte média a poznámky volně v neomezeném prostoru. Ideální pro kreativní brainstorming a vizuální pracovní postupy.",
+                        "icon": "mdi:infinity"
+                    },
+                    {
+                        "title": "Drag & Drop",
+                        "description": "Rychlé nahrávání a organizování obrázků, videí a dokumentů pomocí intuitivního drag-and-drop ovládání.",
+                        "icon": "mdi:mouse"
+                    },
+                    {
+                        "title": "Pluginová podpora",
+                        "description": "Navrženo pro rozšíření — snadno integrujte nové nástroje nebo vytvářejte vlastní funkce.",
+                        "icon": "mdi:rocket"
+                    },
+                    {
+                        "title": "Podporováno Tauri",
+                        "description": "Rychlý, lehký a nativní výkon díky Tauri — ideální pro pokročilé uživatele.",
+                        "icon": "mdi:flash"
+                    },
+                    {
+                        "title": "Vlastní UI",
+                        "description": "Postaveno s Reactem a MUI. Můžete přizpůsobit a upravit rozhraní tak, aby vyhovovalo vašemu pracovnímu postupu.",
+                        "icon": "mdi:palette"
+                    }
+                ]
+            }
+        },
+        "roadmap": {
+            "title": "Plán",
+            "items": [
+                {
+                    "title": "Podpora dalších typů souborů",
+                    "description": "Přidat podporu pro PDF, audio a dokumenty.",
+                    "status": "V průběhu"
+                },
+                {
+                    "title": "Systém hledání a označování médií",
+                    "description": "Implementovat hledání a označování mediálních souborů.",
+                    "status": "Připravujeme"
+                },
+                {
+                    "title": "Pluginové API pro vlastní rozšíření",
+                    "description": "Umožnit třetím stranám pluginy pro rozšíření funkcionality.",
+                    "status": "Dokončeno"
+                },
+                {
+                    "title": "Podpora Markdown poznámek pro kontextové tabule",
+                    "description": "Podpora pro syntaxi markdownu v poznámkách.",
+                    "status": "Připravujeme"
+                }
+            ]
+        }
+    }
+}
