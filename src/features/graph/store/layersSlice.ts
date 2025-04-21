@@ -2,19 +2,39 @@ import { createSlice, createEntityAdapter, PayloadAction } from "@reduxjs/toolki
 import { Layer } from "./types"
 
 const layersAdapter = createEntityAdapter<Layer>()
-
 export const layerSelectors = layersAdapter.getSelectors()
+
+const initialLayer = {
+    id: "default-layer",
+    name: "Layer 1",
+    icon: "bxs:layer",
+}
 
 const layersSlice = createSlice({
     name: "layers",
     initialState: layersAdapter.getInitialState({
-        selectedLayerId: null as string | null,
+        selectedLayerId: initialLayer.id,
+        entities: { [initialLayer.id]: initialLayer },
+        ids: [initialLayer.id]
     }),
     reducers: {
         addLayer: layersAdapter.addOne,
-        removeLayer: layersAdapter.removeOne,
+        removeLayer: (state, action: PayloadAction<string>) => {
+            const idToRemove = action.payload;
+            const allIds = layersAdapter.getSelectors().selectIds(state) as string[];
+
+            if (allIds.length <= 1) {
+                return;
+            }
+
+            layersAdapter.removeOne(state, idToRemove);
+            if (state.selectedLayerId === idToRemove) {
+                const remainingIds = allIds.filter(id => id !== idToRemove);
+                state.selectedLayerId = remainingIds[0] ?? null;
+            }
+        },
         updateLayer: layersAdapter.updateOne,
-        selectLayer: (state, action: PayloadAction<string | null>) => {
+        selectLayer: (state, action: PayloadAction<string>) => {
             state.selectedLayerId = action.payload;
         },
     }

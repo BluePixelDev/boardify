@@ -51,6 +51,7 @@ input[type="range"] {
     border-radius: 3px;
     appearance: none;
     cursor: pointer;
+    padding: initial;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -61,23 +62,23 @@ input[type="range"]::-webkit-slider-thumb {
     background: var(--accent-color);
     border-radius: 50%;
     border: none;
-    margin-top: -6px;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 input[type="range"]::-moz-range-thumb {
     width: var(--slider-thumb-size);
     height: var(--slider-thumb-size);
-    background: var(--accent-color);
+    background: red;
     border: none;
     border-radius: 50%;
 }
 
 /* Text Inputs */
+input,
 input[type="text"],
 input[type="email"],
-input[type="password"] {
-    width: 100%;
+input[type="password"],
+textarea {
     padding: var(--input-padding);
     border: 1px solid var(--separator-color);
     border-radius: var(--border-radius);
@@ -85,11 +86,15 @@ input[type="password"] {
     color: var(--text-color);
     font-size: 1rem;
     transition: border 0.2s, box-shadow 0.2s;
+    resize: none;
+    margin: 0.1rem;
 }
 
+input:focus,
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+textarea:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);

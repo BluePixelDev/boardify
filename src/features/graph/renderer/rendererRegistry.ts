@@ -1,4 +1,4 @@
-import { GraphNodeData } from "../nodes";
+import { GraphNodeData } from "../store";
 import { IRenderer, IRendererRegistry } from "./IRenderer";
 
 export type NodeRenderer<T = unknown> = (props: { node: GraphNodeData<T> }) => JSX.Element | JSX.Element[];

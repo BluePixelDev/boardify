@@ -1,16 +1,16 @@
-import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux"
 import "./sidebar.styles.css"
-import { toggleSidebar } from "@/features/app/appSlice";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { toggleSidebar } from "@/features/app/appSlice"
+import { Icon } from "@iconify/react/dist/iconify.js"
 
 type SidebarProps = {
-    isExpanded?: boolean;
-    children?: React.ReactNode;
-};
+    isExpanded?: boolean
+    children?: React.ReactNode
+}
 
 export default function Sidebar({ isExpanded, children }: SidebarProps) {
-    const dispatch = useDispatch();
-    const handleSidebarToggle = () => dispatch(toggleSidebar());
+    const dispatch = useDispatch()
+    const handleSidebarToggle = () => dispatch(toggleSidebar())
 
     return (
         <>
@@ -26,5 +26,5 @@ export default function Sidebar({ isExpanded, children }: SidebarProps) {
                 </button>
             </aside>
         </>
-    );
+    )
 }

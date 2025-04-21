@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux";
-import { rendererRegistry } from "./RendererRegistry";
-import { selectAllNodes } from "../store/selectors";
+import { selectAllNodesOnCurrentLayer } from "../../store/selectors";
+import { FallbackNode } from "./FallbackNode";
+import { rendererRegistry } from "../rendererRegistry";
+import { useAppSelector } from "@/store";
 
 export default function NodeCanvas() {
-  const nodes = useSelector(selectAllNodes);
+  const nodes = useAppSelector(selectAllNodesOnCurrentLayer);
 
   return (
     <div className="node-canvas__container">
@@ -12,9 +13,8 @@ export default function NodeCanvas() {
 
         if (Renderer) {
           const renderedNode = Renderer.render(node);
-
           if (renderedNode) {
-            return (
+            return (  
               <div key={node.id} className="node-canvas__item">
                 {renderedNode}
               </div>
@@ -22,9 +22,7 @@ export default function NodeCanvas() {
           }
         }
 
-        return (
-          <h1 key={node.id}>No node found!</h1>
-        )
+        return <FallbackNode key={node.id} node={node} />;
       })}
     </div>
   );

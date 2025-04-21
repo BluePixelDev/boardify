@@ -3,10 +3,13 @@ import { getCurrentWindow } from "@tauri-apps/api/window"
 import { error } from "@tauri-apps/plugin-log"
 import "./titlebar.styles.css"
 import TitlebarButton from "./TitlebarButton"
-import TitlebarToolbar from "./TitlebarToolbar"
+import { useAppDispatch } from "@/store"
+import { openSettingsModal } from "@/features/settings"
 
 const appWindow = getCurrentWindow()
 export default function Titlebar() {
+
+    const dispatch = useAppDispatch()
 
     const handleMinimize = async () => {
         try {
@@ -37,7 +40,9 @@ export default function Titlebar() {
 
     return (
         <div data-tauri-drag-region className="titlebar">
-            <TitlebarToolbar />
+                <TitlebarButton label="Back" onClick={() => dispatch(openSettingsModal())}>
+                    <Icon icon="material-symbols:settings" className="titlebar__icon" />
+                </TitlebarButton>
 
             <div className="titlebar-control__container">
                 <TitlebarButton label="Minimize" onClick={handleMinimize}>

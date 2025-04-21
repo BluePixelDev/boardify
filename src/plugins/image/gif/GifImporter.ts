@@ -1,7 +1,7 @@
 import { IImporter, ImportEvent, ImportResult } from "@/features/importing";
 import { createNodeFromImportEvent } from "@/utils/nodeUtils";
-import { addNode } from "../../store";
-import { GIFNodeData } from "./gifNode.types";
+import { addNode } from "../../../features/graph/store";
+import { ImageNodeData } from "../types";
 
 export class GIFImporter implements IImporter {
     canHandle(_file: File, content: ArrayBuffer): boolean {
@@ -25,9 +25,9 @@ export class GIFImporter implements IImporter {
                 width: img.width,
                 height: img.height
             }
-            const newNode = createNodeFromImportEvent<GIFNodeData>(event, nodeSize, {
-                type: 'gif',
-                data: { gifURL: gifUrl, isPlaying: false },
+            const newNode = createNodeFromImportEvent<ImageNodeData>(event, nodeSize, {
+                type: 'image',
+                data: { type: "gif", imageUrl: gifUrl, isPlaying: false },
             })
 
             event.dispatch(addNode(newNode));

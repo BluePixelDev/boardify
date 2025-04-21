@@ -1,0 +1,88 @@
+.snippet-controls__title {
+    margin-bottom: 1rem;
+}
+
+.snippet-controls__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.snippet-controls__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--separator-color);
+    flex-direction: column;
+}
+
+.snippet-controls__name {
+    font-weight: bold;
+    flex: 1;
+}
+
+.snippet-controls__actions,
+.snippet-controls__edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.snippet-controls__edit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.snippet-controls__form {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.snippet-controls__input,
+.snippet-controls__textarea {
+    width: 100%;
+}
+.snippet-controls__textarea {
+    height: 250px;
+}
+
+.snippet-card {
+    background: var(--sidebar-bg);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    background-color: var(--card-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.snippet-card__name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.snippet-card__actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.snippet-card__preview {
+    font-family: monospace;
+    font-size: 0.9rem;
+    background: #0002;
+    padding: 0.5rem;
+    border-radius: 6px;
+    max-height: 100px;
+    overflow: auto;
+}
+
+.snippet-card__edit textarea {
+    min-height: 80px;
+}

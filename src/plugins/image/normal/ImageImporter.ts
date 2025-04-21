@@ -1,8 +1,8 @@
 import { IImporter, ImportEvent, ImportResult } from "@/features/importing"
 import { createNodeFromImportEvent } from "@/utils/nodeUtils"
-import { addNode } from "../../store"
+import { addNode } from "../../../features/graph/store"
 import { getImageFormatFromHeaders } from "@/utils"
-import { ImageNodeData } from "./imageNode.types"
+import { ImageNodeData } from "../types"
 
 export class ImageImporter implements IImporter {
     canHandle(_file: File, content: ArrayBuffer): boolean {
@@ -32,6 +32,7 @@ export class ImageImporter implements IImporter {
             const newNode = createNodeFromImportEvent<ImageNodeData>(event, nodeSize, {
                 type: 'image',
                 data: {
+                    type: "image",
                     imageUrl: imageUrl,
                 },
             })

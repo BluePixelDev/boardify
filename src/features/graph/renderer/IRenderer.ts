@@ -1,4 +1,4 @@
-import { GraphNodeData } from "../nodes"
+import { GraphNodeData } from "../store"
 
 export interface IRenderer<T = unknown> {
     render: (node: GraphNodeData<T>) => JSX.Element | null

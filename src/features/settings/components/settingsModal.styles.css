@@ -1,18 +1,11 @@
-.settings-overlay {
-    position: fixed;
-    top: var(--titlebar-height, 40px);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 60px;
-    z-index: var(--z-index-settings, 1000);
+.settings-modal__container {
+    padding-top: 10em;
+    align-items: flex-start;
 }
 
 .settings__modal {
     width: 600px;
+    height: 80vh;
     padding: 24px;
 }
 

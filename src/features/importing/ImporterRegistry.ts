@@ -15,10 +15,18 @@ class ImporterRegistry {
         }
     }
 
+    unregisterImporter(importer: IImporter) {
+        this.importers = this.importers.filter((entry) => entry.importer !== importer)
+    }
+
     async import(event: ImportEvent): Promise<ImportResult> {
         const fileBuffer = await event.file.arrayBuffer();
 
         for (const { importer } of this.importers) {
+            if (!importer){
+                continue;
+            }
+            
             if (importer.canHandle(event.file, fileBuffer)) {
                 return await importer.importData(event);
             }

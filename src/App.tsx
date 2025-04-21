@@ -1,4 +1,3 @@
-import AppTheme from "@/features/theme/AppTheme"
 import { store } from "@store"
 import { Provider } from "react-redux"
 import "./App.css"
@@ -19,18 +18,16 @@ function App() {
   return (
     <Provider store={store}>
       <ContextMenuProvider>
-        <AppTheme>
-          <AppLayout>
-            <Router>
-              <Routes>
-                {/*TODO: Remove default redirect*/}
-                <Route path="/" element={<Navigate to="/editor" replace />} />
-                <Route path="/  " element={<Home />} />
-                <Route path="/editor" element={<Editor />} />
-              </Routes>
-            </Router>
-          </AppLayout>
-        </AppTheme>
+        <AppLayout>
+          <Router>
+            <Routes>
+              {/*TODO: Remove default redirect*/}
+              <Route path="/" element={<Navigate to="/editor" replace />} />
+              <Route path="/  " element={<Home />} />
+              <Route path="/editor" element={<Editor />} />
+            </Routes>
+          </Router>
+        </AppLayout>
       </ContextMenuProvider>
     </Provider>
   )

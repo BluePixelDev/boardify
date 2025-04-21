@@ -1,10 +1,11 @@
-import { Modal } from "@/features/modal";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-import "./settingsModal.styles.css";
+import { Modal } from "@/features/modal"
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs"
+import "react-tabs/style/react-tabs.css"
+import "./settingsModal.styles.css"
+import { SnippetControls } from "./snippets/SnippetControls"
 
 interface SettingsModalProps {
-    onClose?: () => void;
+    onClose?: () => void
 }
 
 export const SettingsModal = ({ onClose }: SettingsModalProps) => {
@@ -29,7 +30,7 @@ export const SettingsModal = ({ onClose }: SettingsModalProps) => {
                 </TabPanel>
 
                 <TabPanel className="settings__panel">
-                    <p className="settings__panel-text">Theme selection, font size, window styles.</p>
+                    <SnippetControls />
                 </TabPanel>
 
                 <TabPanel className="settings__panel">
@@ -41,5 +42,5 @@ export const SettingsModal = ({ onClose }: SettingsModalProps) => {
                 </TabPanel>
             </Tabs>
         </Modal>
-    );
-};
+    )
+}

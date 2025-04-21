@@ -1,13 +1,15 @@
 import { useAppSelector } from "@/store";
+import { selectEnabledSnippets } from "./snippetSelectors";
 
 export const CSSnippets = () => {
-    const snippets = useAppSelector((state) => state.cssSnippets.snippets)
+    const snippets = useAppSelector(selectEnabledSnippets)
+    const combinedCSS = snippets.map((x) => x.snippet).join("\n")
 
-    return <style>
-        {snippets.length > 0 &&
-            snippets.map((x) => x.snippet).join("\n")
-        }
-    </style>
+    return <style
+        dangerouslySetInnerHTML={{
+            __html: combinedCSS,
+        }}
+    />
 }
 
 export default CSSnippets;

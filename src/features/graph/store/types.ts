@@ -4,6 +4,7 @@ export interface Layer {
 
     /** Hex or CSS color representing the layer visually */
     color: string
+    icon: string
 }
 
 export interface GraphNodeProps<T = unknown> {

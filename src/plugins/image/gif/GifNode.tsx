@@ -3,9 +3,8 @@ import { GraphNode } from "@/features/graph/graphview"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { Icon } from '@iconify/react/dist/iconify.js'
-import { GIFNodeData } from './gifNode.types'
-import { GraphNodeProps } from '../../store'
-import { updateNode } from '../../store/graphSlice'
+import { GraphNodeProps, updateNode } from '@/features/graph'
+import { ImageNodeData } from '../types'
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
     <img
@@ -18,9 +17,12 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
 ))
 OptimizedImage.displayName = "OptimizedImage"
 
+const GIFNode = ({ node }: GraphNodeProps<ImageNodeData>) => {
+    if (node.data.type !== "gif") {
+        return null
+    }
 
-const GIFNode = ({ node }: GraphNodeProps<GIFNodeData>) => {
-    const { gifURL, isPlaying } = node.data
+    const { imageUrl, isPlaying } = node.data
     const [firstFrame, setFirstFrame] = useState<string | null>(null)
 
     const dispatch = useDispatch()
@@ -38,7 +40,7 @@ const GIFNode = ({ node }: GraphNodeProps<GIFNodeData>) => {
 
     useEffect(() => {
         const img = new Image()
-        img.src = gifURL
+        img.src = imageUrl
 
         img.onload = () => {
             const canvas = document.createElement("canvas")
@@ -54,10 +56,10 @@ const GIFNode = ({ node }: GraphNodeProps<GIFNodeData>) => {
                 setFirstFrame(firstFrameData)
             }
         }
-    }, [gifURL])
+    }, [imageUrl])
 
 
-    const imageSrc = isPlaying ? gifURL : firstFrame ?? "/fallback-image.png"
+    const imageSrc = isPlaying ? imageUrl : firstFrame ?? "/fallback-image.png"
     const icon = isPlaying ? "mdi:pause" : "mdi:play"
     const aspectRatio = node.size.width / node.size.height
 

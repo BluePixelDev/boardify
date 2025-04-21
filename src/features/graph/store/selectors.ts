@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { graphSelectors } from "./graphSlice"
 import { RootState } from "@/store"
+import { layerSelectors } from "./layersSlice"
 
 export const selectAllNodes = (state: RootState) =>
     graphSelectors.selectAll(state.graph)
@@ -25,6 +26,11 @@ export const selectNodesByLayer = (layerId: string) =>
         graphSelectors.selectAll,
         nodes => nodes.filter(node => node.layerId === layerId)
     )
+export const selectAllNodesOnCurrentLayer = (state: RootState) => 
+    graphSelectors.selectAll(state.graph).filter(node => node.layerId === state.layers.selectedLayerId)
+
+export const selectAllLayers = (state: RootState) =>
+    layerSelectors.selectAll(state.layers)
 
 export const selectSelectedLayerId = (state: RootState) =>
     state.layers.selectedLayerId
@@ -38,4 +44,4 @@ export const selectCurrentLayer = createSelector(
 export const selectNodesInCurrentLayer = createSelector(
     [selectAllNodes, selectSelectedLayerId],
     (nodes, selectedLayerId) => nodes.filter(node => node.layerId === selectedLayerId)
-);
+)

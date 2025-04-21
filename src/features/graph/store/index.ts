@@ -4,6 +4,7 @@ import { configureStore } from "@reduxjs/toolkit"
 
 export * from "./selectors"
 export type * from "./types"
+export * from "./layersSlice"
 export * from "./graphSlice"
 
 export const store = configureStore({
