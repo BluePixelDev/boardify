@@ -2,6 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
+    paths-ignore:
+     - 'README.md'
+     - 'LICENSE'
     branches:
       - gh-pages
 
