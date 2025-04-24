@@ -28,7 +28,7 @@ export const IntroSection = () => {
 
             <Box mt={5} textAlign="center">
                 <Link
-                    href="https://github.com/your-org/your-repo"
+                    href="https://github.com/bluepixeldev/boardify"
                     target="_blank"
                     rel="noopener noreferrer"
                     underline="none"
