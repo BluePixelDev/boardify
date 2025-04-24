@@ -6,7 +6,7 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/bluepixeldev/boardify)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BluePixelDev/boardify)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bluepixeldev/boardify/build-test)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bluepixeldev/boardify/build-test.yml)
 
 ---
 
