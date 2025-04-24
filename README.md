@@ -2,7 +2,7 @@
 
 **An Extendable React + Tauri Desktop App for Organizing Media on an Infinite Board**
 
-<img src="https://github.com/BluePixelDev/boardify/blob/main/app-icon.png" width="100" height="100" alt="Boardify Icon">
+<img src="app-icon.png" width="100" height="100" alt="Boardify Icon">
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/bluepixeldev/boardify)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BluePixelDev/boardify)

@@ -2,6 +2,11 @@ name: CI - Code Quality
 
 on:
   push:
+    paths-ignore:
+      - .github/workflows/ci.yml
+      - .github/ISSUE_TEMPLATE/**
+      - README.md
+      - LICENSE
     branches:
       - main
       - release
