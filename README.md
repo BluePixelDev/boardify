@@ -7,16 +7,13 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/bluepixeldev/boardify)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BluePixelDev/boardify)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bluepixeldev/boardify/build-test.yml)
-
----
+![GitHub Release](https://img.shields.io/github/v/release/bluepixeldev/boardify)
 
 ## Overview
 
 **Boardify** is a cross-platform desktop application that lets you sort, arrange, and manage reference material such as **images**, **videos**, and other media files on a limitless, zoomable canvas. Built with **React** and powered by **Tauri**, it offers a lightweight yet powerful interface for creative professionals, researchers, and digital collectors.
 
 Whether you're designing a moodboard, organizing research, or managing project assets—Boardify turns your screen into an intuitive infinite whiteboard.
-
----
 
 ## Features
 
@@ -26,15 +23,11 @@ Whether you're designing a moodboard, organizing research, or managing project a
 - **Lightweight & Fast** — Built with Tauri for native speed and low system resource usage.
 - **React UI** — Clean and customizable interface using modern web technologies.
 
----
-
 ## Tech Stack
 
 - **Frontend:** React
 - **Backend/Container:** Tauri (Rust + WebView)
 - **Build System:** Cross-platform support for Windows, macOS, and Linux
-
----
 
 ## Use Cases
 
@@ -43,8 +36,6 @@ Whether you're designing a moodboard, organizing research, or managing project a
 - Academic and research media references
 - Design asset organization
 - Collecting and curating creative resources
-
----
 
 ## Getting Started
 
@@ -69,16 +60,12 @@ npm run tauri dev
 
 > **Note**: Make sure you have all [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) installed.
 
----
-
 ## Roadmap
 
 - Support for more file types (PDF, audio, documents)
 - Search and tagging system
 - Plugin API for custom tools
 - Markdown notes
-
----
 
 ## Contributing
 
