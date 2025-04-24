@@ -14,7 +14,6 @@ import Home from "./Routes/Home"
 import { ContextMenuProvider } from "./features/app/context-menu"
 
 function App() {
-
   return (
     <Provider store={store}>
       <ContextMenuProvider>

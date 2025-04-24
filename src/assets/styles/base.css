@@ -32,9 +32,6 @@ body,
 
 :root {
     /* Colors */
-    --accent-color: #007bff;
-    --background-color: #1e1e1e;
-    --sidebar-bg: #2c2c2c;
     --separator-color: #444;
     --text-color: #f6f6f6;
     --card-color: #333436;

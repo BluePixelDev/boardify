@@ -20,7 +20,7 @@ export interface ThemeContext {
 const ThemeContext = createContext<ThemeContext>({
     fontFamily: "Roboto, sans-serif",
     fontSize: "small",
-    accentColor: "#8c33eb",
+    accentColor: "#aa52bf",
     sidebarBg: "#212426",
     titlebarBg: "#333333",
     titlebarHeight: "40px",

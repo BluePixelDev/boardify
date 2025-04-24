@@ -23,11 +23,11 @@ class ImporterRegistry {
         const fileBuffer = await event.file.arrayBuffer();
 
         for (const { importer } of this.importers) {
-            if (!importer){
+            if (!importer) {
                 continue;
             }
-            
-            if (importer.canHandle(event.file, fileBuffer)) {
+
+            if (await importer.canHandle(event.file, fileBuffer)) {
                 return await importer.importData(event);
             }
         }

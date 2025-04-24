@@ -1,17 +1,23 @@
 import { IImporter, ImportEvent, ImportResult } from "@/features/importing"
 import { createNodeFromImportEvent } from "@/utils/nodeUtils"
 import { addNode } from "../../../features/graph/store"
-import { getImageFormatFromHeaders } from "@/utils"
+import { getFileFormat } from "@/utils"
 import { ImageNodeData } from "../types"
 
+const IMAGE_FORMATS = ["jpg", "jpeg", "png", "webp", "bmp", "tiff"]
 export class ImageImporter implements IImporter {
-    canHandle(_file: File, content: ArrayBuffer): boolean {
-        const format = getImageFormatFromHeaders(content)
+    async canHandle(_file: File, content: ArrayBuffer): Promise<boolean> {
+        const format = await getFileFormat(content)
 
-        if (format == "gif")
+        if (!format) {
             return false
+        }
 
-        return format !== null
+        if (IMAGE_FORMATS.includes(format)) {
+            return true
+        }
+
+        return false
     }
 
     async importData(event: ImportEvent): Promise<ImportResult> {

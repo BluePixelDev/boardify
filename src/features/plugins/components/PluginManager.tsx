@@ -7,12 +7,12 @@ type PluginModule = {
 }
 
 interface PluginContextType {
-    plugins: Map<string, PluginDefinition>;
-    loadPlugin: (pluginId: string) => void;
-    unloadPlugin: (pluginId: string) => void;
+    plugins: Map<string, PluginDefinition>
+    loadPlugin: (pluginId: string) => void
+    unloadPlugin: (pluginId: string) => void
 }
 
-const PluginContext = createContext<PluginContextType | undefined>(undefined);
+const PluginContext = createContext<PluginContextType | undefined>(undefined)
 
 export const PluginManager = ({ children }: { children: React.ReactNode }) => {
     const [plugins, setPlugins] = useState<Map<string, PluginDefinition>>(new Map())
@@ -25,14 +25,14 @@ export const PluginManager = ({ children }: { children: React.ReactNode }) => {
         Object.values(plugins).forEach((mod) => {
             const pluginModule = mod as PluginModule
             if (pluginModule?.pluginDefinition) {
-                const plugin = pluginModule.pluginDefinition;
-                newPlugins.set(plugin.id, plugin);
+                const plugin = pluginModule.pluginDefinition
+                newPlugins.set(plugin.id, plugin)
 
                 try {
-                    plugin.onRegister?.();
-                    info(`Plugin ${plugin.id} registered successfully.`);
+                    plugin.onRegister?.()
+                    info(`Plugin ${plugin.id} registered successfully.`)
                 } catch (err) {
-                    error(`Error in hooks for plugin ${plugin.id}: ${err}`);
+                    error(`Error in hooks for plugin ${plugin.id}: ${err}`)
                 }
             }
         })
@@ -96,9 +96,9 @@ export const PluginManager = ({ children }: { children: React.ReactNode }) => {
 }
 
 export const usePluginManager = (): PluginContextType => {
-    const context = useContext(PluginContext);
+    const context = useContext(PluginContext)
     if (!context) {
-        throw new Error("usePluginManager must be used within a PluginProvider");
+        throw new Error("usePluginManager must be used within a PluginProvider")
     }
-    return context;
+    return context
 }

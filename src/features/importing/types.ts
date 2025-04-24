@@ -18,6 +18,6 @@ export type ImportResult = {
 }
 
 export interface IImporter {
-    canHandle(file: File, content: ArrayBuffer): boolean;
+    canHandle(file: File, content: ArrayBuffer): Promise<boolean>;
     importData(event: ImportEvent): Promise<ImportResult>;
 }

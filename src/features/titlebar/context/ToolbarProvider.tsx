@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
-import { ToolbarItem } from '../types/toolbar'
+import { ToolbarItem } from '../types'
 
 interface ToolbarContextProps {
     items: ToolbarItem[]

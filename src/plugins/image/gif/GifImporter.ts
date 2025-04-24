@@ -2,12 +2,12 @@ import { IImporter, ImportEvent, ImportResult } from "@/features/importing";
 import { createNodeFromImportEvent } from "@/utils/nodeUtils";
 import { addNode } from "../../../features/graph/store";
 import { ImageNodeData } from "../types";
+import { getFileFormat } from "@/utils";
 
 export class GIFImporter implements IImporter {
-    canHandle(_file: File, content: ArrayBuffer): boolean {
-        const header = new Uint8Array(content.slice(0, 6));
-        const headerString = String.fromCharCode(...header);
-        return headerString === 'GIF89a' || headerString === 'GIF87a';
+    async canHandle(_file: File, buffer: ArrayBuffer): Promise<boolean> {
+        const format = await getFileFormat(buffer)
+        return format === "gif" 
     }
 
     async importData(event: ImportEvent): Promise<ImportResult> {

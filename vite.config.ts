@@ -20,6 +20,11 @@ export default defineConfig(async () => ({
       "@snippets": path.resolve(__dirname, './src/features/app-snipets')
     },
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: './setupTests.ts',
+  },
 
   plugins: [react()],
 
@@ -36,7 +41,6 @@ export default defineConfig(async () => ({
       }
       : undefined,
     watch: {
-      // 3. tell vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
     },
   },

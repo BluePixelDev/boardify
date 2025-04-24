@@ -1,8 +1,7 @@
 import { ToastContainer } from "react-toastify"
-import AppSetup from "./AppSetup"
 import { NotificationOverlay } from "./features/notifications"
 import { isSettingsModalOpen, SettingsModal, toggleSettingsModal } from "./features/settings"
-import CSSSnippets from "./features/snippets/CSSSnippets"
+import CSSSnippets from "./features/snippets/Snippets"
 import { Titlebar, ToolbarProvider } from "./features/titlebar"
 import { ModalContainer } from "./features/modal"
 import { AppTheme } from "./features/theme"
@@ -22,8 +21,6 @@ export const AppLayout = (({ children }: AppLayoutProps) => {
         <PluginManager>
             <AppTheme>
                 <ToolbarProvider>
-
-                    <AppSetup />
                     <CSSSnippets />
                     <Titlebar />
                     <NotificationOverlay />

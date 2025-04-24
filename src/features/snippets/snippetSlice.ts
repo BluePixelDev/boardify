@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-type CSSSnippet = {
+type Snippet = {
   id: string
   name: string
   snippet: string
   enabled?: boolean
 }
 
-interface CSSSnippetState {
-  snippets: CSSSnippet[]
+interface SnippetState {
+  snippets: Snippet[]
 }
 
-const initialState: CSSSnippetState = {
+const initialState: SnippetState = {
   snippets: [],
 }
 
-const cssSnippetsSlice = createSlice({
+const snippetsSlice = createSlice({
   name: "cssSnippets",
   initialState,
   reducers: {
@@ -34,6 +34,6 @@ const cssSnippetsSlice = createSlice({
   }
 })
 
-export type { CSSSnippet, CSSSnippetState }
-export const { addSnippet, removeSnippet, updateSnippet } = cssSnippetsSlice.actions
-export default cssSnippetsSlice.reducer
+export type { Snippet, SnippetState as CSSSnippetState }
+export const { addSnippet, removeSnippet, updateSnippet } = snippetsSlice.actions
+export default snippetsSlice.reducer

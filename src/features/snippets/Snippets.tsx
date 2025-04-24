@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/store";
 import { selectEnabledSnippets } from "./snippetSelectors";
 
-export const CSSnippets = () => {
+export const Snippets = () => {
     const snippets = useAppSelector(selectEnabledSnippets)
     const combinedCSS = snippets.map((x) => x.snippet).join("\n")
 
@@ -12,4 +12,4 @@ export const CSSnippets = () => {
     />
 }
 
-export default CSSnippets;
+export default Snippets

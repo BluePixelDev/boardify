@@ -2,26 +2,31 @@ import { DropdownItem } from "@/features/app/dropdown"
 import { useToolbar } from "../context/ToolbarProvider"
 import { ToolbarItem } from "../types"
 
-function groupItemsByPath(items: ToolbarItem[]) {
-    return items.reduce((acc, item) => {
-        const pathParts = item.path.split('/')
-        let currentGroup = acc
-
-        pathParts.forEach((part, index) => {
-            if (index === pathParts.length - 1) {
-                if (!currentGroup[part]) currentGroup[part] = []
-                currentGroup[part].push(item)
-            } else {
-                if (!currentGroup[part]) currentGroup[part] = {}
-                currentGroup = currentGroup[part]
-            }
-        })
-
-        return acc
-    }, {} as Record<string, any>)
+interface GroupedItems {
+    [key: string]: GroupedItems | ToolbarItem[]
 }
 
-function renderToolbarItems(items: Record<string, any>, parentPath: string = '') {
+function groupItemsByPath(items: ToolbarItem[]): GroupedItems {
+    return items.reduce((acc: GroupedItems, item) => {
+        const pathParts = item.path.split('/')
+        pathParts.reduce((currentGroup, part, index) => {
+            if (index === pathParts.length - 1) {
+                if (!Array.isArray(currentGroup[part])) {
+                    currentGroup[part] = []
+                }
+                (currentGroup[part] as ToolbarItem[]).push(item)
+            } else {
+                if (!currentGroup[part] || Array.isArray(currentGroup[part])) {
+                    currentGroup[part] = {}
+                }
+            }
+            return currentGroup[part] as GroupedItems
+        }, acc)
+        return acc
+    }, {} as GroupedItems)
+}
+
+function renderToolbarItems(items: GroupedItems, parentPath = '') {
     return Object.keys(items).map((key) => {
         const currentPath = parentPath ? `${parentPath}/${key}` : key
         const subItems = items[key]
@@ -30,6 +35,7 @@ function renderToolbarItems(items: Record<string, any>, parentPath: string = '')
         return (
             <DropdownItem
                 key={currentPath}
+                topLevel={parentPath === ''}
                 label={key}
                 onClick={onClick}
                 expandOnHover={true}

@@ -5,6 +5,7 @@ import "./titlebar.styles.css"
 import TitlebarButton from "./TitlebarButton"
 import { useAppDispatch } from "@/store"
 import { openSettingsModal } from "@/features/settings"
+import TitlebarToolbar from "./TitlebarToolbar"
 
 const appWindow = getCurrentWindow()
 export default function Titlebar() {
@@ -40,6 +41,7 @@ export default function Titlebar() {
 
     return (
         <div data-tauri-drag-region className="titlebar">
+            <TitlebarToolbar/>
                 <TitlebarButton label="Back" onClick={() => dispatch(openSettingsModal())}>
                     <Icon icon="material-symbols:settings" className="titlebar__icon" />
                 </TitlebarButton>

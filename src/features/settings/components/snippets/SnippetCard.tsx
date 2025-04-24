@@ -1,9 +1,9 @@
-import { CSSSnippet, updateSnippet, removeSnippet } from "@/features/snippets"
+import { Snippet, updateSnippet, removeSnippet } from "@/features/snippets"
 import { useAppDispatch } from "@/store"
 import { useState } from "react"
 
 interface SnippetCardProps {
-    snippet: CSSSnippet
+    snippet: Snippet
 }
 
 export const SnippetCard = ({ snippet }: SnippetCardProps) => {
