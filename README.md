@@ -80,4 +80,3 @@ We welcome contributions from the community! Whether it's a bug fix, feature req
 ---
 
 > "Boardify is a desktop app for organizing reference material such as images, videos, and other media on an infinite board."
-

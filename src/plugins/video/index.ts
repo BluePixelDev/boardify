@@ -7,7 +7,7 @@ import { importerRegistry } from "@/features/importing";
 let renderer: VideoNodeRenderer;
 let importer: VideoImporter;
 
-export const pluginDefinition: PluginDefinition = {
+const plugin: PluginDefinition = {
   name: "Video Plugin",
   id: "core-video-plugin",
   description: "A plugin that adds video support to the application.",
@@ -23,3 +23,5 @@ export const pluginDefinition: PluginDefinition = {
     importerRegistry.unregisterImporter(importer);
   },
 };
+
+export default plugin;

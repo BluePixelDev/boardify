@@ -3,7 +3,7 @@ import { error, info } from "@tauri-apps/plugin-log";
 import { PluginDefinition } from "../types";
 
 type PluginModule = {
-  pluginDefinition: PluginDefinition;
+  default: PluginDefinition;
 };
 
 interface PluginContextType {
@@ -21,28 +21,27 @@ export const PluginManager = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     info("Loading plugins...");
-    const plugins = import.meta.glob("@/plugins/**/index.ts", { eager: true });
-    const newPlugins = new Map<string, PluginDefinition>();
+    const modules = import.meta.glob("@/plugins/**/index.ts", { eager: true });
+    const loadedPlugins = new Map<string, PluginDefinition>();
 
-    Object.values(plugins).forEach((mod) => {
+    Object.values(modules).forEach((mod) => {
       const pluginModule = mod as PluginModule;
-      if (pluginModule?.pluginDefinition) {
-        const plugin = pluginModule.pluginDefinition;
-        newPlugins.set(plugin.id, plugin);
-
+      const plugin = pluginModule.default;
+      if (plugin) {
+        loadedPlugins.set(plugin.id, plugin);
         try {
           plugin.onRegister?.();
           info(`Plugin ${plugin.id} registered successfully.`);
         } catch (err) {
-          error(`Error in hooks for plugin ${plugin.id}: ${err}`);
+          error(`Error registering plugin ${plugin.id}: ${err}`);
         }
       }
     });
 
-    setPlugins(newPlugins);
+    setPlugins(loadedPlugins);
 
     return () => {
-      newPlugins.forEach((plugin) => {
+      loadedPlugins.forEach((plugin) => {
         if (plugin.onUnload) {
           try {
             plugin.onUnload();
@@ -55,39 +54,35 @@ export const PluginManager = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const loadPlugin = (pluginId: string) => {
-    const plugin = plugins.get(pluginId);
-    if (plugin) {
-      if (plugin.onRegister) {
-        try {
-          plugin.onRegister();
-          info(`Plugin ${plugin.id} registered successfully.`);
-        } catch (err) {
-          error(`Error in onRegister hook for plugin ${plugin.id}: ${err}`);
-        }
-      }
-    } else {
+    if (!plugins.has(pluginId)) {
       error(`Plugin with id ${pluginId} not found.`);
+      return;
+    }
+    const plugin = plugins.get(pluginId)!;
+    try {
+      plugin.onRegister?.();
+      info(`Plugin ${plugin.id} registered successfully.`);
+    } catch (err) {
+      error(`Error in onRegister for plugin ${plugin.id}: ${err}`);
     }
   };
 
   const unloadPlugin = (pluginId: string) => {
-    const plugin = plugins.get(pluginId);
-    if (plugin) {
-      if (plugin.onUnload) {
-        try {
-          plugin.onUnload();
-        } catch (err) {
-          error(`Error in onUnload hook for plugin ${plugin.id}: ${err}`);
-        }
-      }
-      setPlugins((prev) => {
-        const newPlugins = new Map(prev);
-        newPlugins.delete(pluginId);
-        return newPlugins;
-      });
-    } else {
+    if (!plugins.has(pluginId)) {
       error(`Plugin with id ${pluginId} not found.`);
+      return;
     }
+    const plugin = plugins.get(pluginId)!;
+    try {
+      plugin.onUnload?.();
+    } catch (err) {
+      error(`Error in onUnload for plugin ${plugin.id}: ${err}`);
+    }
+    setPlugins((prev) => {
+      const updated = new Map(prev);
+      updated.delete(pluginId);
+      return updated;
+    });
   };
 
   return (

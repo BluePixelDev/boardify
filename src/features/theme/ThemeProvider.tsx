@@ -27,7 +27,7 @@ export interface ThemeContext {
 const defaultTheme: ThemeContext = {
   fontFamily: "Roboto, sans-serif",
   fontSize: "small",
-  accentColor: "#7532a8",
+  accentColor: "#aa52bf",
   sidebarBg: "#212426",
   titlebarBg: "#333333",
   titlebarHeight: "40px",
@@ -62,36 +62,29 @@ export default function ThemeProvider({ children, value }: ThemeProviderProps) {
     <ThemeContext.Provider value={theme}>
       <style>
         {`
-                :root {
-                    --font-family: ${theme.fontFamily};
-                    --font-size: ${
-                      theme.fontSize === "small"
-                        ? "14px"
-                        : theme.fontSize === "large"
-                          ? "18px"
-                          : "16px"
-                    };
+          :root {
+            --font-family: ${theme.fontFamily};
+            --font-size: ${theme.fontSize === "small" ? "14px" : theme.fontSize === "large" ? "18px" : "16px"};
+            --accent-color: ${theme.accentColor};
+            --accent-color-hover: ${accentHover};
+            --accent-color-active: ${accentActive};
 
-                    --accent-color: ${theme.accentColor};
-                    --accent-color-hover: ${accentHover};
-                    --accent-color-active: ${accentActive};
+            /*---- Button Styles ----*/
+            --button-color: ${theme.buttonColor};
+            --button-color-hover: ${buttonHover};
+            --button-color-active: ${buttonActive};
 
-                    /*---- Button Styles ----*/
-                    --button-color: ${theme.buttonColor};
-                    --button-color-hover: ${buttonHover};
-                    --button-color-active: ${buttonActive};
-
-                    --sidebar-bg: ${theme.sidebarBg};
-                    --titlebar-bg: ${theme.titlebarBg};
-                    --titlebar-height: ${theme.titlebarHeight};
-                    --grid-bg: ${theme.gridBg};
-                    --separator-color: ${theme.separatorColor};
-                    --button-color: ${theme.buttonColor};
+            --sidebar-bg: ${theme.sidebarBg};
+            --titlebar-bg: ${theme.titlebarBg};
+            --titlebar-height: ${theme.titlebarHeight};
+            --grid-bg: ${theme.gridBg};
+            --separator-color: ${theme.separatorColor};
+            --button-color: ${theme.buttonColor};
                     
-                    --text-color: ${theme.textColor};
-                    --text-color-disabled: ${textColorDisabled};
-                }
-            `}
+            --text-color: ${theme.textColor};
+            --text-color-disabled: ${textColorDisabled};
+          }
+        `}
       </style>
       {children}
     </ThemeContext.Provider>

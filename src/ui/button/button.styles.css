@@ -27,9 +27,11 @@
 .button.accent {
     background-color: var(--accent-color);
 }
+
 .button.accent:hover:not(:disabled) {
     background-color: var(--accent-color-hover, #0056b3);
 }
+
 .button.accent:active:not(:disabled) {
     background-color: var(--accent-color-active, #004085);
 }

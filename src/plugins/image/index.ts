@@ -9,7 +9,7 @@ let renderer: ImageNodeRenderer;
 let importer: ImageImporter;
 let gifImporter: GIFImporter;
 
-export const pluginDefinition: PluginDefinition = {
+const plugin: PluginDefinition = {
   id: "core-image-plugin",
   name: "Image Plugin",
   description: "A plugin that adds image support to the application.",
@@ -27,3 +27,5 @@ export const pluginDefinition: PluginDefinition = {
     importerRegistry.unregisterImporter(importer);
   },
 };
+
+export default plugin;
