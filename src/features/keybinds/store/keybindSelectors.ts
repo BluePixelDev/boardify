@@ -1,3 +1,3 @@
-import { RootState } from "@/store"
+import { RootState } from "@/store";
 
-export const selectKeybinds = (state: RootState) => state.keybinds.keybinds
+export const selectKeybinds = (state: RootState) => state.keybinds.keybinds;

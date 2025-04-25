@@ -1,0 +1,35 @@
+.button {
+    background-color: var(--button-color, #007bff);
+    color: var(--text-color, #f6f6f6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: var(--font-size);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    color: var(--text-color-disabled, #888);
+}
+
+.button:hover:not(:disabled) {
+    background-color: var(--button-color-hover, #0056b3);
+}
+
+.button:active:not(:disabled) {
+    background-color: var(--button-color-active, #004085);
+}
+
+.button.accent {
+    background-color: var(--accent-color);
+}
+.button.accent:hover:not(:disabled) {
+    background-color: var(--accent-color-hover, #0056b3);
+}
+.button.accent:active:not(:disabled) {
+    background-color: var(--accent-color-active, #004085);
+}

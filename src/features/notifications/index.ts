@@ -1,3 +1,3 @@
-export * from './toast';
-export { default as NotificationOverlay } from "./ModalContainer"
-export { default as ErrorPopup } from "./components/ErrorPopup"
+export * from "./toast";
+export { default as NotificationOverlay } from "./ModalContainer";
+export { default as ErrorPopup } from "./components/ErrorPopup";

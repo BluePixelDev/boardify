@@ -1,21 +1,25 @@
-import "./node.styles.css"
+import "./node.styles.css";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InteractiveRect from "./InteractiveRect";
-import { clearAllNodeSelections, toggleNodeSelectionStatus, updateNode } from "../../store/graphSlice";
+import {
+  clearAllNodeSelections,
+  toggleNodeSelectionStatus,
+  updateNode,
+} from "../../store/graphSlice";
 import { isNodeSelected, selectNodeById } from "../../store/selectors";
 import { GraphNodePosition, GraphNodeSize } from "../../store";
 import { useAppSelector } from "@/store";
 
 type GraphNodeProps = {
-  nodeId: string
-  children?: React.ReactNode
-  aspectRatio?: number
-  className?: string
-  resizable?: boolean
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
-  onDoubleClick?: (event: React.MouseEvent<HTMLDivElement>) => void
-  onContextMenu?: (event: React.MouseEvent<HTMLDivElement>) => void
+  nodeId: string;
+  children?: React.ReactNode;
+  aspectRatio?: number;
+  className?: string;
+  resizable?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onDoubleClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onContextMenu?: (event: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 export default function GraphNode({
@@ -26,32 +30,31 @@ export default function GraphNode({
   resizable,
   onClick,
   onDoubleClick,
-  onContextMenu
+  onContextMenu,
 }: GraphNodeProps) {
-  const { zoom } = useAppSelector(state => state.graph.graphView);
+  const { zoom } = useAppSelector((state) => state.graph.graphView);
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const nodeData = useSelector(selectNodeById(nodeId))
-  const isSelected = useSelector(isNodeSelected(nodeId))
+  const nodeData = useSelector(selectNodeById(nodeId));
+  const isSelected = useSelector(isNodeSelected(nodeId));
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     onClick?.(event);
-    dispatch(clearAllNodeSelections())
+    dispatch(clearAllNodeSelections());
     dispatch(toggleNodeSelectionStatus(nodeId));
   };
-
 
   const handleMove = (newPos: GraphNodePosition) => {
     dispatch(
       updateNode({
         id: nodeId,
         changes: {
-          position: newPos
-        }
+          position: newPos,
+        },
       })
     );
-  }
+  };
 
   const handleResize = (newSize: GraphNodeSize) => {
     dispatch(
@@ -59,7 +62,7 @@ export default function GraphNode({
         id: nodeId,
         changes: {
           size: { ...newSize },
-        }
+        },
       })
     );
   };

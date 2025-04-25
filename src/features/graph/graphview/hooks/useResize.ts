@@ -20,19 +20,22 @@ export function useResize({
   resizable,
   anchor = { x: 0, y: 0 },
 }: {
-  zoom: number
-  aspectRatio?: number
-  minWidth: number
-  minHeight: number
+  zoom: number;
+  aspectRatio?: number;
+  minWidth: number;
+  minHeight: number;
   onResize?: (size: GraphNodeSize) => void;
-  onMove?: (position: GraphNodePosition) => void
-  size: GraphNodeSize
-  position: GraphNodePosition
-  resizable: boolean
+  onMove?: (position: GraphNodePosition) => void;
+  size: GraphNodeSize;
+  position: GraphNodePosition;
+  resizable: boolean;
   anchor?: GraphNodeAnchor;
 }): ResizeResult {
-
-  const resizingRef = useRef<{ isResizing: boolean; direction: Directions, dominantAxis?: 'horizontal' | 'vertical' }>({
+  const resizingRef = useRef<{
+    isResizing: boolean;
+    direction: Directions;
+    dominantAxis?: "horizontal" | "vertical";
+  }>({
     isResizing: false,
     direction: "se",
   });
@@ -84,12 +87,12 @@ export function useResize({
       const direction = resizingRef.current.direction;
 
       // Calculate the original edges based on the starting position.
-      const startEdges = getEdges(startPos.current, startSize.current)
+      const startEdges = getEdges(startPos.current, startSize.current);
 
-      const isWest = direction.includes("w")
-      const isEast = direction.includes("e")
-      const isNorth = direction.includes("n")
-      const isSouth = direction.includes("s")
+      const isWest = direction.includes("w");
+      const isEast = direction.includes("e");
+      const isNorth = direction.includes("n");
+      const isSouth = direction.includes("s");
 
       // We copy the original edge position
       const newEdges = { ...startEdges };
@@ -125,15 +128,15 @@ export function useResize({
       // Width limiting
       if (newWidth < minWidth) {
         newWidth = minWidth;
-        if (isWest) newEdges.left = newEdges.right - minWidth
-        if (isEast) newEdges.right = newEdges.left + minWidth
+        if (isWest) newEdges.left = newEdges.right - minWidth;
+        if (isEast) newEdges.right = newEdges.left + minWidth;
       }
 
       // Height Limiting
       if (newHeight < minHeight) {
         newHeight = minHeight;
-        if (isNorth) newEdges.top = newEdges.bottom - minHeight
-        if (isSouth) newEdges.bottom = newEdges.top + minHeight
+        if (isNorth) newEdges.top = newEdges.bottom - minHeight;
+        if (isSouth) newEdges.bottom = newEdges.top + minHeight;
       }
 
       if (aspectRatio) {
@@ -142,10 +145,11 @@ export function useResize({
         const absDeltaY = Math.abs(deltaY);
 
         if (!resizingRef.current.dominantAxis) {
-          resizingRef.current.dominantAxis = absDeltaX > absDeltaY ? 'horizontal' : 'vertical';
+          resizingRef.current.dominantAxis =
+            absDeltaX > absDeltaY ? "horizontal" : "vertical";
         }
 
-        if (resizingRef.current.dominantAxis === 'horizontal') {
+        if (resizingRef.current.dominantAxis === "horizontal") {
           newHeight = newWidth / aspectRatio;
         } else {
           newWidth = newHeight * aspectRatio;
@@ -165,11 +169,11 @@ export function useResize({
 
       const newSize = {
         width: newWidth,
-        height: newHeight
-      }
+        height: newHeight,
+      };
 
       onResize?.(newSize);
-      onMove?.(newPos)
+      onMove?.(newPos);
     },
     [zoom, minWidth, minHeight, aspectRatio, onResize, onMove, anchor]
   );

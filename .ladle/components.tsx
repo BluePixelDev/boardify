@@ -1,16 +1,17 @@
+import "@/App.css";
+import type { GlobalProvider } from "@ladle/react";
+import { Provider as StoreProvider } from "react-redux";
+import { store } from "@/store";
+import { ThemeProvider } from "@/features/theme";
 
-import "../src/App.css"
-import type { StoryDefault } from "@ladle/react"
-import React from "react"
-import { Provider } from 'react-redux'
-import { store } from "../src/store"
-
-export default {
-    decorators: [
-        (Story: React.FC) => (
-            <Provider store={store}>
-                <Story />
-            </Provider>
-        )
-    ]
-} satisfies StoryDefault
+export const Provider: GlobalProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
+  <>
+    <StoreProvider store={store}>
+      <ThemeProvider>{children}</ThemeProvider>
+    </StoreProvider>
+  </>
+);

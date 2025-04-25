@@ -1,31 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 interface SettingsState {
-    isSettingsModalOpen: boolean
+  isSettingsModalOpen: boolean;
 }
 
 const initialState: SettingsState = {
-    isSettingsModalOpen: false,
-}
-
+  isSettingsModalOpen: false,
+};
 
 const settingsSlice = createSlice({
-    name: "settings",
-    initialState,
-    reducers: {
-        toggleSettingsModal: (state) => {
-            state.isSettingsModalOpen = !state.isSettingsModalOpen
-        },
-        openSettingsModal: (state) => {
-            state.isSettingsModalOpen = true
-        }
+  name: "settings",
+  initialState,
+  reducers: {
+    toggleSettingsModal: (state) => {
+      state.isSettingsModalOpen = !state.isSettingsModalOpen;
     },
-})
+    openSettingsModal: (state) => {
+      state.isSettingsModalOpen = true;
+    },
+  },
+});
 
-export const {
-    toggleSettingsModal,
-    openSettingsModal,
-} = settingsSlice.actions
+export const { toggleSettingsModal, openSettingsModal } = settingsSlice.actions;
 
-export default settingsSlice.reducer
-export type { SettingsState }
+export default settingsSlice.reducer;
+export type { SettingsState };

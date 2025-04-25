@@ -1,4 +1,4 @@
 export type VideoNodeData = {
-    src: string;
-    type: string
-}
+  src: string;
+  type: string;
+};

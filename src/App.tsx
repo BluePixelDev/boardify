@@ -1,17 +1,17 @@
-import { store } from "@store"
-import { Provider } from "react-redux"
-import "./App.css"
+import { store } from "@store";
+import { Provider } from "react-redux";
+import "./App.css";
 
 import {
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
-} from 'react-router-dom'
-import { AppLayout } from "./AppLayout"
-import Editor from "./Routes/Editor"
-import Home from "./Routes/Home"
-import { ContextMenuProvider } from "./ui/context-menu"
+} from "react-router-dom";
+import { AppLayout } from "./AppLayout";
+import Editor from "./Routes/Editor";
+import Home from "./Routes/Home";
+import { ContextMenuProvider } from "./ui/context-menu";
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
         </AppLayout>
       </ContextMenuProvider>
     </Provider>
-  )
+  );
 }
 
-export default App
+export default App;

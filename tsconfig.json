@@ -62,7 +62,7 @@
   },
   "include": [
     "src"
-  ],
+, ".ladle/components.tsx"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

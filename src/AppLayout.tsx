@@ -1,38 +1,42 @@
-import { ToastContainer } from "react-toastify"
-import { NotificationOverlay } from "./features/notifications"
-import { isSettingsModalOpen, SettingsModal, toggleSettingsModal } from "./features/settings"
-import CSSSnippets from "./features/snippets/Snippets"
-import { Titlebar, ToolbarProvider } from "./features/titlebar"
-import { ModalContainer } from "./ui/modal"
-import { AppTheme } from "./features/theme"
-import { PluginManager } from "./features/plugins"
-import { useAppDispatch, useAppSelector } from "./store"
+import { ToastContainer } from "react-toastify";
+import { NotificationOverlay } from "./features/notifications";
+import {
+  isSettingsModalOpen,
+  SettingsModal,
+  toggleSettingsModal,
+} from "./features/settings";
+import CSSSnippets from "./features/snippets/Snippets";
+import { Titlebar, ToolbarProvider } from "./features/titlebar";
+import { ModalContainer } from "./ui/modal";
+import { ThemeProvider } from "./features/theme";
+import { PluginManager } from "./features/plugins";
+import { useAppDispatch, useAppSelector } from "./store";
 
 interface AppLayoutProps {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export const AppLayout = (({ children }: AppLayoutProps) => {
+export const AppLayout = ({ children }: AppLayoutProps) => {
+  const settingsOpen = useAppSelector(isSettingsModalOpen);
+  const dispatch = useAppDispatch();
 
-    const settingsOpen = useAppSelector(isSettingsModalOpen)
-    const dispatch = useAppDispatch()
-
-    return (
-        <PluginManager>
-            <AppTheme>
-                <ToolbarProvider>
-                    <CSSSnippets />
-                    <Titlebar />
-                    <NotificationOverlay />
-                    <ModalContainer className="modal-dim settings-modal__container" show={settingsOpen}>
-                        <SettingsModal onClose={() => dispatch(toggleSettingsModal())} />
-                    </ModalContainer>
-                    <ToastContainer />
-                    <div className="app-container">
-                        {children}
-                    </div>
-                </ToolbarProvider>
-            </AppTheme>
-        </PluginManager>
-    )
-})
+  return (
+    <PluginManager>
+      <ThemeProvider>
+        <ToolbarProvider>
+          <CSSSnippets />
+          <Titlebar />
+          <NotificationOverlay />
+          <ModalContainer
+            className="modal-dim settings-modal__container"
+            show={settingsOpen}
+          >
+            <SettingsModal onClose={() => dispatch(toggleSettingsModal())} />
+          </ModalContainer>
+          <ToastContainer />
+          <div className="app-container">{children}</div>
+        </ToolbarProvider>
+      </ThemeProvider>
+    </PluginManager>
+  );
+};

@@ -1,50 +1,50 @@
-import { createSlice, createEntityAdapter, PayloadAction } from "@reduxjs/toolkit"
-import { Layer } from "./types"
+import {
+  createSlice,
+  createEntityAdapter,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { Layer } from "./types";
 
-const layersAdapter = createEntityAdapter<Layer>()
-export const layerSelectors = layersAdapter.getSelectors()
+const layersAdapter = createEntityAdapter<Layer>();
+export const layerSelectors = layersAdapter.getSelectors();
 
 const initialLayer = {
-    id: "default-layer",
-    name: "Layer 1",
-    icon: "bxs:layer",
-}
+  id: "default-layer",
+  name: "Layer 1",
+  icon: "bxs:layer",
+};
 
 const layersSlice = createSlice({
-    name: "layers",
-    initialState: layersAdapter.getInitialState({
-        selectedLayerId: initialLayer.id,
-        entities: { [initialLayer.id]: initialLayer },
-        ids: [initialLayer.id]
-    }),
-    reducers: {
-        addLayer: layersAdapter.addOne,
-        removeLayer: (state, action: PayloadAction<string>) => {
-            const idToRemove = action.payload;
-            const allIds = layersAdapter.getSelectors().selectIds(state) as string[];
+  name: "layers",
+  initialState: layersAdapter.getInitialState({
+    selectedLayerId: initialLayer.id,
+    entities: { [initialLayer.id]: initialLayer },
+    ids: [initialLayer.id],
+  }),
+  reducers: {
+    addLayer: layersAdapter.addOne,
+    removeLayer: (state, action: PayloadAction<string>) => {
+      const idToRemove = action.payload;
+      const allIds = layersAdapter.getSelectors().selectIds(state) as string[];
 
-            if (allIds.length <= 1) {
-                return;
-            }
+      if (allIds.length <= 1) {
+        return;
+      }
 
-            layersAdapter.removeOne(state, idToRemove);
-            if (state.selectedLayerId === idToRemove) {
-                const remainingIds = allIds.filter(id => id !== idToRemove);
-                state.selectedLayerId = remainingIds[0] ?? null;
-            }
-        },
-        updateLayer: layersAdapter.updateOne,
-        selectLayer: (state, action: PayloadAction<string>) => {
-            state.selectedLayerId = action.payload;
-        },
-    }
-})
+      layersAdapter.removeOne(state, idToRemove);
+      if (state.selectedLayerId === idToRemove) {
+        const remainingIds = allIds.filter((id) => id !== idToRemove);
+        state.selectedLayerId = remainingIds[0] ?? null;
+      }
+    },
+    updateLayer: layersAdapter.updateOne,
+    selectLayer: (state, action: PayloadAction<string>) => {
+      state.selectedLayerId = action.payload;
+    },
+  },
+});
 
-export const {
-    addLayer,
-    removeLayer,
-    updateLayer,
-    selectLayer,
-} = layersSlice.actions
+export const { addLayer, removeLayer, updateLayer, selectLayer } =
+  layersSlice.actions;
 
-export default layersSlice.reducer
+export default layersSlice.reducer;

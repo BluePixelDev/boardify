@@ -14,11 +14,11 @@ export default function NodeCanvas() {
         if (Renderer) {
           const renderedNode = Renderer.render(node);
           if (renderedNode) {
-            return (  
+            return (
               <div key={node.id} className="node-canvas__item">
                 {renderedNode}
               </div>
-            )
+            );
           }
         }
 

@@ -1,25 +1,30 @@
-import { Icon } from "@iconify/react/dist/iconify.js"
-import "./modal.styles.css"
+import { Icon } from "@iconify/react/dist/iconify.js";
+import "./modal.styles.css";
 
 interface ModalWindowProps {
-    children: React.ReactNode
-    title?: string
-    className?: string
-    onClose?: () => void
+  children: React.ReactNode;
+  title?: string;
+  className?: string;
+  onClose?: () => void;
 }
 
-export const Modal = ({ children, className, onClose, title }: ModalWindowProps) => {
-    return (
-        <div className={`modal ${className}`}>
-            <div className="modal__header">
-                {title && <h2 className="modal__title">{title}</h2>}            
-                {onClose &&
-                    <button className="modal__close-button" onClick={onClose}>
-                        <Icon icon="ic:round-close" className="modal__close-icon" />
-                    </button>
-                }
-            </div>
-            {children}
-        </div>
-    )
-}
+export const Modal = ({
+  children,
+  className,
+  onClose,
+  title,
+}: ModalWindowProps) => {
+  return (
+    <div className={`modal ${className}`}>
+      <div className="modal__header">
+        {title && <h2 className="modal__title">{title}</h2>}
+        {onClose && (
+          <button className="modal__close-button" onClick={onClose}>
+            <Icon icon="ic:round-close" className="modal__close-icon" />
+          </button>
+        )}
+      </div>
+      {children}
+    </div>
+  );
+};

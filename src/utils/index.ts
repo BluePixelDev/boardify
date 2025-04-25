@@ -1,2 +1,2 @@
-export { getFileFormat } from "./formatUtils"
-export { createNode } from "./nodeUtils"
+export { getFileFormat } from "./formatUtils";
+export { createNode } from "./nodeUtils";

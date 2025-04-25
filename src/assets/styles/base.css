@@ -32,10 +32,8 @@ body,
 
 :root {
     /* Colors */
-    --separator-color: #444;
     --text-color: #f6f6f6;
     --card-color: #333436;
-
     --graph-bg: #222224;
 
     /* Spacing */
@@ -55,6 +53,23 @@ body,
     --z-index-tooltip: 70;
     --z-index-overlay: 80;
     --z-index-always-on-top: 9999;
+}
+
+*:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    color: var(--text-color);
 }
 
 li {

@@ -1,0 +1,14 @@
+.command-palette {
+  position: absolute;
+  z-index: var(1000);
+}
+
+.command-palette__input {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    outline: none;
+}

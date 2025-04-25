@@ -2,7 +2,13 @@ import { useAppSelector } from "@/store";
 import "./grid.styles.css";
 import { CSSProperties } from "react";
 
-export default function DotGrid({ color, opacity = 0.1 }: { color?: string, opacity?: number }) {
+export default function DotGrid({
+  color,
+  opacity = 0.1,
+}: {
+  color?: string;
+  opacity?: number;
+}) {
   const { position, zoom } = useAppSelector((state) => state.graph.graphView);
 
   const baseDotSize = 2;
@@ -19,7 +25,9 @@ export default function DotGrid({ color, opacity = 0.1 }: { color?: string, opac
     </svg>
   `.trim();
 
-  const encodedSvg = encodeURIComponent(svg).replace(/'/g, "%27").replace(/"/g, "%22");
+  const encodedSvg = encodeURIComponent(svg)
+    .replace(/'/g, "%27")
+    .replace(/"/g, "%22");
   const backgroundImage = `url("data:image/svg+xml,${encodedSvg}")`;
 
   const backgroundPosX = `${position.x}px`;

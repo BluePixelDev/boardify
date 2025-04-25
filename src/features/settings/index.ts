@@ -1,2 +1,2 @@
 export * from "./components/SettingsModal";
-export * from "./store"
+export * from "./store";
