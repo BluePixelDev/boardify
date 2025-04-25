@@ -1,12 +1,9 @@
+import { GraphNodeData } from '@/features/graph';
 import './videoNode.style.css'
 import { GraphNode } from "@/features/graph/graphview";
+import { NodeRenderer } from '@/features/graph/renderer';
 import React from "react";
-import { type NodeRenderer } from "../../features/graph/renderer/RendererRegistry";
-
-type VideoNodeData = {
-    src: string;
-    type: string
-}
+import { VideoNodeData } from './types';
 
 const OptimizedVideo = React.memo(({ src, type }: { src: string; type: string }) => (
     <video
@@ -16,15 +13,18 @@ const OptimizedVideo = React.memo(({ src, type }: { src: string; type: string })
     >
         <source src={src} type={type} />
     </video>
-));
+))
+OptimizedVideo.displayName = 'VideoNode';
 
-const VideoNode: NodeRenderer<VideoNodeData> = ({ node }) => {
-    const { src, type } = node.data;
+const VideoNode: NodeRenderer<VideoNodeData> = ({ node }: { node: GraphNodeData<VideoNodeData> }) => {
+    const { src, type } = node.data
+    const { width, height } = node.size
+    const aspect = width / height;
 
     return (
         <GraphNode
             nodeId={node.id}
-            aspectRatio={node.aspect}
+            aspectRatio={aspect}
             className="video-node"
         >
             <OptimizedVideo src={src ?? "/fallback-image.png"} type={type} />

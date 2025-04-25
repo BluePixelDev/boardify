@@ -1,37 +1,55 @@
-import { addNode } from "@/redux/nodes/nodesSlice";
-import { Dispatch } from "@reduxjs/toolkit";
-import { createNode } from "@/utils/nodeUtils";
-import { IImporter } from "@/features/importing/IImporter";
+import { addNode } from "@/features/graph"
+import { IImporter, ImportEvent, ImportResult } from "@/features/importing"
+import { getFileFormat } from "@/utils"
+import { createNodeFromImportEvent } from "@/utils/nodeUtils"
+import { VideoNodeData } from "./types"
 
-export class VideoImporter extends IImporter {
-    importData(file: File, dispatch: Dispatch): void {
-        const videoUrl = URL.createObjectURL(file);
-        const video = document.createElement('video') as HTMLVideoElement;
-
-        video.onloadedmetadata = () => {
-            const newNode = createNode({
-                type: "video",
-                position: {
-                    x: 0,
-                    y: 0,
-                },
-                size: {
-                    width: video.videoWidth,
-                    height: video.videoHeight,
-                },
-                aspect: video.videoWidth / video.videoHeight,
-                data: {
-                    src: videoUrl,
-                    alt: file.name,
-                    type: file.type
-                }
-            })
-            dispatch(addNode(newNode));
+const VIDEO_FORMATS = ['mp4', 'webm', 'ogg']
+export class VideoImporter implements IImporter {
+    async canHandle(_file: File, content: ArrayBuffer): Promise<boolean> {
+        const fileType = await getFileFormat(content)
+        if (!fileType) {
+            return false
         }
-        video.src = videoUrl;
+
+        return Promise.resolve(VIDEO_FORMATS.includes(fileType))
     }
 
-    getSupportedFormats(): string[] {
-        return ['mp4', 'webm', 'ogg']
+    async importData(event: ImportEvent): Promise<ImportResult> {
+        try {
+            const videoUrl = URL.createObjectURL(event.file)
+            const video = document.createElement('video') as HTMLVideoElement
+            video.src = videoUrl 
+            
+            await new Promise<void>((resolve, reject) => {
+                video.onloadedmetadata = () => resolve()
+                video.onerror = () => reject(new Error("Failed to load video metadata"))
+            })
+
+            const file = event.file
+            const size = {
+                width: video.videoWidth,
+                height: video.videoHeight,
+            }
+
+            video.onloadedmetadata = () => {
+                const newNode = createNodeFromImportEvent<VideoNodeData>(event, size,
+                    {
+                        type: "video",
+                        data: {
+                            src: videoUrl,
+                            type: file.type
+                        }
+                    })
+                event.dispatch(addNode(newNode))
+            }
+            video.src = videoUrl
+            console.log("Video URL: ", videoUrl)
+
+            return { success: true, message: 'Image imported successfully.' }
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error)
+            return { success: false, message: `Error importing image: ${message}` }
+        }
     }
 }
