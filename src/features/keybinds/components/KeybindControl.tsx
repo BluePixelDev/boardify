@@ -7,7 +7,7 @@ import {
     markAllNodesSelected,
     updateNode,
 } from "@/features/graph/store/graphSlice"
-import { toggleSidebar } from "@/features/app/appSlice"
+import { toggleSidebar } from "@/store/app/appSlice"
 import { selectKeybinds } from "../store/keybindSelectors"
 import { KeyAction, Keybind } from "../types"
 import { selectSelectedNodes } from "@/features/graph"

@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
 import { clearNotification } from '@/store/notificationsSlice';
-import ErrorPopup from './compoents/ErrorPopup';
+import ErrorPopup from './components/ErrorPopup';
 
 const NotificationOverlay = () => {
     const dispatch = useDispatch();

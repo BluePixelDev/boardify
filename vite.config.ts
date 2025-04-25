@@ -9,6 +9,7 @@ export default defineConfig(async () => ({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@ui': path.resolve(__dirname, './src/ui'),
       '@store': path.resolve(__dirname, './src/store/index.ts'),
       '@shared': path.resolve(__dirname, './src/shared'),
       '@views': path.resolve(__dirname, './src/views'),

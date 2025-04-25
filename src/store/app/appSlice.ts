@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
 interface AppState {
     openSidebar: boolean
@@ -6,10 +6,10 @@ interface AppState {
 
 const initialState: AppState = {
     openSidebar: false,
-};
+}
 
 const appSlice = createSlice({
-    name: "app",
+    name: "root",
     initialState,
     reducers: {
         toggleSidebar: (state) => {
@@ -18,7 +18,7 @@ const appSlice = createSlice({
     }
 })
 
-export type { AppState };
-export const { toggleSidebar } = appSlice.actions;
-export default appSlice.reducer;
+export type { AppState }
+export const { toggleSidebar } = appSlice.actions
+export default appSlice.reducer
 

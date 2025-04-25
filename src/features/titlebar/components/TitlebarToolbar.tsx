@@ -1,4 +1,4 @@
-import { DropdownItem } from "@/features/app/dropdown"
+import { DropdownItem } from "@/ui/dropdown"
 import { useToolbar } from "../context/ToolbarProvider"
 import { ToolbarItem } from "../types"
 

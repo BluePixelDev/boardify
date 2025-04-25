@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import "./fildedrop.styles.css"
-import { Modal } from "@/features/modal";
+import { Modal } from "@/ui/modal";
 
 export default function FileDropModal() {
     return (

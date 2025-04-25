@@ -5,4 +5,4 @@ export type {
     MenuContextItem,
     ContextMenuHandler,
     ContextMenuEvent
-} from "./types/menuContext"
+} from "./types"

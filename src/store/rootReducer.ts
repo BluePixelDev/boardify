@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit"
-import appReducer from "@/features/app/appSlice"
+import appReducer from "@/store/app/appSlice"
 import { settingsReducer } from "@/features/settings/store"
 import graphNodesReducer from "@/features/graph/store/graphSlice"
 import layersReducer from "@/features/graph/store/layersSlice"

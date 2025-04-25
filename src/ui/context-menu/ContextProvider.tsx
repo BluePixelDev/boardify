@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { ContextMenuEvent, ContextMenuHandler, MenuContextItem } from './types/menuContext'
+import { ContextMenuEvent, ContextMenuHandler, MenuContextItem } from './types'
 import ContextMenu from './ContextMenu'
 
 interface ContextMenuContextProps {

@@ -11,7 +11,7 @@ import {
 import { AppLayout } from "./AppLayout"
 import Editor from "./Routes/Editor"
 import Home from "./Routes/Home"
-import { ContextMenuProvider } from "./features/app/context-menu"
+import { ContextMenuProvider } from "./ui/context-menu"
 
 function App() {
   return (

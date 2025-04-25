@@ -7,7 +7,7 @@ import FileDropModal from "./FileDropModal"
 import { readFile } from "@tauri-apps/plugin-fs";
 import { basename } from "@tauri-apps/api/path";
 import { useAppDispatch } from "@/store"
-import { ModalContainer } from "@/features/modal"
+import { ModalContainer } from "@/ui/modal"
 
 export default function DragDropHandler(): JSX.Element {
     const [draggingFiles, setDraggingFiles] = useState(false)

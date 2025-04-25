@@ -7,6 +7,7 @@ interface DropdownItemProps {
     hoverDelay?: number
     expandOnHover?: boolean
     className?: string
+    shardClassName?: string
     style?: React.CSSProperties
     onClick?: () => void
     children?: React.ReactNode

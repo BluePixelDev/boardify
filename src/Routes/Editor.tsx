@@ -4,7 +4,7 @@ import DotGrid from "@/features/graph/grid/DotGrid";
 import NodeCanvas from "@/features/graph/renderer/components/NodesRenderer";
 import { AppDropzone } from "@/features/importing/filedrop";
 import SidebarButton, { Sidebar } from "@/features/sidebar";
-import { isSidebarOpen } from "@/features/app/selectors";
+import { isSidebarOpen } from "@/store/app/appSelectors";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { addLayer, selectAllLayers, selectLayer, selectSelectedLayerId } from "@/features/graph";

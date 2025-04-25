@@ -28,11 +28,14 @@
       "@/*": [
         "./src/*"
       ],
+      "@ui/*": [
+        "./src/ui/*"
+      ],
       "@shared": [
         "./src/shared/"
       ],
       "@store": [
-        "./src/store/index.ts"
+        "./src/store/"
       ],
       "@views": [
         "src/Routes"
