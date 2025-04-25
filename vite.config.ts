@@ -25,6 +25,10 @@ export default defineConfig(async () => ({
     globals: true,
     environment: "jsdom",
     setupFiles: './setupTests.ts',
+    coverage: {
+      reporter: ["text", "json-summary", "json"],
+      reportOnFailure: true,
+    }
   },
 
   plugins: [react()],
