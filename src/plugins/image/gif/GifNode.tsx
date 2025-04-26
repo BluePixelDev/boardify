@@ -1,4 +1,4 @@
-import "./GifNode.styles.css";
+import "./gifNode.styles.css";
 import { GraphNode } from "@/features/graph/graphview";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
