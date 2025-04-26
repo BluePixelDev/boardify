@@ -49,7 +49,8 @@ cd boardify
 2. Install dependencies:
 
 ```bash
-npm install
+npm install -g pnpm
+pnpm install
 ```
 
 3. Run the app:
