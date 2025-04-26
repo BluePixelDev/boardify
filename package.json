@@ -11,7 +11,8 @@
     "prepare": "husky",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "preinstall": "npx only-allow pnpm"
   },
   "husky": {
     "hooks": {
