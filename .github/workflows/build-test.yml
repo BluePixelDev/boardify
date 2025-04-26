@@ -1,14 +1,13 @@
-name: CI - Fast Tauri Build Test
+name: CI - Build Test
 
 on:
   push:
+    branches: [main]
     paths-ignore:
       - .github/workflows/build-test.yml
       - .github/ISSUE_TEMPLATE/**
       - README.md
       - LICENSE
-    branches:
-      - main
 
 jobs:
   build-test:
@@ -18,28 +17,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Set up Node.js with cache
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-
-      - name: Cache global npm packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          cache: "npm"
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
       - name: Cache Rust dependencies
-        uses: actions/cache@v3
+        uses: swatinem/rust-cache@v2
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          workspaces: "./src-tauri -> target"
 
       - name: Install Linux system dependencies
         run: |
@@ -50,11 +40,11 @@ jobs:
             librsvg2-dev \
             libwebkit2gtk-4.1-dev
 
-      - name: Install Tauri CLI (fast via npm)
-        run: npm install -g @tauri-apps/cli
-
       - name: Install project dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Install Tauri CLI via Cargo
+        run: cargo install tauri-cli --version "^2.0.0" --locked
 
       - name: Test build (dev mode)
         run: cargo tauri dev --no-default-features
