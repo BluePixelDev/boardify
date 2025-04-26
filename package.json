@@ -92,9 +92,10 @@
     "vite": "^6.2.2",
     "vitest": "^3.1.2"
   },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+  "optionalDependencies": {
+    "@tauri-apps/cli-darwin-arm64": "^2.5.0",
+    "@tauri-apps/cli-darwin-x64": "^2.5.0",
+    "@tauri-apps/cli-linux-x64-gnu": "^2.5.0",
+    "@tauri-apps/cli-win32-x64-msvc": "^2.5.0"
   }
 }
