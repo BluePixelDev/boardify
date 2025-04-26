@@ -1,82 +1,59 @@
-name: Release Workflow
+name: Publish
 
 on:
+  workflow_dispatch:
   push:
-    paths-ignore:
-      - .github/workflows/release.yml
-      - .github/ISSUE_TEMPLATE/**
-      - README.md
-      - LICENSE
     branches:
       - release
-  release:
-    types: [created]
 
 jobs:
-  build:
+  publish-tauri:
+    permissions:
+      contents: write
     strategy:
+      fail-fast: false,
       matrix:
-        platform: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - platform: "macos-latest"
+            args: "--target aarch64-apple-darwin"
+          - platform: "macos-latest"
+            args: "--target x86_64-apple-darwin"
+          - platform: "ubuntu-22.04"
+            args: ""
+          - platform: "windows-latest"
+            args: ""
+
     runs-on: ${{ matrix.platform }}
-
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Install Rust
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: Install Dependencies (Linux)
-        if: runner.os == 'Linux'
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
-          sudo apt update
-          sudo apt install -y libwebkit2gtk-4.0-dev libgtk-3-dev
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - name: Install Dependencies (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          choco install nsis
+      - name: install frontend dependencies
+        run: npm install
 
-      - name: Install Tauri CLI
-        run: cargo install tauri-cli
-
-      - name: Build Tauri App
-        run: cargo tauri build
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: tauri-build-${{ runner.os }}
-          path: src-tauri/target/release/bundle/
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Linux Build
-        uses: actions/download-artifact@v3
-        with:
-          name: tauri-build-Linux
-          path: build/linux/
-
-      - name: Download Windows Build
-        uses: actions/download-artifact@v3
-        with:
-          name: tauri-build-Windows
-          path: build/windows/
-
-      - name: Download macOS Build
-        uses: actions/download-artifact@v3
-        with:
-          name: tauri-build-macOS
-          path: build/macos/
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            build/linux/**
-            build/windows/**
-            build/macos/**
+      - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: app-v__VERSION__
+          releaseName: "App v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
