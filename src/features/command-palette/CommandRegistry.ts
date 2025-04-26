@@ -35,15 +35,18 @@ export class CommandRegistry implements ICommandRegistry {
     this.listeners.get(event)?.delete(listener);
   }
 
-  async executeCommand(commandId: string): Promise<void> {
+  async executeCommand(commandId: string, args: string[]): Promise<void> {
     const command = this.commands.get(commandId);
     if (!command) {
       throw new Error(`Command with id ${commandId} does not exist.`);
     }
-    await command.action({
-      dispatch: store.dispatch,
-      getState: store.getState,
-    });
+    await command.action(
+      {
+        dispatch: store.dispatch,
+        getState: store.getState,
+      },
+      args
+    );
   }
 
   addCommand(command: Command): void {
@@ -60,6 +63,10 @@ export class CommandRegistry implements ICommandRegistry {
     }
     this.commands.delete(commandId);
     this.emit("commandRemoved");
+  }
+
+  hasCommand(commandId: string): boolean {
+    return this.commands.has(commandId);
   }
 
   getCommands(): Command[] {

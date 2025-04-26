@@ -6,15 +6,19 @@ export interface Command {
   description: string;
   icon?: string;
   shortcut?: string;
-  action: (ctx: {
-    dispatch: AppDispatch;
-    getState: () => RootState;
-  }) => void | Promise<void>;
+  action: (
+    ctx: {
+      dispatch: AppDispatch;
+      getState: () => RootState;
+    },
+    args: string[]
+  ) => void | Promise<void>;
 }
 
 export interface ICommandRegistry {
   addCommand(command: Command): void;
   removeCommand(commandId: string): void;
+  hasCommand(commandId: string): boolean;
   getCommands(): Command[];
-  executeCommand(commandId: string): void;
+  executeCommand(commandId: string, args: string[]): void;
 }

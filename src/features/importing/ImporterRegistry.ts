@@ -21,6 +21,14 @@ class ImporterRegistry {
     );
   }
 
+  clearImporters() {
+    this.importers = [];
+  }
+
+  getImporters(): ImporterEntry[] {
+    return this.importers;
+  }
+
   async import(event: ImportEvent): Promise<ImportResult> {
     const fileBuffer = await event.file.arrayBuffer();
 

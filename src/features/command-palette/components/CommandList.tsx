@@ -5,7 +5,7 @@ export const CommandList = () => {
   const commands = useCommands();
 
   function executeCommand(id: string) {
-    commandRegistry.executeCommand(id);
+    commandRegistry.executeCommand(id, []);
   }
 
   return (

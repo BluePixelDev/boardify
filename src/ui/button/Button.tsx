@@ -6,7 +6,7 @@ type ButtonProps = {
   style?: React.CSSProperties;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export const Button = ({

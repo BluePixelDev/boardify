@@ -1,15 +1,15 @@
-import "./node.styles.css";
+import { useAppSelector } from "@/store";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import InteractiveRect from "./InteractiveRect";
+import { GraphNodePosition, GraphNodeSize } from "../../store";
 import {
   clearAllNodeSelections,
   toggleNodeSelectionStatus,
   updateNode,
 } from "../../store/graphSlice";
 import { isNodeSelected, selectNodeById } from "../../store/selectors";
-import { GraphNodePosition, GraphNodeSize } from "../../store";
-import { useAppSelector } from "@/store";
+import InteractiveRect from "./InteractiveRect";
+import "./node.styles.css";
 
 type GraphNodeProps = {
   nodeId: string;

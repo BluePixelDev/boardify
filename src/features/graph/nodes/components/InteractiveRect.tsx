@@ -1,14 +1,14 @@
-import "./node.styles.css";
 import React, {
   CSSProperties,
   MouseEventHandler,
   useCallback,
   useMemo,
 } from "react";
-import ResizeHandle from "./ResizeHandle";
 import { useDrag, useResize } from "../../graphview/hooks";
 import { DragDelta } from "../../graphview/hooks/useDrag";
 import { GraphNodePosition, GraphNodeSize } from "../../store";
+import "./node.styles.css";
+import ResizeHandle from "./ResizeHandle";
 
 type InteractiveRectProps = {
   zoom: number;

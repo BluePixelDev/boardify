@@ -27,10 +27,6 @@ export const selectNodesByLayer = (layerId: string) =>
   createSelector(graphSelectors.selectAll, (nodes) =>
     nodes.filter((node) => node.layerId === layerId)
   );
-export const selectAllNodesOnCurrentLayer = (state: RootState) =>
-  graphSelectors
-    .selectAll(state.graph)
-    .filter((node) => node.layerId === state.layers.selectedLayerId);
 
 export const selectAllLayers = (state: RootState) =>
   layerSelectors.selectAll(state.layers);
@@ -48,4 +44,10 @@ export const selectNodesInCurrentLayer = createSelector(
   [selectAllNodes, selectSelectedLayerId],
   (nodes, selectedLayerId) =>
     nodes.filter((node) => node.layerId === selectedLayerId)
+);
+
+export const selectAllNodesOnCurrentLayer = createSelector(
+  [selectAllNodes, selectCurrentLayer],
+  (nodes, currentLayer) =>
+    nodes.filter((node) => node.layerId === currentLayer?.id)
 );
