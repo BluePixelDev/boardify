@@ -6,7 +6,7 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/bluepixeldev/boardify)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BluePixelDev/boardify)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bluepixeldev/boardify/build-test.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Bluepixeldev/boardify/release.yml?branch=release)
 ![GitHub Release](https://img.shields.io/github/v/release/bluepixeldev/boardify)
 
 ## Overview
@@ -49,13 +49,14 @@ cd boardify
 2. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
+Make sure you have pnpm installed on your device
 
 3. Run the app:
 
 ```bash
-npm run tauri dev
+pnpm run tauri dev
 ```
 
 > **Note**: Make sure you have all [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) installed.
