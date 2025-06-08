@@ -6,7 +6,7 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/bluepixeldev/boardify)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BluePixelDev/boardify)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bluepixeldev/boardify/build-test.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bluepixeldev/boardify/release.yml?branch=release)
 ![GitHub Release](https://img.shields.io/github/v/release/bluepixeldev/boardify)
 
 ## Overview
@@ -49,7 +49,8 @@ cd boardify
 2. Install dependencies:
 
 ```bash
-npm install
+npm install -g pnpm
+pnpm install
 ```
 
 3. Run the app:
