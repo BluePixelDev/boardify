@@ -15,12 +15,13 @@ export default function TitlebarButton({
   onClick,
 }: ToolbarButtonProps) {
   return (
-    <button
+    <div
+      role="button"
       onClick={onClick}
       className={`titlebar__button ${className ?? ""}`}
       aria-label={label}
     >
       {children ? children : label && <span>{label}</span>}
-    </button>
+    </div>
   );
 }

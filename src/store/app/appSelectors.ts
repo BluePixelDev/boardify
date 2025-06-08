@@ -1,5 +1,5 @@
-import { RootState } from "../store";
+import { RootState } from "../types";
 
 export const isSidebarOpen = (state: RootState): boolean => {
-  return state.app.openSidebar;
+  return state.app.isSidebarOpen;
 };

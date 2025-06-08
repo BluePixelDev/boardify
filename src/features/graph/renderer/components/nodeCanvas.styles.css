@@ -1,9 +1,0 @@
-.node-canvas__container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.node-canvas__item {
-    display: contents;
-}

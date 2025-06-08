@@ -1,9 +1,9 @@
-import { GraphNodeData } from "@/features/graph";
+import { BoardNodeData } from "@/features/board";
 import "./videoNode.style.css";
-import { GraphNode } from "@/features/graph/graphview";
-import { NodeRenderer } from "@/features/graph/renderer";
+import { NodeRenderer } from "@/features/board/renderer";
 import React from "react";
 import { VideoNodeData } from "./types";
+import { BoardNode } from "@/features/board/nodes";
 
 const OptimizedVideo = React.memo(
   ({ src, type }: { src: string; type: string }) => (
@@ -17,16 +17,16 @@ OptimizedVideo.displayName = "VideoNode";
 const VideoNode: NodeRenderer<VideoNodeData> = ({
   node,
 }: {
-  node: GraphNodeData<VideoNodeData>;
+  node: BoardNodeData<VideoNodeData>;
 }) => {
   const { src, type } = node.data;
   const { width, height } = node.size;
   const aspect = width / height;
 
   return (
-    <GraphNode nodeId={node.id} aspectRatio={aspect} className="video-node">
+    <BoardNode nodeId={node.id} aspectRatio={aspect} className="video-node">
       <OptimizedVideo src={src ?? "/fallback-image.png"} type={type} />
-    </GraphNode>
+    </BoardNode>
   );
 };
 

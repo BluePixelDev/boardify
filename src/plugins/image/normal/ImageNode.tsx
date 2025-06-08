@@ -1,8 +1,8 @@
 import "./imageNode.styles.css";
-import { GraphNode } from "@/features/graph/graphview";
 import React from "react";
 import { ImageNodeData } from "../types";
-import { GraphNodeProps } from "@/features/graph";
+import { BoardNodeProps } from "@/features/board";
+import { BoardNode } from "@/features/board/nodes";
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
   <img
@@ -15,16 +15,16 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
 ));
 OptimizedImage.displayName = "OptimizedImage";
 
-const ImageNode = ({ node }: GraphNodeProps<ImageNodeData>) => {
+const ImageNode = ({ node }: BoardNodeProps<ImageNodeData>) => {
   const { width, height } = node.size;
   return (
-    <GraphNode
+    <BoardNode
       nodeId={node.id}
       aspectRatio={width / height}
       className="image-node"
     >
       <OptimizedImage src={node?.data.imageUrl ?? "/fallback-image.png"} />
-    </GraphNode>
+    </BoardNode>
   );
 };
 

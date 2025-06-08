@@ -1,10 +1,10 @@
 import "./gifNode.styles.css";
-import { GraphNode } from "@/features/graph/graphview";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { GraphNodeProps, updateNode } from "@/features/graph";
+import { BoardNodeProps, updateNode } from "@/features/board";
 import { ImageNodeData } from "../types";
+import { BoardNode } from "@/features/board/nodes";
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
   <img
@@ -17,7 +17,7 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
 ));
 OptimizedImage.displayName = "OptimizedImage";
 
-const GIFNode = ({ node }: GraphNodeProps<ImageNodeData>) => {
+const GIFNode = ({ node }: BoardNodeProps<ImageNodeData>) => {
   if (node.data.type !== "gif") {
     return null;
   }
@@ -65,7 +65,7 @@ const GIFNode = ({ node }: GraphNodeProps<ImageNodeData>) => {
   const aspectRatio = node.size.width / node.size.height;
 
   return (
-    <GraphNode nodeId={node.id} aspectRatio={aspectRatio} className="gif-node">
+    <BoardNode nodeId={node.id} aspectRatio={aspectRatio} className="gif-node">
       <OptimizedImage src={imageSrc} />
       <button
         className="gif-node__control-button no-drag"
@@ -74,7 +74,7 @@ const GIFNode = ({ node }: GraphNodeProps<ImageNodeData>) => {
       >
         <Icon icon={icon} className="gif-node__control-icon" />
       </button>
-    </GraphNode>
+    </BoardNode>
   );
 };
 

@@ -1,7 +1,7 @@
 import KeybindControl from "@/features/keybinds/components/KeybindControl";
-import { GraphView } from "@/features/graph/graphview";
-import DotGrid from "@/features/graph/grid/DotGrid";
-import NodeCanvas from "@/features/graph/renderer/components/NodesRenderer";
+import { BoardView } from "@/features/board/boardview";
+import DotGrid from "@/features/board/grid/DotGrid";
+import NodesRenderer from "@/features/board/renderer/components/NodesRenderer";
 import { AppDropzone } from "@/features/importing/filedrop";
 import SidebarButton, { Sidebar } from "@/features/sidebar";
 import { isSidebarOpen } from "@/store/app/appSelectors";
@@ -12,7 +12,7 @@ import {
   selectAllLayers,
   selectLayer,
   selectSelectedLayerId,
-} from "@/features/graph";
+} from "@/features/board";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Editor() {
@@ -54,9 +54,9 @@ export default function Editor() {
       </Sidebar>
       <div className="expand-box">
         <AppDropzone />
-        <GraphView grid={<DotGrid />}>
-          <NodeCanvas />
-        </GraphView>
+        <BoardView grid={<DotGrid />}>
+          <NodesRenderer />
+        </BoardView>
       </div>
     </div>
   );

@@ -1,0 +1,23 @@
+body,
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-container,
+.editor-container,
+.expand-box {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.app-container,
+.editor-container {
+  flex-direction: column;
+}
+
+.expand-box {
+  position: relative;
+}

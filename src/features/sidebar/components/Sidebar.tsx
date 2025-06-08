@@ -13,19 +13,19 @@ export default function Sidebar({ isExpanded, children }: SidebarProps) {
   const handleSidebarToggle = () => dispatch(toggleSidebar());
 
   return (
-    <>
+    <div className="sidebar-container">
       <aside className={`sidebar ${isExpanded ? "expanded" : "collapsed"}`}>
         <div className="sidebar-content">
           <div className="sidebar-inner">{children}</div>
         </div>
-
-        <button
-          className={`sidebar-toggle ${isExpanded ? "expanded" : ""}`}
-          onClick={handleSidebarToggle}
-        >
-          <Icon icon="bxs:left-arrow" className="sidebar-toggle__icon" />
-        </button>
       </aside>
-    </>
+      <div
+        className={`sidebar-toggle ${isExpanded ? "expanded" : "collapsed"}`}
+        onClick={handleSidebarToggle}
+        aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
+      >
+        <Icon icon="bxs:left-arrow" className="sidebar-toggle__icon" />
+      </div>
+    </div>
   );
 }

@@ -1,101 +1,82 @@
-/* Switch (Checkbox) */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.switch .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #555;
-    border-radius: 24px;
-    transition: background-color 0.3s;
-}
-
-.switch .slider::before {
-    content: "";
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: transform 0.3s;
-    border-radius: 50%;
-}
-
-.switch input:checked+.slider {
-    background-color: var(--accent-color);
-}
-
-.switch input:checked+.slider::before {
-    transform: translateX(20px);
-}
-
-/* Range Slider */
-input[type="range"] {
-    width: 100%;
-    height: 6px;
-    background: var(--separator-color);
-    border-radius: 3px;
-    appearance: none;
-    cursor: pointer;
-    padding: initial;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: var(--slider-thumb-size);
-    height: var(--slider-thumb-size);
-    background: var(--accent-color);
-    border-radius: 50%;
-    border: none;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: var(--slider-thumb-size);
-    height: var(--slider-thumb-size);
-    background: red;
-    border: none;
-    border-radius: 50%;
-}
-
-/* Text Inputs */
+/* Text Inputs & Textarea */
 input,
 input[type="text"],
 input[type="email"],
 input[type="password"],
 textarea {
-    padding: var(--input-padding);
-    border: 1px solid var(--separator-color);
-    border-radius: var(--border-radius);
-    background-color: var(--sidebar-bg);
-    color: var(--text-color);
-    font-size: 1rem;
-    transition: border 0.2s, box-shadow 0.2s;
-    resize: none;
-    margin: 0.1rem;
+  padding: var(--input-padding);
+  border: 1px solid var(--separator-color);
+  border-radius: var(--border-radius);
+  background-color: var(--sidebar-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  resize: none;
+  margin: 0.1rem;
 }
 
-input:focus,
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+}
+
+/* Checkbox */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  background-color: var(--sidebar-bg);
+  border: 1px solid var(--separator-color);
+}
+
+input[type="checkbox"] {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  border-radius: var(--border-radius);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--checkbox-size) / 1.2);
+  height: calc(var(--checkbox-size) / 1.2);
+  background-color: white;
+  border-radius: calc(var(--border-radius) / 1.2);
+  transform: translate(-50%, -50%);
+}
+
+/* Radio */
+input[type="radio"] {
+  width: var(--radio-size);
+  height: var(--radio-size);
+  border-radius: 50%;
+}
+
+input[type="radio"]:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--radio-size) / 1.2);
+  height: calc(var(--radio-size) / 1.2);
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
 }

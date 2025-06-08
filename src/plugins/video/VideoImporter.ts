@@ -1,4 +1,4 @@
-import { addNode } from "@/features/graph";
+import { addNode } from "@/features/board";
 import { IImporter, ImportEvent, ImportResult } from "@/features/importing";
 import { getFileFormat } from "@/utils";
 import { createNodeFromImportEvent } from "@/utils/nodeUtils";

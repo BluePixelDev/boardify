@@ -6,11 +6,11 @@ import {
   removeNode,
   markAllNodesSelected,
   updateNode,
-} from "@/features/graph/store/graphSlice";
+} from "@/features/board/store/graphSlice";
 import { toggleSidebar } from "@/store/app/appSlice";
 import { selectKeybinds } from "../store/keybindSelectors";
 import { KeyAction, Keybind } from "../types";
-import { selectSelectedNodes } from "@/features/graph";
+import { selectSelectedNodes } from "@/features/board";
 
 const movementAmount = 10;
 const movementLargeMultiplier = 5;

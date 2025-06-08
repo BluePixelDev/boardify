@@ -19,9 +19,9 @@ export const Modal = ({
       <div className="modal__header">
         {title && <h2 className="modal__title">{title}</h2>}
         {onClose && (
-          <button className="modal__close-button" onClick={onClose}>
+          <div className="modal__close-button" onClick={onClose}>
             <Icon icon="ic:round-close" className="modal__close-icon" />
-          </button>
+          </div>
         )}
       </div>
       {children}

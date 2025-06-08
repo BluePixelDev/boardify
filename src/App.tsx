@@ -1,5 +1,4 @@
 import { store } from "@store";
-import { Provider } from "react-redux";
 import "./App.css";
 
 import {
@@ -12,6 +11,7 @@ import { AppLayout } from "./AppLayout";
 import Editor from "./Routes/Editor";
 import Home from "./Routes/Home";
 import { ContextMenuProvider } from "./ui/context-menu";
+import { Provider } from "react-redux";
 
 function App() {
   return (

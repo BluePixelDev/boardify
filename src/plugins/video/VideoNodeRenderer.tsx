@@ -1,11 +1,11 @@
-import { GraphNodeData } from "@/features/graph";
-import { IRenderer } from "@/features/graph/renderer";
+import { BoardNodeData } from "@/features/board";
+import { IRenderer } from "@/features/board/renderer";
 import { VideoNodeData } from "./types";
 import VideoNode from "./VideoNode";
 
 export class VideoNodeRenderer implements IRenderer<VideoNodeData> {
-  render = (node: GraphNodeData<unknown>): JSX.Element | null => {
-    const nodeData = node as GraphNodeData<VideoNodeData>;
+  render = (node: BoardNodeData<unknown>): JSX.Element | null => {
+    const nodeData = node as BoardNodeData<VideoNodeData>;
     const data = nodeData.data;
 
     if (!nodeData) return null;
@@ -13,6 +13,6 @@ export class VideoNodeRenderer implements IRenderer<VideoNodeData> {
       return null;
     }
 
-    return <VideoNode node={node as GraphNodeData<VideoNodeData>} />;
+    return <VideoNode node={node as BoardNodeData<VideoNodeData>} />;
   };
 }

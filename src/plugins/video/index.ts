@@ -1,7 +1,7 @@
 import { PluginDefinition } from "@/features/plugins";
 import { VideoNodeRenderer } from "./VideoNodeRenderer";
 import { VideoImporter } from "./VideoImporter";
-import { rendererRegistry } from "@/features/graph";
+import { rendererRegistry } from "@/features/board";
 import { importerRegistry } from "@/features/importing";
 
 let renderer: VideoNodeRenderer;

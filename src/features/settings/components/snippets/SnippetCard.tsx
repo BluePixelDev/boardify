@@ -1,5 +1,6 @@
 import { Snippet, updateSnippet, removeSnippet } from "@/features/snippets";
 import { useAppDispatch } from "@/store";
+import { Toggle } from "@/ui/toggle/Toggle";
 import { useState } from "react";
 
 interface SnippetCardProps {
@@ -20,14 +21,12 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
   return (
     <div className="snippet-card">
       <label className="switch snippet-card__toggle">
-        <input
-          type="checkbox"
-          checked={snippet.enabled ?? true}
-          onChange={() =>
-            dispatch(updateSnippet({ ...snippet, enabled: !snippet.enabled }))
-          }
+        <Toggle
+          value={snippet.enabled}
+          onChange={() => {
+            dispatch(updateSnippet({ ...snippet, enabled: !snippet.enabled }));
+          }}
         />
-        <span className="slider" />
       </label>
 
       {editing ? (

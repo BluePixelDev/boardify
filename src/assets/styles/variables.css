@@ -1,0 +1,41 @@
+:root {
+  /* Colors */
+  --text-color: #f6f6f6;
+  --card-color: #333436;
+  --graph-bg: #222224;
+  --separator-color: #444;
+  --accent-color: #007bff;
+  --accent-color-hover: #0056b3;
+  --accent-color-active: #004085;
+  --button-color: #007bff;
+  --button-color-hover: #0056b3;
+  --button-color-active: #004085;
+  --text-color-disabled: #888;
+
+  /* Fonts */
+  --font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  --font-size: 16px;
+
+  /* Spacing / Size */
+  --input-padding: 10px;
+  --border-radius: 6px;
+  --slider-thumb-size: 18px;
+  --sidebar-width: 250px;
+  --radio-size: 16px;
+  --checkbox-size: 16px;
+
+  /* Z-Index Layers */
+  --z-index-base: 0;
+  --z-index-sidebar: 10;
+  --z-index-titlebar: 20;
+  --z-index-dropdown: 30;
+  --z-index-modal: 40;
+  --z-index-settings: 50;
+  --z-index-toast: 60;
+  --z-index-tooltip: 70;
+  --z-index-overlay: 80;
+  --z-index-always-on-top: 9999;
+
+  /* Animation Easing */
+  --anim-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

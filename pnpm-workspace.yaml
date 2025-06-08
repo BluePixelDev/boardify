@@ -1,9 +1,8 @@
 packages:
-  - apps/**
-  - packages/**
+  - packages/*
 
 ignoredBuiltDependencies:
-  - '@swc/core'
+  - "@swc/core"
   - boardify
   - esbuild
   - msw

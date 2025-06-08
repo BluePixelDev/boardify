@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     /* Bundler mode */
@@ -25,44 +21,20 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@ui/*": [
-        "./src/ui/*"
-      ],
-      "@shared": [
-        "./src/shared/"
-      ],
-      "@store": [
-        "./src/store/"
-      ],
-      "@views": [
-        "src/Routes"
-      ],
-      "@utils": [
-        "./src/utils/"
-      ],
-      "@features": [
-        "./src/features/"
-      ],
-      "@graphview": [
-        "src/features/graph/graphview"
-      ],
-      "@file-drop": [
-        "./src/features/file-drop"
-      ],
-      "@theme": [
-        "src/features/theme"
-      ],
-      "@snippets": [
-        "./src/features/snipets"
-      ],
+      "@/*": ["./src/*"],
+      "@ui/*": ["./src/ui/*"],
+      "@shared": ["./src/shared/"],
+      "@store": ["./src/store/"],
+      "@views": ["src/Routes"],
+      "@utils": ["./src/utils/"],
+      "@features": ["./src/features/"],
+      "@graphview": ["src/features/board/boardview"],
+      "@file-drop": ["./src/features/file-drop"],
+      "@theme": ["src/features/theme"],
+      "@snippets": ["./src/features/snipets"]
     }
   },
-  "include": [
-    "src"
-, ".ladle/components.tsx"  ],
+  "include": ["src", ".ladle/components.tsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"

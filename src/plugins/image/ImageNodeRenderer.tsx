@@ -1,12 +1,12 @@
-import { GraphNodeData } from "@/features/graph";
+import { BoardNodeData } from "@/features/board";
 import ImageNode from "./normal/ImageNode";
 import { ImageNodeData } from "./types";
-import { IRenderer } from "@/features/graph/renderer";
+import { IRenderer } from "@/features/board/renderer";
 import GIFNode from "./gif/GifNode";
 
 export class ImageNodeRenderer implements IRenderer<ImageNodeData> {
-  render = (node: GraphNodeData<unknown>): JSX.Element | null => {
-    const nodeData = node as GraphNodeData<ImageNodeData>;
+  render = (node: BoardNodeData<unknown>): JSX.Element | null => {
+    const nodeData = node as BoardNodeData<ImageNodeData>;
     const data = nodeData.data;
 
     if (!nodeData) return null;
@@ -16,9 +16,9 @@ export class ImageNodeRenderer implements IRenderer<ImageNodeData> {
 
     switch (data.type) {
       case "gif":
-        return <GIFNode node={node as GraphNodeData<ImageNodeData>} />;
+        return <GIFNode node={node as BoardNodeData<ImageNodeData>} />;
       case "image":
-        return <ImageNode node={node as GraphNodeData<ImageNodeData>} />;
+        return <ImageNode node={node as BoardNodeData<ImageNodeData>} />;
       default:
         return null;
     }

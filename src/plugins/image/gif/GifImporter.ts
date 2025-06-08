@@ -1,6 +1,6 @@
 import { IImporter, ImportEvent, ImportResult } from "@/features/importing";
 import { createNodeFromImportEvent } from "@/utils/nodeUtils";
-import { addNode } from "../../../features/graph/store";
+import { addNode } from "../../../features/board/store";
 import { ImageNodeData } from "../types";
 import { getFileFormat } from "@/utils";
 
