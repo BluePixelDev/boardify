@@ -1,4 +1,4 @@
-import { RootState } from "@/store";
+import { RootState } from "@/redux";
 import { createSelector } from "reselect";
 
 export const selectEnabledSnippets = createSelector(

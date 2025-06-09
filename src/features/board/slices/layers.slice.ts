@@ -3,9 +3,10 @@ import {
   createEntityAdapter,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { Layer } from "./types";
+import { BoardLayer } from "../types";
+import { arrayMove } from "@dnd-kit/sortable";
 
-const layersAdapter = createEntityAdapter<Layer>();
+const layersAdapter = createEntityAdapter<BoardLayer>();
 export const layerSelectors = layersAdapter.getSelectors();
 
 const initialLayer = {
@@ -41,10 +42,20 @@ const layersSlice = createSlice({
     selectLayer: (state, action: PayloadAction<string>) => {
       state.selectedLayerId = action.payload;
     },
+    reorderLayer(
+      state,
+      action: PayloadAction<{ oldIndex: number; newIndex: number }>
+    ) {
+      state.ids = arrayMove(
+        state.ids as string[],
+        action.payload.oldIndex,
+        action.payload.newIndex
+      );
+    },
   },
 });
 
-export const { addLayer, removeLayer, updateLayer, selectLayer } =
+export const { addLayer, removeLayer, updateLayer, selectLayer, reorderLayer } =
   layersSlice.actions;
 
 export default layersSlice.reducer;

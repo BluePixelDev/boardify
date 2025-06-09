@@ -1,25 +1,24 @@
 import KeybindControl from "@/features/keybinds/components/KeybindControl";
-import { BoardView } from "@/features/board/boardview";
-import DotGrid from "@/features/board/grid/DotGrid";
+import DotGrid from "@/features/board/ui/grid/DotGrid";
 import NodesRenderer from "@/features/board/renderer/components/NodesRenderer";
 import { AppDropzone } from "@/features/importing/filedrop";
-import SidebarButton, { Sidebar } from "@/features/sidebar";
-import { isSidebarOpen } from "@/store/app/appSelectors";
+import SidebarButton, { Sidebar } from "@/ui/sidebar";
+import { isSidebarOpen } from "@/redux/app/appSelectors";
 import { useSelector } from "react-redux";
-import { useAppDispatch, useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/redux";
 import {
   addLayer,
+  BoardView,
   selectAllLayers,
   selectLayer,
-  selectSelectedLayerId,
 } from "@/features/board";
 import { v4 as uuidv4 } from "uuid";
+import LayersSidebar from "@/ui/panels/LayerSidebar";
 
 export default function Editor() {
   const dispatch = useAppDispatch();
   const sidebarOpen = useSelector(isSidebarOpen);
   const layers = useAppSelector(selectAllLayers);
-  const selectedLayerId = useAppSelector(selectSelectedLayerId);
 
   const handleAddLayer = () => {
     const newLayer = {
@@ -36,20 +35,12 @@ export default function Editor() {
     <div className="editor-container">
       <KeybindControl />
       <Sidebar isExpanded={sidebarOpen}>
-        {layers.map((layer) => (
-          <SidebarButton
-            key={layer.id}
-            label={layer.name}
-            icon={layer.icon}
-            selected={selectedLayerId === layer.id}
-            onClick={() => dispatch(selectLayer(layer.id))}
-          />
-        ))}
+        <LayersSidebar />
         <SidebarButton
           className="add-layer__button"
           onClick={handleAddLayer}
           label={"+"}
-          selected={true}
+          selected={false}
         />
       </Sidebar>
       <div className="expand-box">

@@ -1,6 +1,6 @@
 import { createAndOpenProject } from "@/features/project";
 import { join } from "@tauri-apps/api/path";
-import type { AppDispatch } from "@/store";
+import type { AppDispatch } from "@/redux";
 import os from "os";
 
 /**

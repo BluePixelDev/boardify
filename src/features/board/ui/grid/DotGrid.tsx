@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import "./grid.styles.css";
 import { CSSProperties } from "react";
 
@@ -9,7 +9,7 @@ export default function DotGrid({
   color?: string;
   opacity?: number;
 }) {
-  const { position, zoom } = useAppSelector((state) => state.graph.graphView);
+  const { position, zoom } = useAppSelector((state) => state.board.view);
 
   const baseDotSize = 2;
   const dotRadius = baseDotSize;

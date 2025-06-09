@@ -1,15 +1,16 @@
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BoardNodeSize, GraphNodePosition } from "../../store";
 import {
   clearAllNodeSelections,
+  moveSelectedNodes,
   toggleNodeSelectionStatus,
   updateNode,
-} from "../../store/graphSlice";
-import { isNodeSelected, selectNodeById } from "../../store/selectors";
+} from "../../slices/nodes.slice";
+import { isNodeSelected, selectNodeById } from "../../slices/selectors";
 import InteractiveRect from "./InteractiveRect";
 import "./node.styles.css";
+import { BoardNodeSize, GraphNodePosition } from "../../types";
 
 type BoardNodeProps = {
   nodeId: string;
@@ -32,7 +33,7 @@ export default function BoardNode({
   onDoubleClick,
   onContextMenu,
 }: BoardNodeProps) {
-  const { zoom } = useAppSelector((state) => state.graph.graphView);
+  const { zoom } = useAppSelector((state) => state.board.view);
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
@@ -46,6 +47,12 @@ export default function BoardNode({
   };
 
   const handleMove = (newPos: GraphNodePosition) => {
+    dispatch(
+      moveSelectedNodes({
+        dx: newPos.x - (nodeData?.position.x ?? 0),
+        dy: newPos.y - (nodeData?.position.y ?? 0),
+      })
+    );
     dispatch(
       updateNode({
         id: nodeId,

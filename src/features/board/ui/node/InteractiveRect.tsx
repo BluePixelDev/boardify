@@ -4,8 +4,8 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useDrag, useResize } from "../../boardview/hooks";
-import { DragDelta } from "../../boardview/hooks/useDrag";
+import { useDrag, useResize } from "../../hooks";
+import { DragDelta } from "../../hooks/useDrag";
 import { GraphNodePosition, BoardNodeSize } from "../../store";
 import "./node.styles.css";
 import ResizeHandle from "./ResizeHandle";

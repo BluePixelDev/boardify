@@ -41,7 +41,7 @@ export function createNodeFromImportEvent<T>(
   partialNode: Omit<BoardNodeData<T>, "id" | "position" | "layerId" | "size">
 ): BoardNodeData<T> {
   const currentState = importEvent.getState();
-  const { transform } = currentState.graph.graphView;
+  const { transform } = currentState.board.view;
   const eventPosition = importEvent.position;
 
   const [scaleX, , , scaleY, translateX, translateY] = transform;

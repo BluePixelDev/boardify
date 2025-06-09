@@ -1,4 +1,4 @@
-import { RootState } from "@/store";
+import { RootState } from "@/redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
 export type ImportEvent = {
@@ -9,17 +9,7 @@ export type ImportEvent = {
   getState: () => RootState;
 };
 
-export type ImportResult =
-  | {
-      success: true;
-      message: string;
-    }
-  | {
-      success: false;
-      message: string;
-    };
-
 export interface IImporter {
   canHandle(file: File, content: ArrayBuffer): Promise<boolean>;
-  importData(event: ImportEvent): Promise<ImportResult>;
+  importData(event: ImportEvent): Promise<void>;
 }

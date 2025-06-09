@@ -6,7 +6,7 @@ import "./fildedrop.styles.css";
 import FileDropModal from "./FileDropModal";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { basename } from "@tauri-apps/api/path";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch } from "@/redux";
 import { ModalContainer } from "@/ui/modal";
 
 export default function DragDropHandler(): JSX.Element {

@@ -1,9 +1,9 @@
 import React, { CSSProperties, useReducer, RefObject } from "react";
-import { DragDelta, DragStartInfo, useDrag } from "./hooks/useDrag";
 import { useDispatch } from "react-redux";
-import { selectNodesInRect } from "../store";
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import "./board.styles.css";
+import { DragDelta, DragStartInfo, useDrag } from "../../hooks/useDrag";
+import { selectNodesInRect } from "../../slices";
 
 type Point = { x: number; y: number };
 
@@ -50,7 +50,7 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({
   containerRef,
 }) => {
   const reduxDispatch = useDispatch();
-  const { position, zoom } = useAppSelector((s) => s.graph.graphView);
+  const { position, zoom } = useAppSelector((s) => s.board.view);
   const [state, localDispatch] = useReducer(selectionReducer, {
     isSelecting: false,
     start: null,

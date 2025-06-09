@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { BoardNodeProps, updateNode } from "@/features/board";
 import { ImageNodeData } from "../types";
-import { BoardNode } from "@/features/board/nodes";
+import { BoardNode } from "@/features/board/ui/node";
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
   <img

@@ -1,5 +1,5 @@
-import { BoardNode } from "../../nodes";
-import { BoardNodeProps } from "../../store";
+import { BoardNodeProps } from "../../types";
+import { BoardNode } from "../../ui/node";
 
 export const FallbackNode = ({ node }: BoardNodeProps<unknown>) => {
   return (

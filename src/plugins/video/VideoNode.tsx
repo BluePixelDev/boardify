@@ -3,7 +3,7 @@ import "./videoNode.style.css";
 import { NodeRenderer } from "@/features/board/renderer";
 import React from "react";
 import { VideoNodeData } from "./types";
-import { BoardNode } from "@/features/board/nodes";
+import { BoardNode } from "@/features/board/ui/node";
 
 const OptimizedVideo = React.memo(
   ({ src, type }: { src: string; type: string }) => (

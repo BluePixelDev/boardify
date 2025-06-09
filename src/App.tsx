@@ -1,4 +1,4 @@
-import { store } from "@store";
+import { store } from "@/redux";
 import "./App.css";
 
 import {

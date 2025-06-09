@@ -1,17 +1,17 @@
-import { useAppDispatch, useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/redux";
 import React, {
   CSSProperties,
   MouseEventHandler,
   useCallback,
   useRef,
 } from "react";
-import { setPosition, setTransform } from "../store";
 import "./board.styles.css";
-import { useDrag } from "./hooks";
-import { DragDelta } from "./hooks/useDrag";
-import { useZoom, ZoomInfo } from "./hooks/useZoom";
 import { zoomAtPoint } from "./matrixUtils";
 import { SelectionArea } from "./SelectionArea";
+import { setPosition, setTransform } from "../../slices";
+import { useDrag, useZoom } from "../../hooks";
+import { DragDelta } from "../../hooks/useDrag";
+import { ZoomInfo } from "../../hooks/useZoom";
 
 //==== GRAPHVIEW ====
 export type GraphViewProps = {
@@ -31,9 +31,7 @@ export default function BoardView({
 }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const { position, transform } = useAppSelector(
-    (state) => state.graph.graphView
-  );
+  const { position, transform } = useAppSelector((state) => state.board.view);
 
   const handleZoom = useCallback(
     ({ scaleFactor, mouseX, mouseY }: ZoomInfo) => {

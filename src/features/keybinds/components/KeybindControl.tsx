@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import {
   clearAllNodeSelections,
   removeNode,
   markAllNodesSelected,
   updateNode,
-} from "@/features/board/store/graphSlice";
-import { toggleSidebar } from "@/store/app/appSlice";
+} from "@/features/board/slices/nodes.slice";
+import { toggleSidebar } from "@/redux/app/appSlice";
 import { selectKeybinds } from "../store/keybindSelectors";
 import { KeyAction, Keybind } from "../types";
 import { selectSelectedNodes } from "@/features/board";

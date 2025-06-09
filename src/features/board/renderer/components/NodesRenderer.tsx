@@ -1,15 +1,16 @@
-import { selectAllNodesOnCurrentLayer } from "../../store/selectors";
 import { FallbackNode } from "./FallbackNode";
 import { rendererRegistry } from "../rendererRegistry";
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import "./nodesRenderer.styles.css";
+import { BoardNodeData } from "../../types";
+import { selectNodesInCurrentLayer } from "../../slices";
 
 export default function NodesRenderer() {
-  const nodes = useAppSelector(selectAllNodesOnCurrentLayer);
+  const nodes = useAppSelector(selectNodesInCurrentLayer);
 
   return (
     <div className="node-renderer__container">
-      {nodes.map((node) => {
+      {nodes.map((node: BoardNodeData<unknown>) => {
         const Renderer = rendererRegistry.getRenderer(node.type);
 
         if (Renderer) {

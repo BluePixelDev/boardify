@@ -3,29 +3,17 @@ import {
   createEntityAdapter,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { BoardNodeData } from "./types";
+import { BoardNodeData } from "../types";
 
 const nodesAdapter = createEntityAdapter<BoardNodeData>();
-export const graphSelectors = nodesAdapter.getSelectors();
+export const nodesSelectors = nodesAdapter.getSelectors();
 
-interface GraphViewState {
-  position: { x: number; y: number };
-  zoom: number;
-  transform: number[];
-}
-
-interface GraphNodeState {
+interface NodesState {
   selectedNodeIds: string[];
-  graphView: GraphViewState;
 }
 
-const initialState = nodesAdapter.getInitialState<GraphNodeState>({
+const initialState = nodesAdapter.getInitialState<NodesState>({
   selectedNodeIds: [],
-  graphView: {
-    position: { x: 0, y: 0 },
-    zoom: 1,
-    transform: [1, 0, 0, 1, 0, 0],
-  },
 });
 
 const doesNodeIntersectRect = (
@@ -50,8 +38,8 @@ const doesNodeIntersectRect = (
   );
 };
 
-const graphSlice = createSlice({
-  name: "graph",
+const nodesSlice = createSlice({
+  name: "nodes",
   initialState,
   reducers: {
     // Node CRUD
@@ -62,6 +50,27 @@ const graphSlice = createSlice({
       state.selectedNodeIds = state.selectedNodeIds.filter(
         (id) => id !== action.payload
       );
+    },
+
+    moveSelectedNodes: (
+      state,
+      action: PayloadAction<{ dx: number; dy: number }>
+    ) => {
+      const { dx, dy } = action.payload;
+      state.selectedNodeIds.forEach((id) => {
+        const node = state.entities[id];
+        if (node) {
+          nodesAdapter.updateOne(state, {
+            id,
+            changes: {
+              position: {
+                x: node.position.x + dx,
+                y: node.position.y + dy,
+              },
+            },
+          });
+        }
+      });
     },
 
     // Selection
@@ -115,26 +124,6 @@ const graphSlice = createSlice({
 
       state.selectedNodeIds = selected;
     },
-
-    // View transform
-    setPosition: (state, action: PayloadAction<{ x: number; y: number }>) => {
-      const { x, y } = action.payload;
-      state.graphView.position = { x, y };
-      state.graphView.transform[4] = x;
-      state.graphView.transform[5] = y;
-    },
-    setZoom: (state, action: PayloadAction<number>) => {
-      const z = action.payload;
-      state.graphView.zoom = z;
-      state.graphView.transform[0] = z;
-      state.graphView.transform[3] = z;
-    },
-    setTransform: (state, action: PayloadAction<number[]>) => {
-      const m = action.payload;
-      state.graphView.transform = m;
-      state.graphView.zoom = m[0];
-      state.graphView.position = { x: m[4], y: m[5] };
-    },
   },
 });
 
@@ -142,16 +131,14 @@ export const {
   addNode,
   removeNode,
   updateNode,
+  moveSelectedNodes,
   markNodeSelected,
   markAllNodesSelected,
   unmarkNodeSelected,
   clearAllNodeSelections,
   replaceSelection,
   toggleNodeSelectionStatus,
-  setPosition,
-  setZoom,
-  setTransform,
   selectNodesInRect,
-} = graphSlice.actions;
+} = nodesSlice.actions;
 
-export default graphSlice.reducer;
+export default nodesSlice.reducer;

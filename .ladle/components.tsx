@@ -1,7 +1,7 @@
 import "@/App.css";
 import type { GlobalProvider } from "@ladle/react";
 import { Provider as StoreProvider } from "react-redux";
-import { store } from "@/store";
+import { store } from "@/redux";
 import { ThemeProvider } from "@/features/theme";
 
 export const Provider: GlobalProvider = ({

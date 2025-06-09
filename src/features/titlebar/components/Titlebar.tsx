@@ -3,7 +3,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { error } from "@tauri-apps/plugin-log";
 import "./titlebar.styles.css";
 import TitlebarButton from "./TitlebarButton";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch } from "@/redux";
 import { openSettingsModal } from "@/features/settings";
 import TitlebarToolbar from "./TitlebarToolbar";
 

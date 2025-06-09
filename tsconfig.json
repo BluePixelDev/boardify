@@ -24,7 +24,7 @@
       "@/*": ["./src/*"],
       "@ui/*": ["./src/ui/*"],
       "@shared": ["./src/shared/"],
-      "@store": ["./src/store/"],
+      "@store": ["src/redux"],
       "@views": ["src/Routes"],
       "@utils": ["./src/utils/"],
       "@features": ["./src/features/"],

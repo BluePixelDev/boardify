@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import { selectEnabledSnippets } from "./snippetSelectors";
 
 export const Snippets = () => {

@@ -2,7 +2,7 @@ import "./imageNode.styles.css";
 import React from "react";
 import { ImageNodeData } from "../types";
 import { BoardNodeProps } from "@/features/board";
-import { BoardNode } from "@/features/board/nodes";
+import { BoardNode } from "@/features/board/ui/node";
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
   <img

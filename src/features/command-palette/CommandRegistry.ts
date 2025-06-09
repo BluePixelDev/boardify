@@ -1,4 +1,4 @@
-import { store } from "@/store";
+import { store } from "@/redux";
 import { Command, ICommandRegistry } from "./types";
 
 type CommandRegistryEvent = "commandAdded" | "commandRemoved";

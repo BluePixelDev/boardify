@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { importerRegistry } from "./ImporterRegistry";
+import { importerRegistry, NoSuitableImporterError } from "./ImporterRegistry";
 import { ImportEvent, IImporter } from "./types";
-import { RootState } from "@/store";
+import { RootState } from "@/redux";
 
 const mockState = {} as unknown as RootState;
 
@@ -83,12 +83,12 @@ describe("ImporterRegistry", () => {
   });
 
   it("returns failure when no importer can handle the file", async () => {
+    importerRegistry.clearImporters();
     importerRegistry.registerImporter(fallbackImporter, 1);
 
-    const result = await importerRegistry.import(importEvent);
-
-    expect(result.success).toBe(false);
-    expect(result.message).toBe("No suitable importer found.");
+    await expect(importerRegistry.import(importEvent)).rejects.toThrow(
+      NoSuitableImporterError
+    );
     expect(fallbackImporter.importData).not.toHaveBeenCalled();
   });
 });

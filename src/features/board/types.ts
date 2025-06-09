@@ -1,4 +1,4 @@
-export interface Layer {
+export interface BoardLayer {
   id: string;
   name: string;
 

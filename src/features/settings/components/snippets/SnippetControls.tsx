@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/store";
+import { useAppSelector } from "@/redux";
 import { SnippetForm } from "./SnippetForm";
 import { SnippetCard } from "./SnippetCard";
 import "./SnippetControls.styles.css";

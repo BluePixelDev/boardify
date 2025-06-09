@@ -1,5 +1,5 @@
-import { openProject as _openProject } from "@/store/app/appSlice";
-import type { AppThunk } from "@/store/types";
+import { openProject as _openProject } from "@/redux/app/appSlice";
+import type { AppThunk } from "@/redux/types";
 import { importResource } from "../utils/projectUtils";
 
 export const createAndOpenProject =

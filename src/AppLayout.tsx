@@ -10,7 +10,7 @@ import { Titlebar, ToolbarProvider } from "./features/titlebar";
 import { ModalContainer } from "./ui/modal";
 import { ThemeProvider } from "./features/theme";
 import { PluginManager } from "./features/plugins";
-import { useAppDispatch, useAppSelector } from "./store";
+import { useAppDispatch, useAppSelector } from "./redux";
 import { useEffect } from "react";
 import { setupDevProject } from "./dev";
 
