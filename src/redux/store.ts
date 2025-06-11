@@ -1,19 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { keybindsReducer } from "@/features/keybinds";
 import { settingsReducer } from "@/features/settings/store";
-import snippetsReducer from "@/features/snippets/snippetSlice";
-import appReducer from "@/redux/app/appSlice";
+import appReducer from "@/redux/slices/appSlice";
 import { combineReducers } from "@reduxjs/toolkit";
-import notificationsReducer from "./notificationsSlice";
-import { boardReducers } from "@/features/board/slices";
+import notificationsReducer from "./slices/notificationsSlice";
+import nodesSlice from "./slices/nodesSlice";
+import boardSlice from "./slices/boardSlice";
+import layersSlice from "./slices/layersSlice";
+import snippetSlice from "./slices/snippetSlice";
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     settings: settingsReducer,
-    board: combineReducers(boardReducers),
+    board: combineReducers({
+      nodes: nodesSlice,
+      view: boardSlice,
+      layers: layersSlice,
+    }),
     keybinds: keybindsReducer,
-    cssSnippets: snippetsReducer,
+    cssSnippets: snippetSlice,
     notifications: notificationsReducer,
   },
   devTools: process.env.NODE_ENV !== "production",

@@ -1,19 +1,17 @@
-import KeybindControl from "@/features/keybinds/components/KeybindControl";
-import DotGrid from "@/features/board/ui/grid/DotGrid";
-import NodesRenderer from "@/features/board/renderer/components/NodesRenderer";
-import { AppDropzone } from "@/features/importing/filedrop";
+import DotGrid from "@/features/board/grid/DotGrid";
 import SidebarButton, { Sidebar } from "@/ui/sidebar";
-import { isSidebarOpen } from "@/redux/app/appSelectors";
+import { isSidebarOpen } from "@/redux/selectors/appSelectors";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "@/redux";
-import {
-  addLayer,
-  BoardView,
-  selectAllLayers,
-  selectLayer,
-} from "@/features/board";
 import { v4 as uuidv4 } from "uuid";
-import LayersSidebar from "@/ui/panels/LayerSidebar";
+import LayersSidebar from "@/features/board/layers/LayerSidebar";
+import { KeybindControl } from "@/features/keybinds";
+import NodesRenderer from "../features/board/nodes/NodesRenderer";
+import { FileDropzone } from "@/ui/dropzone";
+import { FallbackNode } from "../features/board/nodes/FallbackNode";
+import { selectAllLayers } from "@/redux/selectors/layersSelectors";
+import { BoardView } from "@/features/board";
+import { addLayer, selectLayer } from "@/redux/slices/layersSlice";
 
 export default function Editor() {
   const dispatch = useAppDispatch();
@@ -44,9 +42,13 @@ export default function Editor() {
         />
       </Sidebar>
       <div className="expand-box">
-        <AppDropzone />
+        <FileDropzone />
         <BoardView grid={<DotGrid />}>
-          <NodesRenderer />
+          <NodesRenderer
+            fallback={(nodeId) => {
+              return <FallbackNode key={nodeId} nodeId={nodeId} />;
+            }}
+          />
         </BoardView>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Snippet, updateSnippet, removeSnippet } from "@/features/snippets";
+import { Snippet, updateSnippet, removeSnippet } from "@/redux";
 import { useAppDispatch } from "@/redux";
 import { Toggle } from "@/ui/toggle/Toggle";
 import { useState } from "react";

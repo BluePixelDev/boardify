@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import "./sidebar.styles.css";
-import { toggleSidebar } from "@/redux/app/appSlice";
+import { toggleSidebar } from "@/redux/slices/appSlice";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 type SidebarProps = {

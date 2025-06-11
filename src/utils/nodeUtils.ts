@@ -1,9 +1,6 @@
-import {
-  BoardNodeData,
-  BoardNodeSize,
-  selectCurrentLayer,
-} from "@/features/board";
-import { ImportEvent } from "@/features/importing";
+import { ImportEvent } from "@/core/importers";
+import { NodeData, NodeSize } from "@/features/board/nodes";
+import { selectCurrentLayer } from "@/redux/selectors/layersSelectors";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -14,8 +11,8 @@ import { v4 as uuidv4 } from "uuid";
  * @returns A new `GraphNodeData<T>` object with a generated unique `id` and the provided properties.
  */
 export function createNode<T>(
-  partialNode: Omit<BoardNodeData<T>, "id">
-): BoardNodeData<T> {
+  partialNode: Omit<NodeData<T>, "id">
+): NodeData<T> {
   return {
     id: uuidv4(),
     ...partialNode,
@@ -37,9 +34,9 @@ export function createNode<T>(
  */
 export function createNodeFromImportEvent<T>(
   importEvent: ImportEvent,
-  size: BoardNodeSize,
-  partialNode: Omit<BoardNodeData<T>, "id" | "position" | "layerId" | "size">
-): BoardNodeData<T> {
+  size: NodeSize,
+  partialNode: Omit<NodeData<T>, "id" | "position" | "layerId" | "size">
+): NodeData<T> {
   const currentState = importEvent.getState();
   const { transform } = currentState.board.view;
   const eventPosition = importEvent.position;

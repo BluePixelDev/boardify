@@ -9,10 +9,8 @@ import CSSSnippets from "./features/snippets/Snippets";
 import { Titlebar, ToolbarProvider } from "./features/titlebar";
 import { ModalContainer } from "./ui/modal";
 import { ThemeProvider } from "./features/theme";
-import { PluginManager } from "./features/plugins";
+import { PluginManager } from "./core/plugins";
 import { useAppDispatch, useAppSelector } from "./redux";
-import { useEffect } from "react";
-import { setupDevProject } from "./dev";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -21,10 +19,6 @@ interface AppLayoutProps {
 export const AppLayout = ({ children }: AppLayoutProps) => {
   const settingsOpen = useAppSelector(isSettingsModalOpen);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    setupDevProject(dispatch);
-  }, [dispatch]);
 
   return (
     <PluginManager>

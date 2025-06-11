@@ -1,8 +1,9 @@
 import "./imageNode.styles.css";
 import React from "react";
 import { ImageNodeData } from "../types";
-import { BoardNodeProps } from "@/features/board";
-import { BoardNode } from "@/features/board/ui/node";
+import BoardNode from "@/features/board/nodes/BoardNode";
+import { NodeRendererProps } from "@/features/board/nodes";
+import { useNode } from "@/features/board/nodes/hooks/useNode";
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
   <img
@@ -15,11 +16,16 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
 ));
 OptimizedImage.displayName = "OptimizedImage";
 
-const ImageNode = ({ node }: BoardNodeProps<ImageNodeData>) => {
+const ImageNode = ({ nodeId }: NodeRendererProps) => {
+  const node = useNode<ImageNodeData>(nodeId);
+  if (!node?.data) {
+    return null;
+  }
+
   const { width, height } = node.size;
   return (
     <BoardNode
-      nodeId={node.id}
+      nodeId={nodeId}
       aspectRatio={width / height}
       className="image-node"
     >

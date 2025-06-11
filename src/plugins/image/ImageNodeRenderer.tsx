@@ -1,24 +1,24 @@
-import { BoardNodeData } from "@/features/board";
 import ImageNode from "./normal/ImageNode";
-import { ImageNodeData } from "./types";
-import { IRenderer } from "@/features/board/renderer";
 import GIFNode from "./gif/GifNode";
+import { IRenderer } from "@/core/renderers";
+import { useNode } from "@/features/board/nodes/hooks/useNode";
+import { ImageNodeData } from "./types";
 
-export class ImageNodeRenderer implements IRenderer<ImageNodeData> {
-  render = (node: BoardNodeData<unknown>): JSX.Element | null => {
-    const nodeData = node as BoardNodeData<ImageNodeData>;
-    const data = nodeData.data;
+export class ImageNodeRenderer implements IRenderer {
+  render = (nodeId: string): JSX.Element | null => {
+    const node = useNode<ImageNodeData>(nodeId);
+    const nodeData = node?.data;
 
     if (!nodeData) return null;
-    if (!data || !data.imageUrl) {
+    if (!nodeData || !nodeData.imageUrl) {
       return null;
     }
 
-    switch (data.type) {
+    switch (nodeData.type) {
       case "gif":
-        return <GIFNode node={node as BoardNodeData<ImageNodeData>} />;
+        return <GIFNode nodeId={node.id} />;
       case "image":
-        return <ImageNode node={node as BoardNodeData<ImageNodeData>} />;
+        return <ImageNode nodeId={node.id} />;
       default:
         return null;
     }

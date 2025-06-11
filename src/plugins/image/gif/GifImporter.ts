@@ -1,8 +1,8 @@
-import { IImporter, ImportEvent } from "@/features/importing";
+import { IImporter, ImportEvent } from "@core/importers";
 import { createNodeFromImportEvent } from "@/utils/nodeUtils";
 import { ImageNodeData } from "../types";
 import { getFileFormat } from "@/utils";
-import { addNode } from "@/features/board";
+import { addNode } from "@/redux/slices/nodesSlice";
 
 export class GIFImporter implements IImporter {
   async canHandle(_file: File, buffer: ArrayBuffer): Promise<boolean> {

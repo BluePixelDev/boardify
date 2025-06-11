@@ -23,15 +23,12 @@
     "paths": {
       "@/*": ["./src/*"],
       "@ui/*": ["./src/ui/*"],
-      "@shared": ["./src/shared/"],
+      "@core/*": ["./src/core/*"],
+      "@hooks": ["./src/hooks/"],
       "@store": ["src/redux"],
-      "@views": ["src/Routes"],
+      "@routes": ["src/Routes"],
       "@utils": ["./src/utils/"],
-      "@features": ["./src/features/"],
-      "@graphview": ["src/features/board/boardview"],
-      "@file-drop": ["./src/features/file-drop"],
-      "@theme": ["src/features/theme"],
-      "@snippets": ["./src/features/snipets"]
+      "@features": ["./src/features/"]
     }
   },
   "include": ["src", ".ladle/components.tsx"],

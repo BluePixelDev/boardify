@@ -1,8 +1,8 @@
-import { IImporter, ImportEvent } from "@/features/importing";
+import { IImporter, ImportEvent } from "@core/importers";
 import { createNodeFromImportEvent } from "@/utils/nodeUtils";
 import { getFileFormat } from "@/utils";
 import { ImageNodeData } from "../types";
-import { addNode } from "@/features/board";
+import { addNode } from "@/redux/slices/nodesSlice";
 
 const IMAGE_FORMATS = ["jpg", "jpeg", "png", "webp", "bmp", "tiff"];
 export class ImageImporter implements IImporter {

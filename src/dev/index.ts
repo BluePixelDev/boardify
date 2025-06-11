@@ -1,1 +1,0 @@
-export { setupDevProject } from "./devProject";

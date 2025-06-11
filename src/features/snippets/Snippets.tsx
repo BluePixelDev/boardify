@@ -1,9 +1,9 @@
-import { useAppSelector } from "@/redux";
-import { selectEnabledSnippets } from "./snippetSelectors";
+import { selectEnabledSnippets, useAppSelector } from "@/redux";
+import { Snippet } from "./types";
 
 export const Snippets = () => {
   const snippets = useAppSelector(selectEnabledSnippets);
-  const combinedCSS = snippets.map((x) => x.snippet).join("\n");
+  const combinedCSS = snippets.map((x: Snippet) => x.snippet).join("\n");
 
   return (
     <style

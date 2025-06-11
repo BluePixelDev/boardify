@@ -2,9 +2,11 @@ import "./gifNode.styles.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { BoardNodeProps, updateNode } from "@/features/board";
+import BoardNode from "@/features/board/nodes/BoardNode";
+import { NodeRendererProps } from "@/features/board/nodes";
+import { useNode } from "@/features/board/nodes/hooks/useNode";
 import { ImageNodeData } from "../types";
-import { BoardNode } from "@/features/board/ui/node";
+import { updateNode } from "@/redux/slices/nodesSlice";
 
 const OptimizedImage = React.memo(({ src }: { src: string }) => (
   <img
@@ -17,7 +19,11 @@ const OptimizedImage = React.memo(({ src }: { src: string }) => (
 ));
 OptimizedImage.displayName = "OptimizedImage";
 
-const GIFNode = ({ node }: BoardNodeProps<ImageNodeData>) => {
+const GIFNode = ({ nodeId }: NodeRendererProps) => {
+  const node = useNode<ImageNodeData>(nodeId);
+  if (!node?.data) {
+    return null;
+  }
   if (node.data.type !== "gif") {
     return null;
   }
@@ -29,7 +35,7 @@ const GIFNode = ({ node }: BoardNodeProps<ImageNodeData>) => {
   const toggleIsPlaying = () => {
     dispatch(
       updateNode({
-        id: node.id,
+        id: nodeId,
         changes: {
           data: {
             ...node.data,

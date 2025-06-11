@@ -1,9 +1,9 @@
-import { importerRegistry } from "@/features/importing";
 import { ImageNodeRenderer } from "./ImageNodeRenderer";
 import { ImageImporter } from "./normal/ImageImporter";
-import { PluginDefinition } from "@/features/plugins";
+import { PluginDefinition } from "@/core/plugins";
 import { GIFImporter } from "./gif/GifImporter";
-import { rendererRegistry } from "@/features/board/renderer";
+import { rendererRegistry } from "@/core/renderers";
+import { importerRegistry } from "@/core/importers";
 
 let renderer: ImageNodeRenderer;
 let importer: ImageImporter;

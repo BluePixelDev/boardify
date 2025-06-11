@@ -1,5 +1,4 @@
-import { useAppDispatch } from "@/redux";
-import { addSnippet } from "@/features/snippets";
+import { addSnippet, useAppDispatch } from "@/redux";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
