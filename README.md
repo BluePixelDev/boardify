@@ -15,20 +15,6 @@
 
 Whether you're designing a moodboard, organizing research, or managing project assets—Boardify turns your screen into an intuitive infinite whiteboard.
 
-## Features
-
-- **Infinite Canvas** — A boundless space to visually arrange media just how you want it.
-- **Drag & Drop Media** — Quickly import images, videos, and more with intuitive controls.
-- **Modular & Extendable** — Designed with a plugin-ready architecture for future expansions.
-- **Lightweight & Fast** — Built with Tauri for native speed and low system resource usage.
-- **React UI** — Clean and customizable interface using modern web technologies.
-
-## Tech Stack
-
-- **Frontend:** React
-- **Backend/Container:** Tauri (Rust + WebView)
-- **Build System:** Cross-platform support for Windows, macOS, and Linux
-
 ## Use Cases
 
 - Moodboards and inspiration boards
@@ -61,23 +47,5 @@ npm run tauri dev
 
 > **Note**: Make sure you have all [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) installed.
 
-## Roadmap
-
-- Support for more file types (PDF, audio, documents)
-- Search and tagging system
-- Plugin API for custom tools
-- Markdown notes
-
-## Contributing
-
-We welcome contributions from the community! Whether it's a bug fix, feature request, or documentation update—feel free to fork the repo and submit a pull request.
-
----
-
 ## License
-
 [License](https://github.com/BluePixelDev/boardify/blob/main/LICENSE)
-
----
-
-> "Boardify is a desktop app for organizing reference material such as images, videos, and other media on an infinite board."
