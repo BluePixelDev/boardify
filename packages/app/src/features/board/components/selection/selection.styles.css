@@ -1,0 +1,57 @@
+.resize-handle {
+  position: absolute;
+  border-radius: 100%;
+  background-color: var(--accent-color);
+  box-shadow: 0 1px 4px 2px rgba(0, 0, 0, 0.2);
+  pointer-events: auto;
+}
+
+/* Edge handles */
+.handle-n {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.handle-s {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.handle-e {
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+}
+
+.handle-w {
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Corner handles */
+.handle-se {
+  right: 0;
+  bottom: 0;
+  transform: translate(50%, 50%);
+}
+
+.handle-sw {
+  left: 0;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+}
+
+.handle-ne {
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+}
+
+.handle-nw {
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+}

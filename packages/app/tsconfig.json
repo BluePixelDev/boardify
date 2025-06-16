@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    /* Linting */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@ui/*": ["src/ui/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@store/*": ["src/redux/*"],
+      "@routes/*": ["src/Routes/*"],
+      "@utils/*": ["src/utils/*"],
+      "@features/*": ["src/features/*"]
+    }
+  },
+  "include": [
+    "src",
+    ".ladle/components.tsx",
+    "src/redux",
+    "src/Routes",
+    "src/ui",
+    "src/utils",
+    "src/vite-env.d.ts",
+    "src.tsx",
+    "srcLayout.tsx",
+    "src/main.tsx",
+    "src/core",
+    "src/features",
+    "src/hooks",
+    "src/plugins"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

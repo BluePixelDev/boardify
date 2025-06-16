@@ -1,0 +1,16 @@
+.viewport {
+  position: absolute;
+  will-change: transform;
+  user-select: none;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.viewport__content {
+  position: absolute;
+  width: 0;
+  height: 0;
+}

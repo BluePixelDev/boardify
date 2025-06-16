@@ -1,0 +1,1 @@
+export { rendererRegistry } from "./rendererRegistry";

@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Boardify Plugin Manifest",
+  "type": "object",
+  "required": ["id", "name", "version", "main"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the plugin (e.g. 'core-image-plugin')."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the plugin."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the plugin."
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of what the plugin does."
+    },
+    "main": {
+      "type": "string",
+      "description": "Path to the plugin's main JS/TS file (usually built)."
+    },
+    "author": {
+      "type": "string"
+    },
+    "minAppVersion": {
+      "type": "string",
+      "description": "Minimum compatible Boardify app version."
+    }
+  },
+  "additionalProperties": false
+}

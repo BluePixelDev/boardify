@@ -1,0 +1,11 @@
+.board-node {
+  position: absolute;
+  z-index: 1;
+  will-change: transform;
+}
+
+.board-node.selected .resize-handles__wrapper {
+  outline-style: solid;
+  outline-color: var(--accent-color);
+  pointer-events: auto;
+}

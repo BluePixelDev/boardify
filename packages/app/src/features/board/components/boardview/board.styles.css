@@ -1,0 +1,47 @@
+.board-view {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: var(--board-bg, #222224);
+}
+
+.board-view__content {
+  position: absolute;
+  will-change: transform;
+  user-select: none;
+  width: 0;
+  height: 0;
+}
+
+/*---- SELECTION ----*/
+.selection-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+.selection-rect {
+  position: absolute;
+  border: 2px dashed var(--accent-color);
+  pointer-events: auto;
+  z-index: var(--z-index-selection-rect, 1000);
+}
+
+.selection-rect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent-color);
+  opacity: 0.2;
+}
+
+.viewport {
+  width: 100%;
+  height: 100%;
+}
