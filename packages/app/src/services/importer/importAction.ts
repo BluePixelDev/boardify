@@ -1,8 +1,9 @@
 import { AppThunk } from "@/redux";
-import { importerRegistry } from "./ImporterRegistry";
 import { error } from "@tauri-apps/plugin-log";
 import { showErrorToast } from "@/features/notifications";
-import { ImportEvent, NoSuitableImporterError } from "@boardify/sdk";
+import { ImportEvent } from "@boardify/sdk";
+import { importerRegistry } from "./ImporterRegistry";
+import { NoSuitableImporterError } from "./types";
 
 export const importFile =
   (path: string, position: { x: number; y: number }, file: File): AppThunk =>

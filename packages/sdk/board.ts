@@ -1,4 +1,27 @@
-import { ImportEvent } from "./importer";
+/**
+ * Represents a visual layer used to organize nodes on the canvas.
+ */
+export interface Layer {
+  /**
+   * Unique identifier for the layer.
+   */
+  id: string;
+
+  /**
+   * Human-readable name of the layer.
+   */
+  name: string;
+
+  /**
+   * CSS color or hex code used to visually represent the layer.
+   */
+  color: string;
+
+  /**
+   * Icon name or path associated with the layer.
+   */
+  icon: string;
+}
 
 export interface NodePosition {
   x: number;
@@ -38,15 +61,3 @@ export type UseNodeResult<T> = {
   move: (newPos: NodePosition) => void;
   resize: (newSize: NodeSize) => void;
 };
-
-export interface NodeService {
-  addNode<T = unknown>(node: NodeData<T>): void;
-  removeNode(id: string): void;
-  updateNode<T = unknown>(id: string, patch: Partial<NodeData<T>>): void;
-  createNodeFromImportEvent<T>(
-    event: ImportEvent,
-    size: NodeSize,
-    node: Omit<NodeData<T>, "id" | "position" | "layerId" | "size" | "zIndex"> &
-      Partial<Pick<NodeData<T>, "aspectLocked">>
-  ): NodeData<T>;
-}

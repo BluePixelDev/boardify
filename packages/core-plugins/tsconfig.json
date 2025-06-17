@@ -14,7 +14,7 @@
     "noEmit": false,
     "baseUrl": ".",
     "paths": {
-      "@boardify/sdk": ["../sdk/src/index.ts"]
+      "@boardify/core-plugins": ["./src/index.ts"]
     }
   },
   "include": ["src"]

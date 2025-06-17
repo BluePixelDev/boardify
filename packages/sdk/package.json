@@ -1,11 +1,9 @@
 {
   "name": "@boardify/sdk",
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
-  "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --watch"
-  },
+  "license": "MIT",
+  "main": "index.ts",
+  "types": "index.ts",
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -3,7 +3,7 @@ import { ManifestEntry, PluginManifest } from "./types";
 import { join } from "@tauri-apps/api/path";
 import { error } from "console";
 import path from "path";
-import { PluginDefinition } from "@boardify/sdk";
+import { Plugin } from "@boardify/sdk";
 
 export async function loadManifests(baseDir: string): Promise<ManifestEntry[]> {
   const results: ManifestEntry[] = [];
@@ -38,13 +38,13 @@ export async function loadManifests(baseDir: string): Promise<ManifestEntry[]> {
 
 export async function loadPluginFromManifest(
   entry: ManifestEntry
-): Promise<PluginDefinition | undefined> {
+): Promise<Plugin | undefined> {
   const { manifest, pluginDir } = entry;
   const entryPath = path.join(pluginDir, manifest.main);
   try {
     const mod = await import(/* @vite-ignore */ `local://${entryPath}`);
     if (mod && typeof mod === "object" && "default" in mod) {
-      return (mod as { default: PluginDefinition }).default;
+      return (mod as { default: Plugin }).default;
     } else {
       error(`Plugin "${manifest.id}" has no default export.`);
     }

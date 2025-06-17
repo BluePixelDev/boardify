@@ -1,4 +1,4 @@
-import { importFile } from "@/core/importers/importAction";
+import { importFile } from "@/services/importer/importAction";
 import { useAppDispatch } from "@/redux";
 import { ModalContainer } from "@/ui/modal";
 import { basename } from "@tauri-apps/api/path";

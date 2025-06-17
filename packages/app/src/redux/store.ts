@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { settingsReducer } from "@/features/settings/store";
 import appReducer from "@/redux/slices/appSlice";
 import { combineReducers } from "@reduxjs/toolkit";
-import pluginsSlice from "@/core/plugins/store";
+import pluginsSlice from "@/services/plugins/store";
 import notificationsReducer from "./slices/notificationsSlice";
 import snippetSlice from "@/features/snippets/store/snippetSlice";
 import keybindsSlice from "@/features/keybinds/redux/keybindsSlice";

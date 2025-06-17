@@ -1,11 +1,15 @@
 import { AppDispatch } from "@/redux";
-import { PluginDefinition } from "@boardify/sdk";
+import { App, Plugin } from "@boardify/sdk";
 import { createContext, useContext, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { corePluginRegistry } from "@boardify/core-plugins";
-import { SdkInitializer } from "./SdkInitializer";
+import { BoardNode, useNode } from "@/features/board";
+import { importerRegistry } from "../importer";
+import { rendererRegistry } from "../renderer";
+import { createNodeService } from "../node";
+import { getFileFormat } from "@/utils";
 
-type PluginRegistry = Map<string, PluginDefinition>;
+type PluginRegistry = Map<string, Plugin>;
 interface PluginContextType {
   plugins: PluginRegistry;
 }
@@ -16,14 +20,37 @@ export function PluginProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
   const registry = useRef<PluginRegistry>(new Map());
 
+  const app: App = {
+    components: {
+      BoardNode,
+    },
+    importers: importerRegistry,
+    renderers: rendererRegistry,
+    nodeService: createNodeService(dispatch),
+    utils: {
+      getFileFormat,
+    },
+    hooks: {
+      useNode,
+    },
+  };
+
   useEffect(() => {
-    for (const [id, entry] of Object.entries(corePluginRegistry)) {
-      entry.plugin.attach();
-      registry.current.set(id, entry.plugin);
-      console.info(`Core plugin "${id}" initialized.`);
-    }
+    let cancelled = false;
+
+    (async () => {
+      for (const [id, entry] of Object.entries(corePluginRegistry)) {
+        const instance = new entry.plugin(app, entry.manifest);
+        await instance.attach?.();
+        if (!cancelled) {
+          registry.current.set(id, instance);
+          console.info(`Core plugin "${id}" initialized.`);
+        }
+      }
+    })();
 
     return () => {
+      cancelled = true;
       for (const [id, plugin] of registry.current.entries()) {
         plugin.detach?.();
         console.info(`Core plugin "${id}" detached.`);
@@ -34,7 +61,6 @@ export function PluginProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <SdkInitializer />
       <PluginContext.Provider value={{ plugins: registry.current }}>
         {children}
       </PluginContext.Provider>
@@ -49,7 +75,7 @@ export const usePluginManager = () => {
   return ctx;
 };
 
-export function usePlugin<T extends PluginDefinition = PluginDefinition>(
+export function usePlugin<T extends Plugin = Plugin>(
   id: string
 ): T | undefined {
   const { plugins } = usePluginManager();

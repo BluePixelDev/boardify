@@ -27,7 +27,8 @@
       "@store/*": ["src/redux/*"],
       "@routes/*": ["src/Routes/*"],
       "@utils/*": ["src/utils/*"],
-      "@features/*": ["src/features/*"]
+      "@features/*": ["src/features/*"],
+      "@services/*": ["src/services/*"]
     }
   },
   "include": [

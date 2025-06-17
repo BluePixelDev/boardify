@@ -9,7 +9,7 @@ import CSSSnippets from "./features/snippets/Snippets";
 import { Titlebar, ToolbarProvider } from "./features/titlebar";
 import { ModalContainer } from "./ui/modal";
 import { ThemeProvider } from "./features/theme";
-import { PluginProvider } from "./core/plugins";
+import { PluginProvider } from "./services/plugins";
 import { useAppDispatch, useAppSelector } from "./redux";
 
 interface AppLayoutProps {

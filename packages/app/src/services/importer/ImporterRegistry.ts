@@ -1,35 +1,30 @@
-import {
-  ImporterEntry,
-  ImporterHandler,
-  ImporterRegistryInterface,
-  ImportEvent,
-  NoSuitableImporterError,
-} from "@boardify/sdk";
+import { ImporterEntry, ImporterHandler, ImportEvent } from "@boardify/sdk";
+import { NoSuitableImporterError } from "./types";
 
 /**
  * A registry to manage and prioritize data importers.
  */
-class ImporterRegistry implements ImporterRegistryInterface {
+class ImporterRegistry {
   private importers: ImporterEntry[] = [];
 
-  registerImporter(handler: ImporterHandler, priority = 0): void {
+  register(handler: ImporterHandler, priority = 0): void {
     if (!this.importers.some((entry) => entry.handler === handler)) {
       this.importers.push({ handler, priority });
       this.importers.sort((a, b) => b.priority - a.priority);
     }
   }
 
-  unregisterImporter(handler: ImporterHandler): void {
+  unregister(handler: ImporterHandler): void {
     this.importers = this.importers.filter(
       (entry) => entry.handler !== handler
     );
   }
 
-  clearImporters(): void {
+  clear(): void {
     this.importers = [];
   }
 
-  getImporters(): ImporterEntry[] {
+  get(): ImporterEntry[] {
     return this.importers;
   }
 
