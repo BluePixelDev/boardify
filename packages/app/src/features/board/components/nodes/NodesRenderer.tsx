@@ -2,15 +2,16 @@ import { useAppSelector } from "@/redux";
 import { rendererRegistry } from "@/services/renderer";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackNode } from "./FallbackNode";
-import { NodeData, selectVisibleNodes } from "../..";
+import { selectVisibleNodes } from "../..";
 
 export function NodesRenderer() {
-  const nodes = useAppSelector(selectVisibleNodes);
+  const visibleNodes = useAppSelector(selectVisibleNodes);
 
   return (
     <>
-      {nodes.map((node: NodeData<unknown>) => {
-        const Renderer = rendererRegistry.get(node.type);
+      {visibleNodes.map((node) => {
+        const Renderer = rendererRegistry.getRendererForNode(node);
+
         return (
           <ErrorBoundary
             key={node.id}

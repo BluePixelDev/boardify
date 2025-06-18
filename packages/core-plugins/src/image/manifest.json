@@ -1,9 +1,0 @@
-{
-  "id": "core-image-plugin",
-  "name": "Image Plugin",
-  "description": "A plugin that adds image support to the application.",
-  "main": "./index.tsx",
-  "version": "1.0.0",
-  "author": "boardify",
-  "minAppVersion": "0.2.0"
-}

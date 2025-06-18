@@ -1,18 +1,37 @@
-import { NodeRendererEntry } from "@boardify/sdk";
+import { NodeData, NodeRendererEntry } from "@boardify/sdk";
+import { warn } from "@tauri-apps/plugin-log";
+import { ComponentType } from "react";
 
+/**
+ * A registry to manage dynamic node renderers with priority and ID.
+ */
 class RendererRegistry {
-  private renderers = new Map<string, NodeRendererEntry>();
+  private entries: NodeRendererEntry[] = [];
 
-  register(type: string, renderer: NodeRendererEntry) {
-    this.renderers.set(type, renderer);
+  register(entry: NodeRendererEntry) {
+    const exists = this.entries.some((e) => e.id === entry.id);
+    if (exists) {
+      warn(
+        `[RendererRegistry] Renderer with id "${entry.id}" already registered.`
+      );
+      return;
+    }
+    this.entries.push(entry);
+    this.entries.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
   }
 
-  get(type: string): NodeRendererEntry | undefined {
-    return this.renderers.get(type);
+  clear(): void {
+    this.entries = [];
   }
 
-  public unregister(type: string): boolean {
-    return this.renderers.delete(type);
+  getRendererForNode(
+    node: NodeData
+  ): ComponentType<{ nodeId: string }> | undefined {
+    return this.entries.find((entry) => entry.match(node.type))?.component;
+  }
+
+  unregister(id: string): void {
+    this.entries = this.entries.filter((entry) => entry.id !== id);
   }
 }
 

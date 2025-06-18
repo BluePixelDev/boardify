@@ -1,6 +1,6 @@
 import { NodeRendererProps, WithApp } from "@boardify/sdk";
-import { GIFNode } from "./GifNode";
-import { ImageNode } from "./ImageNode";
+import { GIFNode } from "./nodes/GifNode";
+import { ImageNode } from "./nodes/ImageNode";
 
 export function ImageNodeRenderer(props: WithApp<NodeRendererProps>) {
   const { node } = props.app.hooks.useNode(props.nodeId);

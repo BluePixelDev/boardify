@@ -1,17 +1,15 @@
 import { importFile } from "@/services/importer/importAction";
-import { useAppDispatch } from "@/redux";
-import { ModalContainer } from "@/ui/modal";
 import { basename } from "@tauri-apps/api/path";
 import { DragDropEvent, getCurrentWebview } from "@tauri-apps/api/webview";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { error } from "@tauri-apps/plugin-log";
 import { useEffect, useRef, useState } from "react";
 import "./fildedrop.styles.css";
-import FileDropModal from "./FileDropModal";
+import { Modal } from "../modal";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export function FileDropzone(): JSX.Element {
   const [draggingFiles, setDraggingFiles] = useState(false);
-  const dispatch = useAppDispatch();
   const internalDrag = useRef(false);
 
   const handleInternalDragStart = () => (internalDrag.current = true);
@@ -85,7 +83,7 @@ export function FileDropzone(): JSX.Element {
       const fileName = await basename(path);
       const file = new File([fileData], fileName);
       const positionXY = { x: position.x, y: position.y };
-      dispatch(importFile(path, positionXY, file));
+      await importFile(path, positionXY, file);
     }
   };
 
@@ -94,9 +92,12 @@ export function FileDropzone(): JSX.Element {
   };
 
   return (
-    <ModalContainer show={draggingFiles} className="file-drop-modal__container">
-      <FileDropModal />
-    </ModalContainer>
+    <Modal containerClass="file-drop" isOpen={draggingFiles}>
+      <div className="file-drop__content">
+        <Icon icon="subway:file-1" className="file-drop__icon" />
+        <h1 className="file-drop__title">Drop files here</h1>
+      </div>
+    </Modal>
   );
 }
 

@@ -46,3 +46,15 @@ const plugin: PluginDefinition = {
 
 export default plugin;
 ```
+
+# Naming Conventions
+
+```js
+<plugin>:<domain>.<type>[.<subtype>...]
+```
+
+## Exampl
+
+```js
+"core:media.image";
+```

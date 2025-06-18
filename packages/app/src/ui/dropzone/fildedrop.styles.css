@@ -1,16 +1,15 @@
-.file-drop-modal__container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--accent-color);
-  opacity: 0.5;
-}
-
-.file-drop-modal__container {
+.file-drop.modal-container .modal-dim {
   border: dashed 2px var(--accent-color);
+  pointer-events: none;
+
+  &::after {
+    content: "";
+    position: fixed;
+    display: block;
+    inset: 0;
+    background-color: var(--accent-color);
+    opacity: 0.3;
+  }
 }
 
 .file-drop__modal {

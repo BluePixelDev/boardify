@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import process from "process";
+import tailwindcss from "@tailwindcss/vite";
 import { aliases } from "./vite.aliases";
 
 const host = process.env.TAURI_DEV_HOST;
@@ -19,7 +20,7 @@ export default defineConfig(async () => ({
     },
   },
 
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
 
   clearScreen: false,
   server: {

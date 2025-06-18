@@ -1,14 +1,16 @@
 // Core Event Types
 
-import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 import { NodeData, NodeSize, UseNodeResult } from "board";
 
-export type ImportEvent<TState = unknown, TDispatch = Dispatch> = {
+export interface PrioritizedEntry {
+  id: string;
+  priority?: number;
+}
+
+export type ImportEvent = {
   path: string;
   file: File;
   position: { x: number; y: number };
-  dispatch: TDispatch;
-  getState: () => TState;
 };
 
 export type ImporterHandler = (
@@ -16,28 +18,23 @@ export type ImporterHandler = (
   accept: () => void
 ) => Promise<void>;
 
-/**
- * An entry in the importer registry with handler and priority.
- */
-export type ImporterEntry = {
-  handler: ImporterHandler;
-  priority: number;
-};
-
-// Node Rendering
-
 export interface NodeRendererProps {
   nodeId: string;
 }
 
-export type NodeRendererEntry = (
-  props: NodeRendererProps
-) => JSX.Element | null;
+export interface ImporterEntry extends PrioritizedEntry {
+  handler: ImporterHandler;
+}
+
+export interface NodeRendererEntry extends PrioritizedEntry {
+  match: (type: string) => boolean;
+  component: React.ComponentType<{ nodeId: string }>;
+}
 
 // Node Creation Utilities
 
 export type CreateNodeFromImportEventFn = <T>(
-  importEvent: ImportEvent<unknown, Dispatch<UnknownAction>>,
+  importEvent: ImportEvent,
   size: NodeSize,
   partialNode: Omit<
     NodeData<T>,
@@ -61,12 +58,12 @@ export type GetFileFormatFn = (
 
 export interface App {
   importers: {
-    register: (handler: ImporterHandler, priority?: number) => void;
-    unregister: (handler: ImporterHandler) => void;
+    register: (entry: ImporterEntry) => void;
+    unregister: (id: string) => void;
   };
   renderers: {
-    register: (type: string, renderer: NodeRendererEntry) => void;
-    unregister: (type: string) => void;
+    register: (entry: NodeRendererEntry) => void;
+    unregister: (id: string) => void;
   };
   nodeService: {
     addNode: <T>(node: NodeData<T>) => void;

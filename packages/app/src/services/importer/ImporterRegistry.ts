@@ -1,23 +1,27 @@
-import { ImporterEntry, ImporterHandler, ImportEvent } from "@boardify/sdk";
+import { ImporterEntry, ImportEvent } from "@boardify/sdk";
 import { NoSuitableImporterError } from "./types";
+import { warn } from "@tauri-apps/plugin-log";
 
 /**
  * A registry to manage and prioritize data importers.
  */
-class ImporterRegistry {
+export class ImporterRegistry {
   private importers: ImporterEntry[] = [];
 
-  register(handler: ImporterHandler, priority = 0): void {
-    if (!this.importers.some((entry) => entry.handler === handler)) {
-      this.importers.push({ handler, priority });
-      this.importers.sort((a, b) => b.priority - a.priority);
+  register(entry: ImporterEntry): void {
+    const exists = this.importers.some((imp) => imp.id === entry.id);
+    if (exists) {
+      warn(
+        `[ImporterRegistry] Importer with id "${entry.id}" already registered.`
+      );
+      return;
     }
+    this.importers.push(entry);
+    this.importers.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
   }
 
-  unregister(handler: ImporterHandler): void {
-    this.importers = this.importers.filter(
-      (entry) => entry.handler !== handler
-    );
+  unregister(id: string): void {
+    this.importers = this.importers.filter((entry) => entry.id !== id);
   }
 
   clear(): void {

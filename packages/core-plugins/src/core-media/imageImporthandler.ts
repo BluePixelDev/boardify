@@ -1,7 +1,7 @@
 import { ImportEvent, App, NodeSize, NodeData } from "@boardify/sdk";
+import { CoreImageSubtypes, MediaNodeTypes } from "./mediaNodeTypes";
 
 const SUPPORTED_FORMATS = ["jpg", "jpeg", "png", "webp", "bmp", "tiff", "gif"];
-
 export function createImageImporterHandler(app: App) {
   return async (event: ImportEvent, accept: () => void): Promise<void> => {
     let format: string | undefined;
@@ -38,9 +38,9 @@ export function createImageImporterHandler(app: App) {
 
     const newNode: NodeData<unknown> =
       app.nodeService.createNodeFromImportEvent(event, nodeSize, {
-        type: "image",
+        type: MediaNodeTypes.Image,
         data: {
-          type: isGif ? "gif" : "image",
+          type: isGif ? CoreImageSubtypes.Gif : CoreImageSubtypes.Static,
           imageUrl,
           ...(isGif && { isPlaying: false }),
         },

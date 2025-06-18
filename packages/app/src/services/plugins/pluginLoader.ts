@@ -1,9 +1,13 @@
 import { readDir, readTextFile } from "@tauri-apps/plugin-fs";
-import { ManifestEntry, PluginManifest } from "./types";
 import { join } from "@tauri-apps/api/path";
 import { error } from "console";
 import path from "path";
-import { Plugin } from "@boardify/sdk";
+import { Plugin, PluginManifest } from "@boardify/sdk";
+
+export type ManifestEntry = {
+  manifest: PluginManifest;
+  pluginDir: string;
+};
 
 export async function loadManifests(baseDir: string): Promise<ManifestEntry[]> {
   const results: ManifestEntry[] = [];
@@ -50,5 +54,6 @@ export async function loadPluginFromManifest(
     }
   } catch (e) {
     error(`Error loading plugin "${manifest.id}": ${e}`);
+    return undefined;
   }
 }

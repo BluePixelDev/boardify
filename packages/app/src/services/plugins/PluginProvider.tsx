@@ -1,15 +1,14 @@
-import { AppDispatch } from "@/redux";
-import { App, Plugin } from "@boardify/sdk";
+import { Plugin, PluginManifest } from "@boardify/sdk";
 import { createContext, useContext, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { corePluginRegistry } from "@boardify/core-plugins";
-import { BoardNode, useNode } from "@/features/board";
-import { importerRegistry } from "../importer";
-import { rendererRegistry } from "../renderer";
-import { createNodeService } from "../node";
-import { getFileFormat } from "@/utils";
+import { app } from "./app";
 
-type PluginRegistry = Map<string, Plugin>;
+type PluginWithManifest = {
+  instance: Plugin;
+  manifest: PluginManifest;
+};
+
+type PluginRegistry = Map<string, PluginWithManifest>;
 interface PluginContextType {
   plugins: PluginRegistry;
 }
@@ -17,23 +16,7 @@ interface PluginContextType {
 const PluginContext = createContext<PluginContextType | undefined>(undefined);
 
 export function PluginProvider({ children }: { children: React.ReactNode }) {
-  const dispatch = useDispatch<AppDispatch>();
   const registry = useRef<PluginRegistry>(new Map());
-
-  const app: App = {
-    components: {
-      BoardNode,
-    },
-    importers: importerRegistry,
-    renderers: rendererRegistry,
-    nodeService: createNodeService(dispatch),
-    utils: {
-      getFileFormat,
-    },
-    hooks: {
-      useNode,
-    },
-  };
 
   useEffect(() => {
     let cancelled = false;
@@ -43,7 +26,7 @@ export function PluginProvider({ children }: { children: React.ReactNode }) {
         const instance = new entry.plugin(app, entry.manifest);
         await instance.attach?.();
         if (!cancelled) {
-          registry.current.set(id, instance);
+          registry.current.set(id, { instance, manifest: entry.manifest });
           console.info(`Core plugin "${id}" initialized.`);
         }
       }
@@ -51,13 +34,13 @@ export function PluginProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       cancelled = true;
-      for (const [id, plugin] of registry.current.entries()) {
-        plugin.detach?.();
+      for (const [id, { instance }] of registry.current.entries()) {
+        instance.detach?.();
         console.info(`Core plugin "${id}" detached.`);
       }
       registry.current.clear();
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

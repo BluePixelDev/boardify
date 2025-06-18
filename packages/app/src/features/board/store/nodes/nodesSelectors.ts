@@ -42,3 +42,13 @@ export const selectVisibleNodes = createSelector(
       .filter((n) => n.layerId === selLayer)
       .sort((a, b) => a.zIndex - b.zIndex)
 );
+
+export const selectVisibleNodesIds = createSelector(
+  selectAllNodes,
+  selectSelectedLayerId,
+  (nodes, selLayer) =>
+    nodes
+      .filter((n) => n.layerId === selLayer)
+      .sort((a, b) => a.zIndex - b.zIndex)
+      .map((ctx) => ctx.id)
+);

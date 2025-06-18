@@ -1,5 +1,5 @@
 import { selectCurrentLayer } from "@/features/board/store/layersSelectors";
-import { RootState } from "@/redux";
+import { store } from "@/redux";
 import { CreateBaseNodeFn, CreateNodeFromImportEventFn } from "@boardify/sdk";
 import { v4 as uuidv4 } from "uuid";
 
@@ -33,7 +33,7 @@ export const createNodeFromImportEvent: CreateNodeFromImportEventFn = (
   size,
   partialNode
 ) => {
-  const state = importEvent.getState() as RootState;
+  const state = store.getState();
   const { transform } = state.board.view;
   const { x, y } = importEvent.position;
 

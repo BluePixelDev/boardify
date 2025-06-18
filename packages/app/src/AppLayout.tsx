@@ -2,12 +2,12 @@ import { ToastContainer } from "react-toastify";
 import { NotificationOverlay } from "./features/notifications";
 import {
   isSettingsModalOpen,
-  SettingsModal,
+  SettingsModalContent,
   toggleSettingsModal,
 } from "./features/settings";
 import CSSSnippets from "./features/snippets/Snippets";
 import { Titlebar, ToolbarProvider } from "./features/titlebar";
-import { ModalContainer } from "./ui/modal";
+import { Modal } from "./ui/modal";
 import { ThemeProvider } from "./features/theme";
 import { PluginProvider } from "./services/plugins";
 import { useAppDispatch, useAppSelector } from "./redux";
@@ -27,12 +27,14 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           <CSSSnippets />
           <Titlebar />
           <NotificationOverlay />
-          <ModalContainer
-            className="modal-dim settings-modal__container"
-            show={settingsOpen}
+          <Modal
+            isOpen={settingsOpen}
+            onClose={() => dispatch(toggleSettingsModal())}
+            title="Settings"
+            className="settings__modal"
           >
-            <SettingsModal onClose={() => dispatch(toggleSettingsModal())} />
-          </ModalContainer>
+            <SettingsModalContent />
+          </Modal>
           <ToastContainer />
           <div className="app-container">{children}</div>
         </ToolbarProvider>
